@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 7,
+  "title": "slices.Sort で並べ替え",
+  "priority": "🔴",
+  "text": "並べ替えは標準パッケージ `slices` の `slices.Sort(s)` で行います。Python の `a.sort()` と同じく**その場で**昇順に並べ替え、戻り値はありません。int でも string でも同じ書き方で使えます。以前は `sort.Ints(s)` のように型ごとの関数を使っていたため、古いコードではそちらも見かけます。🔴 ソートはスキルチェック頻出なので、`slices.Sort` を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\na.sort()\n```\n\nGo ではこう書く:\n\n```go\nslices.Sort(s)\n```",
+  "sample": "// lesson07 ch07: slices.Sort で並べ替え\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tnums := []int{3, 1, 4, 1, 5}\n\n\t// その場で昇順に並べ替えます。戻り値はありません\n\tslices.Sort(nums)\n\tfmt.Println(nums)\n\n\t// 文字列も同じ書き方で並べ替えられます\n\tnames := []string{\"banana\", \"apple\", \"cherry\"}\n\tslices.Sort(names)\n\tfmt.Println(names)\n}\n",
+  "exercise": {
+    "description": "スライス `[]int{5, 2, 8, 1}` を作り、`slices.Sort` で昇順に並べ替えてからスライス全体を出力してください。`slices` を import に追加してください。\n\n**期待出力**\n\n```text\n[1 2 5 8]\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[1 2 5 8]\n",
+    "answer": "// lesson07 ch07 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tnums := []int{5, 2, 8, 1}\n\n\t// a.sort() と同じ「その場で並べ替え」なので、戻り値を受け取る必要は\n\t// ありません。並べ替わった nums をそのまま出力します。\n\tslices.Sort(nums)\n\tfmt.Println(nums)\n}\n"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 9,
+  "chapter": 3,
+  "title": "配列 [3]int（固定長・値型）",
+  "priority": "⚪",
+  "text": "Go にタプルはありませんが、見た目が近いものに**配列**があります。`[3]int` は長さ 3 で固定された並びで、長さまで型の一部です（`[3]int` と `[4]int` は別の型）。追加も削除もできません。また**値型**（代入すると中身ごとコピーされる型）なので、コピー先を変えても元は変わりません。Python のタプルと違い、要素の書き換えは可能です。ふだんはスライスを使うため、⚪ 配列は「固定長・値型」という性質を知っておくだけで十分です。\n\nPython ではこう書いた:\n\n```python\nt = (1, 2, 3)  # タプル。長さ固定\n```\n\nGo ではこう書く:\n\n```go\na := [3]int{1, 2, 3} // 配列。長さ 3 で固定\n```",
+  "sample": "// lesson09 ch03: 配列 [3]int（固定長・値型）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// [] の中に長さを書くと配列になります。長さは変えられません\n\ta := [3]int{1, 2, 3}\n\tfmt.Println(a)\n\tfmt.Println(len(a))\n\n\t// 値型: 代入すると中身ごとコピーされます\n\tb := a\n\tb[0] = 99\n\tfmt.Println(b)\n\tfmt.Println(a) // コピー元は変わりません\n}\n",
+  "exercise": {
+    "description": "配列 `a := [3]int{1, 2, 3}` を作り、`b := a` でコピーしてから `b` の 0 番目を `99` に書き換え、1 行目に `a` を、2 行目に `b` を出力して、コピー元が変わっていないことを確認してください。\n\n**期待出力**\n\n```text\n[1 2 3]\n[99 2 3]\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[1 2 3]\n[99 2 3]\n",
+    "answer": "// lesson09 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\ta := [3]int{1, 2, 3}\n\n\t// 配列は値型なので、b := a の時点で中身ごとコピーされます。\n\t// スライスと違い、b を書き換えても a には影響しません。\n\tb := a\n\tb[0] = 99\n\n\tfmt.Println(a)\n\tfmt.Println(b)\n}\n"
+  }
+}

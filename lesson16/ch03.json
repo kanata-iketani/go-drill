@@ -1,0 +1,27 @@
+{
+  "lesson": 16,
+  "chapter": 3,
+  "title": "カンマ ok イディオム v, ok := m[k]",
+  "priority": "🔴",
+  "text": "Go の map は、存在しないキーを読んでもエラーにならず、値の型の**ゼロ値**（int なら 0、string なら空文字列）を返します。そのため「値が 0」と「キーがない」を区別できません。区別するには v, ok := m[k] という**カンマ ok イディオム**を使います。ok はキーが存在すれば true になる bool です。Python の in 演算子や get() で行っていた存在チェックは、Go ではすべてこの形で書きます。🔴 手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nif \"apple\" in prices:\n    print(prices[\"apple\"])\n```\n\nGo ではこう書く:\n\n```go\nif v, ok := prices[\"apple\"]; ok {\n\tfmt.Println(v)\n}\n```",
+  "sample": "// lesson16 ch03: カンマ ok イディオム\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tprices := map[string]int{\"coffee\": 480, \"tea\": 400}\n\n\t// 存在しないキーはエラーにならず、ゼロ値（int なら 0）が返ります\n\tfmt.Println(prices[\"juice\"])\n\n\t// 「0 円」なのか「メニューにない」のかは、カンマ ok で区別します\n\tif v, ok := prices[\"coffee\"]; ok {\n\t\tfmt.Println(\"coffee は\", v, \"円\")\n\t}\n\n\t// 値が不要で存在だけ知りたいときは v を _ で捨てます\n\tif _, ok := prices[\"juice\"]; !ok {\n\t\tfmt.Println(\"juice はメニューにありません\")\n\t}\n}\n",
+  "exercise": {
+    "description": "スターターにはメニュー表 `menu` が定義されています。標準入力から商品名が 1 行で与えられるので、メニューにあれば `{価格}円`、なければ `ありません` と出力してください。\n\n**入力される値**\n\n```text\n商品名\n```\n\n**入力例1**\n\n```text\ncoffee\n```\n\n**期待出力1**\n\n```text\n480円\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tmenu := map[string]int{\"coffee\": 480, \"tea\": 400, \"cocoa\": 520}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\titem := sc.Text()\n\n\t// ここから下を書く\n\t_ = menu\n\t_ = item\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "coffee\n",
+        "expected_stdout": "480円\n"
+      },
+      {
+        "stdin": "juice\n",
+        "expected_stdout": "ありません\n"
+      },
+      {
+        "stdin": "cocoa\n",
+        "expected_stdout": "520円\n"
+      }
+    ],
+    "answer": "// lesson16 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tmenu := map[string]int{\"coffee\": 480, \"tea\": 400, \"cocoa\": 520}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\titem := sc.Text()\n\n\t// 存在しないキーは 0 が返るだけでエラーにならないため、\n\t// 「メニューにない」ことを知るにはカンマ ok イディオムが必須です。\n\tif v, ok := menu[item]; ok {\n\t\tfmt.Printf(\"%d円\\n\", v)\n\t} else {\n\t\tfmt.Println(\"ありません\")\n\t}\n}\n"
+  }
+}

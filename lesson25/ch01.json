@@ -1,0 +1,27 @@
+{
+  "lesson": 25,
+  "chapter": 1,
+  "title": "値型のコピー（int・struct・配列は代入で複製）",
+  "priority": "🟡",
+  "text": "Python ではすべての変数がオブジェクトへの参照で、`id()` で同一性を確かめられましたが、Go に `id()` はありません。代わりに「型ごとのコピーのされ方」で考えます。`int`・構造体・配列（固定長）は**値型**（代入や引数渡しで中身が丸ごと複製される型）です。コピーを書き換えても元の変数は変わりません。配列が値としてコピーされる点は、Python のリストとの大きな違いです。🟡 「代入=複製」になる型を押さえましょう。\n\nPython ではこう書いた:\n\n```python\na = [1, 2, 3]\nb = a       # 同じオブジェクトを指す\nb[0] = 100  # a も変わる\n```\n\nGo ではこう書く:\n\n```go\na := [3]int{1, 2, 3} // 配列は値型\nb := a               // 中身が丸ごとコピーされる\nb[0] = 100           // a は変わらない\n```",
+  "sample": "// lesson25 ch01: 値型は代入でコピーされる\npackage main\n\nimport \"fmt\"\n\ntype Point struct {\n\tX, Y int\n}\n\nfunc main() {\n\t// 構造体は値型: 代入で中身が丸ごとコピーされます\n\tp := Point{X: 1, Y: 2}\n\tq := p\n\tq.X = 100\n\tfmt.Println(p.X, q.X) // 1 100（p は変わらない）\n\n\t// 配列（固定長）も値型です\n\ta := [3]int{1, 2, 3}\n\tb := a\n\tb[0] = 100\n\tfmt.Println(a[0], b[0]) // 1 100\n\n\t// int も同じ: コピーを変えても元は変わりません\n\tx := 10\n\ty := x\n\ty = 999\n\tfmt.Println(x, y) // 10 999\n}\n",
+  "exercise": {
+    "description": "1 行目に名前と年齢が空白区切りで入力されます。構造体 `Person{Name, Age}` の変数 `original` を作り、`copied := original` と代入してから `copied.Age` に 10 を足してください。そのあと 1 行目に `original: <名前> <年齢>`、2 行目に `copied: <名前> <年齢+10>` を出力し、構造体が値型なのでコピー側だけが変わることを確かめます。\n\n**入力される値**\n\n```text\n名前 年齢\n```\n\n**入力例1**\n\n```text\n田中 20\n```\n\n**期待出力1**\n\n```text\noriginal: 田中 20\ncopied: 田中 30\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tage, _ := strconv.Atoi(fields[1])\n\n\t// ここから下を書く: original を作り、copied := original として Age を +10 し、\n\t// original: <名前> <年齢> / copied: <名前> <年齢+10> の 2 行を出力する\n\t_ = name\n\t_ = age\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "田中 20\n",
+        "expected_stdout": "original: 田中 20\ncopied: 田中 30\n"
+      },
+      {
+        "stdin": "鈴木 35\n",
+        "expected_stdout": "original: 鈴木 35\ncopied: 鈴木 45\n"
+      },
+      {
+        "stdin": "Gopher 5\n",
+        "expected_stdout": "original: Gopher 5\ncopied: Gopher 15\n"
+      }
+    ],
+    "answer": "// lesson25 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tage, _ := strconv.Atoi(fields[1])\n\n\toriginal := Person{Name: name, Age: age}\n\t// 構造体は値型なので、この代入で中身が丸ごと複製されます。\n\t// Python のように「同じオブジェクトを 2 つの名前で指す」のではないため、\n\t// copied を書き換えても original には影響しません。\n\tcopied := original\n\tcopied.Age += 10\n\n\tfmt.Printf(\"original: %s %d\\n\", original.Name, original.Age)\n\tfmt.Printf(\"copied: %s %d\\n\", copied.Name, copied.Age)\n}\n"
+  }
+}

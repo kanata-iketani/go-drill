@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 1,
+  "title": "スライスの生成と len",
+  "priority": "🔴",
+  "text": "Go で Python のリストに当たるのが**スライス**（複数の値を順番に並べて持てるデータ構造）です。`[]int{1, 2, 3}` のように「要素の型」を付けて作り、1 つのスライスには同じ型の値しか入れられない点が Python との大きな違いです。要素数は Python と同じく `len(s)` で数えます。🔴 スライスはこの先すべてのレッスンで使うので、生成の書き方を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\na = [1, 2, 3]\nprint(len(a))\n```\n\nGo ではこう書く:\n\n```go\ns := []int{1, 2, 3}\nfmt.Println(len(s))\n```",
+  "sample": "// lesson07 ch01: スライスの生成と len\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 要素の型を付けて作ります。int のスライスには int しか入りません\n\tnums := []int{10, 20, 30}\n\tfmt.Println(nums)\n\tfmt.Println(len(nums))\n\n\t// 文字列のスライスも同じ形です\n\tfruits := []string{\"りんご\", \"みかん\"}\n\tfmt.Println(fruits)\n\n\t// 空のスライスは要素 0 個から始まります\n\tvar empty []int\n\tfmt.Println(len(empty))\n}\n",
+  "exercise": {
+    "description": "int のスライス `[10 20 30]` を作り、1 行目にスライス全体を、2 行目に `len` で数えた要素数を出力してください。\n\n**期待出力**\n\n```text\n[10 20 30]\n3\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[10 20 30]\n3\n",
+    "answer": "// lesson07 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// [1, 2, 3] に当たる書き方。[]int が「int のスライス」という型名です。\n\tnums := []int{10, 20, 30}\n\n\t// fmt.Println にスライスを渡すと [10 20 30] の形式で表示されます。\n\tfmt.Println(nums)\n\tfmt.Println(len(nums))\n}\n"
+  }
+}

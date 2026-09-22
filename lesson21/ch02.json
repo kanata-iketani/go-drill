@@ -1,0 +1,27 @@
+{
+  "lesson": 21,
+  "chapter": 2,
+  "title": "メソッドとレシーバ（self の代わり）",
+  "priority": "🔴",
+  "text": "構造体に結び付いた関数を**メソッド**といい、`func` と関数名の間に**レシーバ**（メソッドを呼ばれる本人）を書きます。Python の `self` に当たるのがレシーバで、**Go に `self` というキーワードはありません**。名前は自分で決めます。フィールドを書き換えるメソッドはポインタレシーバ `(r *Rect)`、読むだけなら値レシーバ `(r Rect)` にします。🔴 `p.Method()` の形は毎日書くので、手が覚えるまで練習しましょう。\n\nPython ではこう書いた:\n\n```python\nclass Rect:\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n\n    def area(self):\n        return self.w * self.h\n```\n\nGo ではこう書く:\n\n```go\ntype Rect struct {\n\tW, H int\n}\n\n// (r Rect) がレシーバ。中では r が self の代わり\nfunc (r Rect) Area() int {\n\treturn r.W * r.H\n}\n```",
+  "sample": "// lesson21 ch02: メソッドとレシーバ（self の代わり）\npackage main\n\nimport \"fmt\"\n\ntype Rect struct {\n\tW, H int\n}\n\n// 値レシーバ: 読むだけのメソッド。r が self の代わりです\nfunc (r Rect) Area() int {\n\treturn r.W * r.H\n}\n\n// ポインタレシーバ: フィールドを書き換えるメソッドは *Rect にします\nfunc (r *Rect) Scale(n int) {\n\tr.W *= n\n\tr.H *= n\n}\n\nfunc main() {\n\tr := Rect{W: 2, H: 3}\n\tfmt.Println(r.Area()) // 6\n\n\tr.Scale(2)            // 呼び出し側の書き方は値レシーバと同じ\n\tfmt.Println(r.Area()) // 24\n}\n",
+  "exercise": {
+    "description": "1 行目に長方形の幅 w・高さ h・倍率 n（すべて整数）が空白区切りで与えられます。\n構造体 `Rect` に、面積を返す**値レシーバ**のメソッド `Area() int` と、\n幅と高さを n 倍にする**ポインタレシーバ**のメソッド `Scale(n int)` を定義してください。\n最初の面積を出力し、`Scale(n)` を呼んでから、もう一度面積を出力します（2 行）。\n\n**入力例1**\n\n```text\n2 3 2\n```\n\n**期待出力1**\n\n```text\n6\n24\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに Rect と Area() int、Scale(n int) を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tw, _ := strconv.Atoi(fields[0])\n\th, _ := strconv.Atoi(fields[1])\n\tn, _ := strconv.Atoi(fields[2])\n\t// ここから下を書く（Area → Scale → Area の順に使う）\n\t_, _, _ = w, h, n\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson21 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Rect struct {\n\tW, H int\n}\n\n// 読むだけなので値レシーバ。r にはコピーが入ります\nfunc (r Rect) Area() int {\n\treturn r.W * r.H\n}\n\n// フィールドを書き換えて呼び出し元に反映したいので、ポインタレシーバにします。\n// 値レシーバのままだとコピーを書き換えるだけで、Scale の結果が消えてしまいます。\nfunc (r *Rect) Scale(n int) {\n\tr.W *= n\n\tr.H *= n\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tw, _ := strconv.Atoi(fields[0])\n\th, _ := strconv.Atoi(fields[1])\n\tn, _ := strconv.Atoi(fields[2])\n\n\tr := Rect{W: w, H: h}\n\tfmt.Println(r.Area())\n\tr.Scale(n)\n\tfmt.Println(r.Area())\n}\n",
+    "tests": [
+      {
+        "stdin": "2 3 2\n",
+        "expected_stdout": "6\n24\n"
+      },
+      {
+        "stdin": "1 5 3\n",
+        "expected_stdout": "5\n45\n"
+      },
+      {
+        "stdin": "4 4 1\n",
+        "expected_stdout": "16\n16\n"
+      }
+    ]
+  }
+}

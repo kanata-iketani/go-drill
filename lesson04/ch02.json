@@ -1,0 +1,14 @@
+{
+  "lesson": 4,
+  "chapter": 2,
+  "title": ":= による短縮宣言",
+  "priority": "🔴",
+  "text": "関数の中では `name := \"gopher\"` と書くだけで、宣言と代入を同時にできます。型は右辺から自動で決まります（型推論）。見た目は Python の代入とほぼ同じですが、`:=` は「新しい変数を作る」記号であり、作った変数の型はやはり固定です。実際の Go のコードでは var よりこちらが主流です。🔴 `:=` は今後全レッスンで使うので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nage = 20\n```\n\nGo ではこう書く:\n\n```go\nage := 20 // int と推論される\n```",
+  "sample": "// lesson04 ch02: := による短縮宣言\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 宣言と代入を同時に行い、型は右辺から推論されます\n\tname := \"gopher\" // string\n\tage := 13        // int\n\theight := 158.3  // float64\n\n\tfmt.Println(name, \"は\", age, \"歳です\")\n\tfmt.Println(\"身長:\", height)\n\n\t// 複数の変数を同時に作ることもできます\n\tx, y := 10, 20\n\tfmt.Println(\"x + y =\", x+y)\n}\n",
+  "exercise": {
+    "description": "`:=` だけを使って、変数 `item` に `\"りんご\"`、変数 `count` に `3`、\n変数 `price` に `150` を入れ、合計金額（`count * price`）を含む次の 1 行を\n出力してください。\n\n**期待出力**\n\n```text\nりんご 3 個で 450 円\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "expected_stdout": "りんご 3 個で 450 円\n",
+    "answer": "// lesson04 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 関数の中では := が最短の宣言方法で、実務でも主流の書き方です。\n\t// 3 つとも右辺から型が推論されます（string, int, int）。\n\titem := \"りんご\"\n\tcount := 3\n\tprice := 150\n\n\tfmt.Println(item, count, \"個で\", count*price, \"円\")\n}\n"
+  }
+}

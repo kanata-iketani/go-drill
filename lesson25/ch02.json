@@ -1,0 +1,27 @@
+{
+  "lesson": 25,
+  "chapter": 2,
+  "title": "スライスとマップが「参照的」に振る舞う理由",
+  "priority": "🟡",
+  "text": "スライスの実体は「配列へのポインタ・長さ・容量」を持つ小さな**ヘッダ**です。代入でコピーされるのはこのヘッダだけで、中身の配列は共有されたままです。そのため片方の要素を変えると、もう片方からも変わって見えます。マップも同様に内部データへの参照を持ちます。Python のリストや辞書の共有と同じ見た目ですが、Go では「同じ配列を指しているから」と理由まで説明できます。🟡 ヘッダと配列の関係を理解しましょう。\n\nPython ではこう書いた:\n\n```python\na = [1, 2, 3]\nb = a       # 同じリストを指す\nb[0] = 100  # a も [100, 2, 3]\n```\n\nGo ではこう書く:\n\n```go\na := []int{1, 2, 3}\nb := a     // ヘッダのコピー。中身の配列は同じ\nb[0] = 100 // a も [100 2 3] になる\n```",
+  "sample": "// lesson25 ch02: スライスとマップは中身を共有する\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// スライスの代入はヘッダ（配列の場所・長さ・容量）のコピーだけです\n\ta := []int{1, 2, 3}\n\tb := a\n\tb[0] = 100\n\tfmt.Println(a) // [100 2 3] 同じ配列を指しているため a も変わる\n\tfmt.Println(b) // [100 2 3]\n\n\t// マップも内部データへの参照を持ちます\n\tm1 := map[string]int{\"apple\": 150}\n\tm2 := m1\n\tm2[\"apple\"] = 200\n\tfmt.Println(m1[\"apple\"]) // 200\n}\n",
+  "exercise": {
+    "description": "1 行目に個数 n、2 行目に n 個の整数が空白区切りで入力され、スターターでスライス `a` に格納済みです。`b := a` と代入してから `b[0]` を 10 倍し、1 行目に `a`、2 行目に `b` を `fmt.Println` でそのまま出力してください。コピーされるのはヘッダだけで中身の配列は共有されているため、2 行は同じ内容になります。\n\n**入力される値**\n\n```text\nn\na1 a2 ... an\n```\n\n**入力例1**\n\n```text\n3\n1 2 3\n```\n\n**期待出力1**\n\n```text\n[10 2 3]\n[10 2 3]\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta := make([]int, n)\n\tfor i := range n {\n\t\ta[i], _ = strconv.Atoi(fields[i])\n\t}\n\n\t// ここから下を書く: b := a としてから b[0] を 10 倍し、\n\t// a と b を 1 行ずつ fmt.Println で出力する\n\t_ = a\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "3\n1 2 3\n",
+        "expected_stdout": "[10 2 3]\n[10 2 3]\n"
+      },
+      {
+        "stdin": "4\n5 6 7 8\n",
+        "expected_stdout": "[50 6 7 8]\n[50 6 7 8]\n"
+      },
+      {
+        "stdin": "2\n9 4\n",
+        "expected_stdout": "[90 4]\n[90 4]\n"
+      }
+    ],
+    "answer": "// lesson25 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta := make([]int, n)\n\tfor i := range n {\n\t\ta[i], _ = strconv.Atoi(fields[i])\n\t}\n\n\t// b := a でコピーされるのはヘッダ（配列の場所・長さ・容量）だけです。\n\t// 中身の配列は a と b で共有されているので、b[0] への書き込みは\n\t// a からも見えます。「参照的」に振る舞う理由はこの共有にあります。\n\tb := a\n\tb[0] *= 10\n\tfmt.Println(a)\n\tfmt.Println(b)\n}\n"
+  }
+}

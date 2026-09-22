@@ -1,0 +1,15 @@
+{
+  "lesson": 14,
+  "chapter": 2,
+  "title": "条件付き内包表記の代替（if でフィルタしながら append）",
+  "priority": "🟡",
+  "text": "条件付き内包表記（if で要素を絞り込みながらリストを作る Python の書き方）も Go には存在しません。for の中に if を入れ、条件を満たしたときだけ append します。フィルタと変換を同時に行いたい場合も、if の中で加工してから append するだけです。3 行が 4 行になるが読める、という点は前チャプターと同じで、どの行が何をしているか一目で追えます。🟡 「for + if + append」の組み合わせを理屈で理解しましょう。\n\nPython ではこう書いた:\n\n```python\nevens = [x for x in nums if x % 2 == 0]\n```\n\nGo ではこう書く:\n\n```go\nevens := []int{}\nfor _, x := range nums {\n\tif x%2 == 0 {\n\t\tevens = append(evens, x)\n\t}\n}\n```",
+  "sample": "// lesson14 ch02: 条件付き内包表記の代替\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tnums := []int{7, 2, 9, 4, 11, 6}\n\n\t// Python: evens = [x for x in nums if x % 2 == 0]\n\tevens := []int{}\n\tfor _, x := range nums {\n\t\tif x%2 == 0 { // 条件を満たしたときだけ append\n\t\t\tevens = append(evens, x)\n\t\t}\n\t}\n\tfmt.Println(evens) // [2 4 6]\n\n\t// フィルタしながら変換もできます: 奇数だけ 10 倍\n\toddsTen := []int{}\n\tfor _, x := range nums {\n\t\tif x%2 == 1 {\n\t\t\toddsTen = append(oddsTen, x*10)\n\t\t}\n\t}\n\tfmt.Println(oddsTen) // [70 90 110]\n}\n",
+  "exercise": {
+    "description": "スライス `nums := []int{12, 5, 8, 20, 3, 16, 7}` から、10 以上の値だけを集めた新しいスライスを作り、`fmt.Println` で出力してください。\n\n**期待出力**\n\n```text\n[12 20 16]\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tnums := []int{12, 5, 8, 20, 3, 16, 7}\n\n\t// ここに書く\n\t_ = nums\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[12 20 16]\n",
+    "answer": "// lesson14 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tnums := []int{12, 5, 8, 20, 3, 16, 7}\n\n\t// Python の [x for x in nums if x >= 10] に相当します。\n\t// for で全要素を回し、if で条件を満たすものだけ append します。\n\t// フィルタは「空スライス + for + if + append」の 4 点セットです。\n\tbig := []int{}\n\tfor _, x := range nums {\n\t\tif x >= 10 {\n\t\t\tbig = append(big, x)\n\t\t}\n\t}\n\tfmt.Println(big)\n}\n"
+  }
+}

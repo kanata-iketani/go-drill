@@ -1,0 +1,27 @@
+{
+  "lesson": 19,
+  "chapter": 4,
+  "title": ":= が作る意図しない新変数",
+  "priority": "🟡",
+  "text": "`:=` は代入ではなく**宣言**です。そのため内側のブロックで外側と同じ名前に `:=` を使うと、意図せず新しい変数を作ってシャドーイングしてしまいます。実務での典型が `if v, err := f(); err == nil {` の形で、ここで作った `v` や `err` は **if の外では使えません**。Python にはない、`:=` と `=` の使い分けから生まれる実務の落とし穴です。外に残したいときは先に宣言して `=` で代入します。🟡 この違いは Go を書く限りずっとついて回るので、理屈を押さえましょう。\n\nPython ではこう書いた:\n\n```python\nn = 0\nif True:\n    n = int(\"42\")  # 代入はいつも同じ n を指す\nprint(n)  # 42\n```\n\nGo ではこう書く:\n\n```go\nn := 0\nif true {\n\tn := 42 // := だと新しい n。外の n は 0 のまま\n\t_ = n\n}\n// 外の n に入れたいなら = で代入する\n```",
+  "sample": "// lesson19 ch04: := が作る意図しない新変数\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\ttotal := 0\n\n\t// if の頭で := した v と err は、この if の中でだけ有効です\n\tif v, err := strconv.Atoi(\"10\"); err == nil {\n\t\ttotal += v // 中で使い切るならこの形が便利\n\t}\n\tfmt.Println(total) // 10\n\n\t// 外でも使いたいときは、先に宣言して = で代入します\n\tvar v int\n\tvar err error\n\tv, err = strconv.Atoi(\"20\")\n\tif err == nil {\n\t\ttotal += v\n\t}\n\tfmt.Println(total) // 30\n}\n",
+  "exercise": {
+    "description": "整数が 1 行に 1 つずつ、複数行にわたって与えられます（行数は決まっていません）。\n`for sc.Scan() { ... }` で全行を読み、各行を\n`if n, err := strconv.Atoi(sc.Text()); err == nil { ... }` の形で変換して、\n**if の中で** total に足してください。最後に total を出力します。\n（n と err は if の外では使えないことを確かめながら書いてください）\n\n**入力例1**\n\n```text\n3\n4\n```\n\n**期待出力1**\n\n```text\n7\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\ttotal := 0\n\tfor sc.Scan() {\n\t\t// ここから下を書く（if n, err := strconv.Atoi(...); err == nil の形）\n\t\t_ = strconv.Atoi\n\t}\n\tfmt.Println(total)\n}\n",
+    "answer": "// lesson19 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\ttotal := 0\n\tfor sc.Scan() {\n\t\t// n と err はこの if の中だけの変数です。中で使い切るならこの形が最短で、\n\t\t// 外に持ち出したくなったら「先に宣言して = で代入」に切り替えます。\n\t\t// うっかり := で外の変数を隠すのが実務でよくある落とし穴です。\n\t\tif n, err := strconv.Atoi(sc.Text()); err == nil {\n\t\t\ttotal += n\n\t\t}\n\t}\n\tfmt.Println(total)\n}\n",
+    "tests": [
+      {
+        "stdin": "3\n4\n",
+        "expected_stdout": "7\n"
+      },
+      {
+        "stdin": "1\n2\n3\n",
+        "expected_stdout": "6\n"
+      },
+      {
+        "stdin": "10\n",
+        "expected_stdout": "10\n"
+      }
+    ]
+  }
+}

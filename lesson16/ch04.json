@@ -1,0 +1,27 @@
+{
+  "lesson": 16,
+  "chapter": 4,
+  "title": "delete と len",
+  "priority": "🟡",
+  "text": "map の要素の削除は delete(m, key)、要素数は len(m) で調べます。Python の del d[key] は存在しないキーを指定すると KeyError になりましたが、Go の delete は存在しないキーを渡しても何も起きず、エラーになりません。この仕様のおかげで、削除前の存在チェックは不要です。len はスライスと同じ感覚で使えます。🟡 「delete は失敗しない」という Python との差を理屈で押さえましょう。\n\nPython ではこう書いた:\n\n```python\ndel prices[\"apple\"]  # キーがないと KeyError\nprint(len(prices))\n```\n\nGo ではこう書く:\n\n```go\ndelete(prices, \"apple\") // キーがなくても何も起きない\nfmt.Println(len(prices))\n```",
+  "sample": "// lesson16 ch04: delete と len\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tstock := map[string]int{\"pen\": 120, \"note\": 180, \"clip\": 50}\n\tfmt.Println(len(stock)) // 3\n\n\t// delete でキーごと削除します\n\tdelete(stock, \"note\")\n\tfmt.Println(len(stock)) // 2\n\n\t// 存在しないキーを delete してもエラーになりません（何も起きない）\n\tdelete(stock, \"eraser\")\n\tfmt.Println(len(stock)) // 2\n}\n",
+  "exercise": {
+    "description": "スターターには在庫表 `stock`（3 商品）が定義されています。標準入力から商品名が 1 行で与えられるので、その商品を `delete` で削除し、削除後の要素数を出力してください。存在しない商品名が与えられることもありますが、その場合も delete を呼んで構いません。\n\n**入力される値**\n\n```text\n削除する商品名\n```\n\n**入力例1**\n\n```text\npen\n```\n\n**期待出力1**\n\n```text\n2\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tstock := map[string]int{\"pen\": 120, \"note\": 180, \"clip\": 50}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// ここから下を書く\n\t_ = stock\n\t_ = name\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "pen\n",
+        "expected_stdout": "2\n"
+      },
+      {
+        "stdin": "eraser\n",
+        "expected_stdout": "3\n"
+      },
+      {
+        "stdin": "clip\n",
+        "expected_stdout": "2\n"
+      }
+    ],
+    "answer": "// lesson16 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tstock := map[string]int{\"pen\": 120, \"note\": 180, \"clip\": 50}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// Go の delete は存在しないキーでも安全（何も起きない）なので、\n\t// Python の del と違い、存在チェックなしでそのまま呼べます。\n\tdelete(stock, name)\n\tfmt.Println(len(stock))\n}\n"
+  }
+}

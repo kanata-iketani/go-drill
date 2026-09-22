@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 4,
+  "title": "コメント",
+  "priority": "⚪",
+  "text": "コメント（実行されないメモ書き）は、Python では `#` でしたが、Go では 1 行コメントが `//`、複数行コメントが `/* */` です。Go には Python の docstring はなく、関数の説明も `//` を関数の直前に書くのが慣習です。⚪ 記号が違うことだけ知っておけば十分です。\n\nPython ではこう書いた:\n\n```python\n# 1行コメント\n```\n\nGo ではこう書く:\n\n```go\n// 1行コメント\n/* 複数行\n   コメント */\n```",
+  "sample": "// lesson02 ch04: コメント\npackage main\n\nimport \"fmt\"\n\n// main の直前のコメントは「この関数の説明」を書く場所という慣習があります\nfunc main() {\n\t// これは 1 行コメントです。この行は実行されません\n\tfmt.Println(\"コメントは出力されません\")\n\n\t/*\n\t   これは複数行コメントです。\n\t   まとまった説明や、一時的にコードを無効にしたいときに使います。\n\t*/\n\tfmt.Println(\"ここは実行されます\") // 行の後ろにも書けます\n}\n",
+  "exercise": {
+    "description": "次の 3 行の `Println` のうち、2 行目だけを `//` でコメントアウトして、\n1 行目と 3 行目だけが出力されるプログラムを書いてください。\n\n```go\nfmt.Println(\"おはよう\")\nfmt.Println(\"こんにちは\")\nfmt.Println(\"こんばんは\")\n```\n\n**期待出力**\n\n```text\nおはよう\nこんばんは\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "おはよう\nこんばんは\n",
+    "answer": "// lesson02 ch04 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"おはよう\")\n\t// 行頭に // を付けるとその行はコンパイル対象から外れます。\n\t// 削除と違って元に戻すのが簡単なので、\n\t// 「一時的に消したい」ときはコメントアウトを使います。\n\t// fmt.Println(\"こんにちは\")\n\tfmt.Println(\"こんばんは\")\n}\n"
+  }
+}

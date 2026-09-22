@@ -1,0 +1,27 @@
+{
+  "lesson": 23,
+  "chapter": 3,
+  "title": "go mod init と複数ファイル",
+  "priority": "🟡",
+  "text": "**モジュール**は依存パッケージとバージョンを管理する単位で、`go mod init 名前` を実行すると管理ファイル `go.mod` が作られます。同じディレクトリで同じ `package main` を宣言したファイル同士なら、別ファイルの関数を **import なしで**そのまま呼べます。Python では別ファイルに分けたら `import` が必要でしたが、Go はパッケージ単位で 1 つの空間を共有します。実行は `go run .` とディレクトリごと指定します。🟡 まず 1 ファイル内の関数分割で感覚をつかみましょう。\n\nPython ではこう書いた:\n\n```python\n# helper.py に分けたら import が必要\nfrom helper import add\nprint(add(1, 2))\n```\n\nGo ではこう書く:\n\n```go\n// helper.go（同じ package main）に書いた add は\n// main.go から import なしで呼べる\nfmt.Println(add(1, 2))\n```",
+  "sample": "// lesson23 ch03: go mod init と複数ファイル\n// go mod init example.com/hello で go.mod が作られ、モジュールになります。\n// 下の関数たちは、同じ package main の別ファイル（例: calc.go）に\n// 移しても import なしでそのまま呼べます。実行は go run . です。\npackage main\n\nimport \"fmt\"\n\n// 本来は calc.go など別ファイルに置ける関数です\nfunc sum(nums []int) int {\n\ttotal := 0\n\tfor _, n := range nums {\n\t\ttotal += n\n\t}\n\treturn total\n}\n\nfunc average(nums []int) int {\n\treturn sum(nums) / len(nums)\n}\n\nfunc main() {\n\tscores := []int{80, 90, 70, 100}\n\tfmt.Println(\"合計:\", sum(scores))\n\tfmt.Println(\"平均:\", average(scores))\n}\n",
+  "exercise": {
+    "description": "1 行目に個数 n、2 行目に n 個の整数が空白区切りで入力されます。合計を返す関数 `sum(nums []int) int` と最大値を返す関数 `maxOf(nums []int) int` を main の外（トップレベル）に定義し、1 行目に合計、2 行目に最大値を出力してください。トップレベルの関数は、同じ `package main` なら別ファイル（例: calc.go）に移しても import なしで呼べる形です。\n\n**入力される値**\n\n```text\nn\na1 a2 ... an\n```\n\n**入力例1**\n\n```text\n3\n1 2 3\n```\n\n**期待出力1**\n\n```text\n6\n3\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに sum(nums []int) int と maxOf(nums []int) int を書く\n// （同じ package main なら、別ファイルに置いても import なしで呼べます）\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, n)\n\tfor i := range n {\n\t\tnums[i], _ = strconv.Atoi(fields[i])\n\t}\n\n\t// ここから下を書く: 合計と最大値を出力する\n\t_ = nums\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "3\n1 2 3\n",
+        "expected_stdout": "6\n3\n"
+      },
+      {
+        "stdin": "5\n10 3 8 1 6\n",
+        "expected_stdout": "28\n10\n"
+      },
+      {
+        "stdin": "4\n7 7 2 9\n",
+        "expected_stdout": "25\n9\n"
+      }
+    ],
+    "answer": "// lesson23 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// トップレベルに置いた関数は、同じ package main なら calc.go など\n// 別ファイルへ移しても main からそのまま見えます（import 不要）。\n// 「機能ごとにファイルを分ける」が Go の整理の仕方です。\nfunc sum(nums []int) int {\n\ttotal := 0\n\tfor _, n := range nums {\n\t\ttotal += n\n\t}\n\treturn total\n}\n\nfunc maxOf(nums []int) int {\n\tm := nums[0]\n\tfor _, n := range nums {\n\t\tif n > m {\n\t\t\tm = n\n\t\t}\n\t}\n\treturn m\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, n)\n\tfor i := range n {\n\t\tnums[i], _ = strconv.Atoi(fields[i])\n\t}\n\n\tfmt.Println(sum(nums))\n\tfmt.Println(maxOf(nums))\n}\n"
+  }
+}

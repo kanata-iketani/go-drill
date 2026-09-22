@@ -1,0 +1,27 @@
+{
+  "lesson": 22,
+  "chapter": 1,
+  "title": "Go に継承はない（is-a ではなく has-a で考える）",
+  "priority": "🟡",
+  "text": "Go に**継承**は存在しません。Python の `class Dog(Animal)` のような親子関係（is-a、「Dog は Animal である」という関係）は書けず、**has-a**（ある型が別の型をフィールドとして持つこと）で考えます。継承ツリーを設計する代わりに、部品となる構造体を組み合わせて型を作り、共通の振る舞いは埋め込みとインターフェースで表現します。🟡 まずは「is-a ではなく has-a で考える」という発想の転換を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nclass Dog(Animal):  # Dog は Animal である (is-a)\n    pass\n```\n\nGo ではこう書く:\n\n```go\ntype Dog struct {\n\tAnimal Animal // Dog は Animal を持つ (has-a)\n\tBreed  string\n}\n```",
+  "sample": "// lesson22 ch01: Go に継承はない（has-a で考える）\npackage main\n\nimport \"fmt\"\n\n// Animal は「名前と鳴き声」を持つ部品です\ntype Animal struct {\n\tName string\n\tCry  string\n}\n\n// Dog は Animal を継承するのではなく、フィールドとして「持ち」ます (has-a)\ntype Dog struct {\n\tAnimal Animal\n\tBreed  string\n}\n\nfunc main() {\n\td := Dog{\n\t\tAnimal: Animal{Name: \"ポチ\", Cry: \"ワン\"},\n\t\tBreed:  \"柴犬\",\n\t}\n\t// 中の Animal にはフィールド名を経由してアクセスします\n\tfmt.Println(d.Animal.Name, \"は\", d.Breed, \"です\")\n\tfmt.Println(d.Animal.Name, \"は\", d.Animal.Cry, \"と鳴きます\")\n}\n",
+  "exercise": {
+    "description": "1 行目に名前、2 行目に会社名が入力されます。名前を持つ構造体 `Person` と、`Person` をフィールドとして持つ（has-a）構造体 `Employee` を使って、`<名前> は <会社名> の社員です` と 1 行出力してください。継承の代わりに `Employee` が `Person` を「持ち」、名前には `e.Person.Name` の形でアクセスするのがポイントです。\n\n**入力される値**\n\n```text\n名前\n会社名\n```\n\n**入力例1**\n\n```text\n田中\nペイザ株式会社\n```\n\n**期待出力1**\n\n```text\n田中 は ペイザ株式会社 の社員です\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\n// Person は名前を持つ構造体です\ntype Person struct {\n\tName string\n}\n\n// Employee は Person を「持つ」構造体です (has-a)\ntype Employee struct {\n\tPerson  Person\n\tCompany string\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\tsc.Scan()\n\tcompany := sc.Text()\n\n\t// ここから下を書く: Employee を作り、\n\t// 「<名前> は <会社名> の社員です」と出力する\n\t_ = name\n\t_ = company\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "田中\nペイザ株式会社\n",
+        "expected_stdout": "田中 は ペイザ株式会社 の社員です\n"
+      },
+      {
+        "stdin": "鈴木\nGo商事\n",
+        "expected_stdout": "鈴木 は Go商事 の社員です\n"
+      },
+      {
+        "stdin": "佐藤\n未来ソフト\n",
+        "expected_stdout": "佐藤 は 未来ソフト の社員です\n"
+      }
+    ],
+    "answer": "// lesson22 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\ntype Person struct {\n\tName string\n}\n\ntype Employee struct {\n\tPerson  Person\n\tCompany string\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\tsc.Scan()\n\tcompany := sc.Text()\n\n\t// 継承の代わりに、Employee が Person をフィールドとして持ちます (has-a)。\n\t// 「Employee は Person である」ではなく「Employee は Person を持つ」と\n\t// 考えるのが Go の設計スタイルです。\n\te := Employee{Person: Person{Name: name}, Company: company}\n\tfmt.Println(e.Person.Name, \"は\", e.Company, \"の社員です\")\n}\n"
+  }
+}

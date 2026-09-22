@@ -1,0 +1,27 @@
+{
+  "lesson": 16,
+  "chapter": 6,
+  "title": "キーを集めてソートして出力（順序が必要なときの定石）",
+  "priority": "🔴",
+  "text": "順序を揃えて map を出力したいときの定石は「キーをスライスに集めてソートし、その順に map を引く」です。make([]string, 0, len(m)) で空スライスを用意し、range でキーだけを append、slices.Sort で並べ替えてから for で出力します。順序が保証されない Go の map では、Python の sorted(d) に相当するこの処理を自分で書きます。スキルチェックで map の中身を出力する問題は、ほぼ必ずこの形になります。🔴 手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nfor k in sorted(d):\n    print(k, d[k])\n```\n\nGo ではこう書く:\n\n```go\nkeys := make([]string, 0, len(m))\nfor k := range m {\n\tkeys = append(keys, k)\n}\nslices.Sort(keys)\nfor _, k := range keys {\n\tfmt.Println(k, m[k])\n}\n```",
+  "sample": "// lesson16 ch06: キーを集めてソートして出力\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tscores := map[string]int{\"suzuki\": 90, \"sato\": 80, \"tanaka\": 70}\n\n\t// 1. キーだけをスライスに集める（range はキーだけも受け取れます）\n\tkeys := make([]string, 0, len(scores))\n\tfor k := range scores {\n\t\tkeys = append(keys, k)\n\t}\n\n\t// 2. ソートしてから、その順に map を引く\n\tslices.Sort(keys)\n\tfor _, k := range keys {\n\t\tfmt.Println(k, scores[k])\n\t}\n}\n",
+  "exercise": {
+    "description": "標準入力の 3 行に「名前 点数」が空白区切りで与えられます（名前の重複はありません）。map に登録したあと、名前の昇順に「名前 点数」を 1 行ずつ出力してください。map の range 順は不定なので、キーを集めてソートしてから出力します。\n\n**入力される値**\n\n```text\n名前1 点数1\n名前2 点数2\n名前3 点数3\n```\n\n**入力例1**\n\n```text\nsuzuki 90\nsato 80\ntanaka 70\n```\n\n**期待出力1**\n\n```text\nsato 80\nsuzuki 90\ntanaka 70\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\tscores := make(map[string]int)\n\tfor range 3 {\n\t\tsc.Scan()\n\t\tf := strings.Fields(sc.Text())\n\t\tv, _ := strconv.Atoi(f[1])\n\t\tscores[f[0]] = v\n\t}\n\n\t// ここから下を書く: キーを集めてソートし、その順に出力する\n\t_ = scores\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "suzuki 90\nsato 80\ntanaka 70\n",
+        "expected_stdout": "sato 80\nsuzuki 90\ntanaka 70\n"
+      },
+      {
+        "stdin": "c 3\na 1\nb 2\n",
+        "expected_stdout": "a 1\nb 2\nc 3\n"
+      },
+      {
+        "stdin": "yuki 5\nken 9\nami 7\n",
+        "expected_stdout": "ami 7\nken 9\nyuki 5\n"
+      }
+    ],
+    "answer": "// lesson16 ch06 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"slices\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\tscores := make(map[string]int)\n\tfor range 3 {\n\t\tsc.Scan()\n\t\tf := strings.Fields(sc.Text())\n\t\tv, _ := strconv.Atoi(f[1])\n\t\tscores[f[0]] = v\n\t}\n\n\t// map の range 順は不定なので、そのまま出力すると結果が毎回変わりえます。\n\t// 「キーを集める → ソート → その順に引く」が順序を固定する定石です。\n\tkeys := make([]string, 0, len(scores))\n\tfor k := range scores {\n\t\tkeys = append(keys, k)\n\t}\n\tslices.Sort(keys)\n\tfor _, k := range keys {\n\t\tfmt.Println(k, scores[k])\n\t}\n}\n"
+  }
+}

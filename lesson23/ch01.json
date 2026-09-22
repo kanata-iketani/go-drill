@@ -1,0 +1,27 @@
+{
+  "lesson": 23,
+  "chapter": 1,
+  "title": "package と main が入口",
+  "priority": "🟡",
+  "text": "Go のソースファイルは必ず `package` 宣言（このファイルが属するパッケージ名の表明）で始まります。実行プログラムは `package main` に属し、その中の `func main` が**唯一の入口**です。Python では import されたときに実行されないよう `if __name__ == \"__main__\":` というガードを書きましたが、Go にこのガードはありません。実行は常に main から始まり、それ以外の関数は呼ばれるまで動かないからです。🟡 「入口は main だけ」という決まりを理解しましょう。\n\nPython ではこう書いた:\n\n```python\ndef main():\n    print(\"hello\")\n\nif __name__ == \"__main__\":\n    main()  # import 時に走らないためのガード\n```\n\nGo ではこう書く:\n\n```go\npackage main\n\nfunc main() { // ここが唯一の入口。ガードは不要\n\tfmt.Println(\"hello\")\n}\n```",
+  "sample": "// lesson23 ch01: package main と func main が入口\n// Python の if __name__ == \"__main__\": に相当するガードはありません。\npackage main\n\nimport \"fmt\"\n\n// main 以外の関数は、呼ばれるまで実行されません\nfunc greet(name string) string {\n\treturn \"こんにちは、\" + name + \" さん\"\n}\n\nfunc main() {\n\t// 実行は必ずここから始まります（プログラム唯一の入口）\n\tfmt.Println(greet(\"Gopher\"))\n\tfmt.Println(\"main が終わるとプログラムも終わります\")\n}\n",
+  "exercise": {
+    "description": "1 行目に名前が入力されます。`こんにちは、<名前> さん` という文字列を返す関数 `greet(name string) string` を main の外に定義し、main から呼び出して結果を出力してください。greet は main から呼ばれてはじめて動きます。`if __name__ == \"__main__\"` のようなガードは書きません。\n\n**入力される値**\n\n```text\n名前\n```\n\n**入力例1**\n\n```text\n田中\n```\n\n**期待出力1**\n\n```text\nこんにちは、田中 さん\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\n// ここに greet(name string) string を書く:\n// 「こんにちは、<名前> さん」という文字列を返す\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// ここから下を書く: greet を呼んで結果を出力する\n\t_ = name\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "田中\n",
+        "expected_stdout": "こんにちは、田中 さん\n"
+      },
+      {
+        "stdin": "Gopher\n",
+        "expected_stdout": "こんにちは、Gopher さん\n"
+      },
+      {
+        "stdin": "世界\n",
+        "expected_stdout": "こんにちは、世界 さん\n"
+      }
+    ],
+    "answer": "// lesson23 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\n// main 以外の関数は入口にならず、main から呼ばれてはじめて動きます。\n// そのため Python のような if __name__ == \"__main__\": ガードは不要です。\nfunc greet(name string) string {\n\treturn \"こんにちは、\" + name + \" さん\"\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// 実行は常に main から始まる、が Go の決まりです\n\tfmt.Println(greet(name))\n}\n"
+  }
+}

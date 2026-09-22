@@ -1,0 +1,27 @@
+{
+  "lesson": 20,
+  "chapter": 5,
+  "title": "再帰",
+  "priority": "🟡",
+  "text": "関数が自分自身を呼び出すことを**再帰**といいます。書き方の考え方は Python と同じで、まず「これ以上自分を呼ばずに答えを返す条件（基底条件）」を書き、それ以外では少し小さくした問題で自分を呼びます。Go では引数と戻り値に型を書く点だけが違います。基底条件を忘れると自分を呼び続けてスタックオーバーフローで落ちるので、必ず先頭に書きましょう。🟡 再帰は理屈が命です。\n\nPython ではこう書いた:\n\n```python\ndef fact(n):\n    if n == 0:\n        return 1\n    return n * fact(n - 1)\n```\n\nGo ではこう書く:\n\n```go\nfunc fact(n int) int {\n\tif n == 0 {\n\t\treturn 1 // 基底条件\n\t}\n\treturn n * fact(n-1)\n}\n```",
+  "sample": "// lesson20 ch05: 再帰\npackage main\n\nimport \"fmt\"\n\n// fact は n の階乗（n * (n-1) * ... * 1）を再帰で計算します\nfunc fact(n int) int {\n\tif n == 0 {\n\t\treturn 1 // 基底条件: これがないと無限に呼び続ける\n\t}\n\treturn n * fact(n-1) // 少し小さい問題を自分に任せる\n}\n\n// カウントダウンも再帰で書けます\nfunc countdown(n int) {\n\tif n < 0 {\n\t\treturn\n\t}\n\tfmt.Println(n)\n\tcountdown(n - 1)\n}\n\nfunc main() {\n\tfmt.Println(fact(5)) // 120\n\tcountdown(3)\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 n（0〜12）が与えられます。\n**再帰**で階乗を計算する関数 `fact(n int) int` を定義し、`fact(n)` を出力してください。\nfor 文は使わず、基底条件（n == 0 のとき 1）と自分自身の呼び出しで書いてください。\n\n**入力例1**\n\n```text\n5\n```\n\n**期待出力1**\n\n```text\n120\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに fact(n int) int を再帰で定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\t// ここから下を書く（fact(n) を出力する）\n\t_ = n\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson20 ch05 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 再帰は「基底条件を先に書く」が鉄則です。n == 0 で必ず止まるので、\n// fact(5) → 5 * fact(4) → ... → 5 * 4 * 3 * 2 * 1 * fact(0) と展開されて答えが出ます。\nfunc fact(n int) int {\n\tif n == 0 {\n\t\treturn 1\n\t}\n\treturn n * fact(n-1)\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\tfmt.Println(fact(n))\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n",
+        "expected_stdout": "120\n"
+      },
+      {
+        "stdin": "0\n",
+        "expected_stdout": "1\n"
+      },
+      {
+        "stdin": "10\n",
+        "expected_stdout": "3628800\n"
+      }
+    ]
+  }
+}

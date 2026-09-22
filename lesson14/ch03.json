@@ -1,0 +1,15 @@
+{
+  "lesson": 14,
+  "chapter": 3,
+  "title": "関数に切り出すのが Go 流",
+  "priority": "🟡",
+  "text": "リスト内包表記がない Go で、for + append のかたまりが何度も登場するなら、関数に切り出すのが Go 流です。Python では内包表記を 1 行で使い回しましたが、Go では「スライスを受け取り、新しいスライスを返す関数」を定義して名前を付けます。呼び出す側は 1 行になり、内包表記と同じ読みやすさに戻ります。処理に名前が付くぶん、意図はむしろ伝わりやすくなります。🟡 変換処理を関数にまとめる発想を理屈で理解しましょう。\n\nPython ではこう書いた:\n\n```python\ndoubled = [x * 2 for x in nums]\n```\n\nGo ではこう書く:\n\n```go\nfunc double(nums []int) []int {\n\tresult := []int{}\n\tfor _, x := range nums {\n\t\tresult = append(result, x*2)\n\t}\n\treturn result\n}\n\n// 呼び出す側は 1 行に戻る\ndoubled := double(nums)\n```",
+  "sample": "// lesson14 ch03: 関数に切り出すのが Go 流\npackage main\n\nimport \"fmt\"\n\n// squares は各要素を 2 乗した新しいスライスを返す\nfunc squares(nums []int) []int {\n\tresult := []int{}\n\tfor _, x := range nums {\n\t\tresult = append(result, x*x)\n\t}\n\treturn result\n}\n\n// bigOnly は 10 以上の値だけを集めた新しいスライスを返す\nfunc bigOnly(nums []int) []int {\n\tresult := []int{}\n\tfor _, x := range nums {\n\t\tif x >= 10 {\n\t\t\tresult = append(result, x)\n\t\t}\n\t}\n\treturn result\n}\n\nfunc main() {\n\tnums := []int{3, 12, 5, 20}\n\t// 呼び出す側は内包表記と同じ 1 行で読めます\n\tfmt.Println(squares(nums)) // [9 144 25 400]\n\tfmt.Println(bigOnly(nums)) // [12 20]\n}\n",
+  "exercise": {
+    "description": "各要素を 2 倍した新しいスライスを返す関数 `double` を完成させてください。`main` はすでに `double([]int{1, 2, 3, 4, 5})` の結果を出力するようになっています。\n\n**期待出力**\n\n```text\n[2 4 6 8 10]\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\n// double は nums の各要素を 2 倍した新しいスライスを返す\nfunc double(nums []int) []int {\n\t// ここに書く\n\treturn nil\n}\n\nfunc main() {\n\tfmt.Println(double([]int{1, 2, 3, 4, 5}))\n}\n",
+    "stdin": "",
+    "expected_stdout": "[2 4 6 8 10]\n",
+    "answer": "// lesson14 ch03 解答\npackage main\n\nimport \"fmt\"\n\n// double は各要素を 2 倍した新しいスライスを返す。\n// Python の [x * 2 for x in nums] を関数に切り出した形で、\n// 名前が付くことで呼び出す側は 1 行になり、意図も伝わりやすくなります。\nfunc double(nums []int) []int {\n\tresult := []int{}\n\tfor _, x := range nums {\n\t\tresult = append(result, x*2)\n\t}\n\treturn result\n}\n\nfunc main() {\n\tfmt.Println(double([]int{1, 2, 3, 4, 5}))\n}\n"
+  }
+}

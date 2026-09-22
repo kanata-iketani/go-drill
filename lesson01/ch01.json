@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 1,
+  "title": "Goはコンパイルして動かす",
+  "priority": "🟡",
+  "text": "Go は**コンパイル**（ソースコードを機械語に変換すること）してから動かす言語です。Python はスクリプトをインタプリタがそのまま実行しましたが、Go はスクリプトではなくビルドして動かします。とはいえ `go run` コマンドがコンパイルと実行をまとめてやってくれるので、学習中の使い心地は Python とほぼ同じです。🟡 まずは「書く → go run で動かす」の流れを理解しましょう。\n\nPython ではこう書いた:\n\n```sh\npython3 main.py\n```\n\nGo ではこう書く:\n\n```sh\ngo run main.go\n```",
+  "sample": "// lesson01 ch01: はじめての Go プログラム\n// 実行: go run ./lesson01/ch01_sample.go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, Go!\")\n\tfmt.Println(\"Go はコンパイルして動かす言語です\")\n\tfmt.Println(\"go run がコンパイルと実行をまとめてやってくれます\")\n}\n",
+  "exercise": {
+    "description": "`fmt.Println` を使って、次の 2 行をこの順番で出力するプログラムを書いてください。\n\n1. `Hello, Go!`\n2. `研修から来ました`\n\n**期待出力**\n\n```text\nHello, Go!\n研修から来ました\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "Hello, Go!\n研修から来ました\n",
+    "answer": "// lesson01 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// Println は出力の最後に自動で改行を付けるため、\n\t// 「1行ずつ出力」は Println を行の数だけ並べるのが最も素直です。\n\tfmt.Println(\"Hello, Go!\")\n\tfmt.Println(\"研修から来ました\")\n}\n"
+  }
+}

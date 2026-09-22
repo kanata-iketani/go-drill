@@ -1,0 +1,237 @@
+:root {
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --text: #1e2430;
+  --muted: #667085;
+  --border: #d9dee7;
+  --accent: #0d9488;
+  --accent2: #2563eb;
+  --codebg: #f0f2f5;
+  --danger: #d64545;
+  --ok: #0d9488;
+}
+body.dark {
+  --bg: #14181f;
+  --panel: #1c222c;
+  --text: #e6e9ef;
+  --muted: #8b93a3;
+  --border: #313947;
+  --codebg: #11151b;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  background: var(--bg); color: var(--text);
+  display: flex; flex-direction: column;
+}
+
+/* ---- ヘッダー ---- */
+#topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; background: #232f3e; color: #fff;
+  flex: 0 0 auto;
+}
+body.dark #topbar { background: #0d1117; }
+#brand { font-weight: bold; font-size: 15px; }
+#lessonSelect {
+  
+  max-width: 300px; padding: 4px 6px; border-radius: 4px; border: none;
+  background: #37455a; color: #fff; font-size: 13px;
+}
+#chapterTabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+.chTab {
+  padding: 4px 10px; border-radius: 4px; border: none; cursor: pointer;
+  background: #37455a; color: #cfd6e0; font-size: 12px; white-space: nowrap;
+}
+.chTab.active { background: var(--accent); color: #fff; font-weight: bold; }
+.chTab.passed::after { content: " ✅"; }
+#progressBadge { font-size: 12px; color: #cfd6e0; white-space: nowrap; }
+#themeToggle { background: none; border: none; cursor: pointer; font-size: 16px; }
+#qaToggle {
+  background: #0d9488; color: #fff; border: none; border-radius: 4px;
+  padding: 5px 12px; font-size: 13px; cursor: pointer; white-space: nowrap;
+}
+#qaToggle:hover { filter: brightness(1.1); }
+
+/* ---- 質問ドロワー ---- */
+#qaDrawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 95vw;
+  background: var(--panel); border-left: 1px solid var(--border);
+  box-shadow: -4px 0 20px rgba(0,0,0,0.25); z-index: 50;
+  display: flex; flex-direction: column;
+}
+#qaDrawer.hidden { display: none; }
+#qaHead {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 12px; border-bottom: 1px solid var(--border); flex: 0 0 auto;
+}
+.qaTab {
+  padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border);
+  background: var(--panel); color: var(--text); cursor: pointer; font-size: 13px;
+}
+.qaTab.active { background: #0d9488; border-color: #6c5ce7; color: #fff; font-weight: bold; }
+#qaClose { background: none; border: none; cursor: pointer; font-size: 15px; color: var(--muted); }
+
+.qaPane { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.qaPane.hidden { display: none; }
+
+#qaContext {
+  padding: 6px 14px; font-size: 12px; color: var(--muted);
+  border-bottom: 1px solid var(--border); flex: 0 0 auto;
+}
+#qaLog { flex: 1; overflow-y: auto; padding: 12px 14px; }
+.qaMsg { margin-bottom: 14px; font-size: 13.5px; line-height: 1.8; }
+.qaMsg .who { font-size: 11px; font-weight: bold; color: var(--muted); margin-bottom: 3px; }
+.qaMsg.user .bubble {
+  background: rgba(13, 148, 136, 0.12); border-radius: 8px; padding: 8px 12px;
+  white-space: pre-wrap;
+}
+.qaMsg.claude .bubble {
+  background: var(--codebg); border-radius: 8px; padding: 8px 12px;
+}
+.qaMsg .bubble pre.code { margin: 8px 0; }
+.qaThinking { color: var(--muted); font-size: 13px; padding: 4px 0; }
+
+#qaInputArea {
+  flex: 0 0 auto; border-top: 1px solid var(--border); padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+#qaAttach { font-size: 12px; color: var(--muted); }
+#qaInput {
+  resize: vertical; background: var(--codebg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 4px; padding: 8px;
+  font-size: 13.5px; font-family: inherit;
+}
+#qaSend { align-self: flex-end; }
+
+#qaNotesPane { overflow-y: auto; padding: 12px 14px; display: block; }
+#qaNotesActions { display: flex; gap: 8px; margin-bottom: 10px; }
+#qaNotesStatus { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; min-height: 1em; }
+#qaSummary { font-size: 13.5px; margin-bottom: 16px; }
+#qaSummary:not(:empty) {
+  border: 1px solid var(--border); border-radius: 6px; padding: 4px 14px;
+}
+#qaListTitle { font-size: 14px; margin: 10px 0 8px; }
+.qaItem {
+  border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+  margin-bottom: 8px; font-size: 12.5px;
+}
+.qaItem .meta { color: var(--muted); font-size: 11px; margin-bottom: 4px; display: flex; }
+.qaItem .meta button {
+  margin-left: auto; background: none; border: none; color: var(--danger);
+  cursor: pointer; font-size: 11px;
+}
+.qaItem .q { font-weight: bold; margin-bottom: 4px; white-space: pre-wrap; }
+.qaItem .a { color: var(--muted); line-height: 1.6; }
+
+/* ---- 3 ペイン ---- */
+#panes { flex: 1; display: flex; min-height: 0; }
+#lessonPane {
+  flex: 0 0 44%; max-width: 44%; overflow-y: auto;
+  background: var(--panel); border-right: 1px solid var(--border);
+}
+#material { padding: 18px 22px 60px; }
+#rightPane { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+#editorPane { flex: 1 1 55%; display: flex; flex-direction: column; min-height: 0; }
+#consolePane {
+  flex: 1 1 45%; min-height: 0; overflow-y: auto;
+  border-top: 2px solid var(--border); background: var(--panel);
+  padding: 10px 14px;
+}
+
+/* ---- 教材 ---- */
+#chTitle { font-size: 19px; margin: 0 0 12px; line-height: 1.4; }
+.secTitle {
+  font-size: 15px; margin: 26px 0 8px; padding: 6px 10px;
+  background: var(--codebg); border-left: 4px solid var(--accent);
+}
+.md { line-height: 1.9; font-size: 14px; }
+.md p { margin: 10px 0; }
+.md code, #material code {
+  background: var(--codebg); padding: 1px 5px; border-radius: 3px;
+  font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 0.92em;
+}
+#material pre.code code, .md pre.code code {
+  padding: 0; background: none; color: inherit; font-size: inherit;
+}
+pre.code {
+  background: #0d1420; color: #dbe4f0; padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; font-size: 13px; line-height: 1.6;
+  font-family: Consolas, "SF Mono", Menlo, monospace;
+}
+.sampleWrap { position: relative; }
+.miniBtn {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--accent2); color: #fff; border: none; border-radius: 4px;
+  padding: 4px 10px; font-size: 12px; cursor: pointer; opacity: 0.9;
+}
+.miniBtn:hover { opacity: 1; }
+.hidden { display: none; }
+
+/* ---- ツールバー / エディタ ---- */
+#toolbar {
+  display: flex; gap: 8px; align-items: center;
+  padding: 8px 10px; background: var(--panel); border-bottom: 1px solid var(--border);
+}
+.btn {
+  padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border);
+  background: var(--panel); color: var(--text); cursor: pointer; font-size: 13px;
+}
+.btn:hover { filter: brightness(0.95); }
+.btn.run { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: bold; }
+.btn.judge { background: var(--accent2); border-color: var(--accent2); color: #fff; font-weight: bold; }
+.btn.next { border-color: var(--accent); color: var(--accent); }
+.btn:disabled { opacity: 0.5; cursor: wait; }
+.kbd { font-size: 10px; opacity: 0.8; }
+.spacer { flex: 1; }
+
+#editorHost { flex: 1; min-height: 0; overflow: hidden; background: #282c34; }
+#editorHost .cm-editor { height: 100%; font-size: 14px; }
+#editorHost .cm-scroller { font-family: Consolas, "SF Mono", Menlo, monospace; }
+#fallbackEditor {
+  width: 100%; height: 100%; border: none; resize: none; outline: none;
+  background: #282c34; color: #abb2bf; padding: 12px;
+  font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 14px;
+  line-height: 1.6; tab-size: 4;
+}
+
+/* ---- 出力・採点 ---- */
+#ioGrid { display: flex; gap: 12px; }
+.ioCol { display: flex; flex-direction: column; flex: 0 0 180px; }
+.ioCol.grow { flex: 1; min-width: 0; }
+.ioLabel { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+#stdinBox {
+  height: 90px; resize: vertical; background: var(--codebg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 4px; padding: 6px;
+  font-family: Consolas, Menlo, monospace; font-size: 13px;
+}
+#outputBox {
+  min-height: 90px; margin: 0; background: var(--codebg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px; font-size: 13px; white-space: pre-wrap;
+  font-family: Consolas, Menlo, monospace; overflow-x: auto;
+}
+#outputBox.err { color: var(--danger); }
+
+#judgeResult { margin-top: 10px; }
+.banner {
+  padding: 12px 16px; border-radius: 6px; font-size: 16px; font-weight: bold;
+  margin-bottom: 10px;
+}
+.banner.pass { background: rgba(26, 158, 92, 0.15); color: var(--ok); border: 1px solid var(--ok); }
+.banner.fail { background: rgba(214, 69, 69, 0.12); color: var(--danger); border: 1px solid var(--danger); }
+.caseCard {
+  border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px;
+  overflow: hidden; font-size: 13px;
+}
+.caseHead { padding: 6px 10px; background: var(--codebg); font-weight: bold; }
+.caseBody { display: flex; gap: 0; }
+.caseCol { flex: 1; min-width: 0; padding: 8px 10px; }
+.caseCol + .caseCol { border-left: 1px solid var(--border); }
+.caseCol .lbl { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+.caseCol pre {
+  margin: 0; white-space: pre-wrap; font-family: Consolas, Menlo, monospace;
+  font-size: 12.5px;
+}
+.stderrBox { color: var(--danger); }

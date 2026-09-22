@@ -1,0 +1,27 @@
+{
+  "lesson": 19,
+  "chapter": 3,
+  "title": "パッケージ変数（global 文はない）",
+  "priority": "🟡",
+  "text": "関数の**外**で宣言した変数を**パッケージ変数**といい、同じパッケージのどの関数からも読み書きできます。Python では関数の中から書き換えるときに `global` 文が必要でしたが、**Go に `global` や `nonlocal` はありません**。関数の外に書けば、宣言なしでそのまま読み書きできます。ただし、どこからでも変えられる変数は追いかけるのが大変なので、基本は引数と戻り値で渡し、パッケージ変数は設定値など最小限にとどめます。🟡\n\nPython ではこう書いた:\n\n```python\ncount = 0\n\ndef add():\n    global count  # global 宣言が必要\n    count += 1\n```\n\nGo ではこう書く:\n\n```go\nvar count int // 関数の外に書く（パッケージ変数）\n\nfunc add() {\n\tcount++ // global なしで書き換えられる\n}\n```",
+  "sample": "// lesson19 ch03: パッケージ変数（global 文はない）\npackage main\n\nimport \"fmt\"\n\n// 関数の外で宣言した変数は、どの関数からも読み書きできます\nvar balance = 1000\n\n// Python と違い global 宣言は不要（そもそも存在しません）\nfunc deposit(n int) {\n\tbalance += n\n}\n\nfunc withdraw(n int) {\n\tbalance -= n\n}\n\nfunc main() {\n\tfmt.Println(\"最初:\", balance)\n\tdeposit(500)\n\twithdraw(200)\n\tfmt.Println(\"最後:\", balance)\n}\n",
+  "exercise": {
+    "description": "口座の残高を管理します。1 行目に取引額（正なら入金、負なら出金）が空白区切りで 1 個以上与えられます。\n**パッケージ変数** `var balance = 1000` と、balance に n を足す関数 `apply(n int)` を定義し、\n取引を順に apply してから最終残高を出力してください（`global` に当たる宣言は書かないこと）。\n\n**入力例1**\n\n```text\n100 -30\n```\n\n**期待出力1**\n\n```text\n1070\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここにパッケージ変数 balance と関数 apply(n int) を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, len(fields))\n\tfor i, f := range fields {\n\t\tnums[i], _ = strconv.Atoi(f)\n\t}\n\t// ここから下を書く（nums を順に apply して balance を出力する）\n\t_ = nums\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson19 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 関数の外で宣言すると、同じパッケージのどの関数からも見えます。\n// Python の global 文に当たるものは Go にはなく、宣言なしで書き換えられます。\nvar balance = 1000\n\nfunc apply(n int) {\n\tbalance += n\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tfor _, f := range fields {\n\t\tn, _ := strconv.Atoi(f)\n\t\tapply(n)\n\t}\n\tfmt.Println(balance)\n}\n",
+    "tests": [
+      {
+        "stdin": "100 -30\n",
+        "expected_stdout": "1070\n"
+      },
+      {
+        "stdin": "500\n",
+        "expected_stdout": "1500\n"
+      },
+      {
+        "stdin": "-100 -200 -300\n",
+        "expected_stdout": "400\n"
+      }
+    ]
+  }
+}

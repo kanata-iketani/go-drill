@@ -1,0 +1,27 @@
+{
+  "lesson": 15,
+  "chapter": 1,
+  "title": "bufio.Scanner で 1 行読む",
+  "priority": "🔴",
+  "text": "**標準入力**（キーボードやテストケースからプログラムに渡されるデータ）を読むには bufio.Scanner を使います。Python の input() 相当が、Go では「Scanner を作る → Scan() で 1 行読む → Text() で取り出す」と 4 行かかります。理屈より先に、この定型を丸暗記することがスキルチェック攻略の近道です。Text() が返す文字列に改行は含まれません。🔴 手が覚えるまで何度も書きましょう。\n\nPython ではこう書いた:\n\n```python\ns = input()\nprint(s)\n```\n\nGo ではこう書く:\n\n```go\nsc := bufio.NewScanner(os.Stdin)\nsc.Scan()\ns := sc.Text()\nfmt.Println(s)\n```",
+  "sample": "// lesson15 ch01: bufio.Scanner で 1 行読む\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\t// Python の input() に相当する処理は Go では複数行かかります\n\tsc := bufio.NewScanner(os.Stdin) // 1. 標準入力を読む Scanner を作る\n\tsc.Scan()                        // 2. 1 行読み込む\n\tline := sc.Text()                // 3. 読んだ行を文字列で取り出す（改行は含まない）\n\n\tfmt.Println(\"入力:\", line)\n}\n",
+  "exercise": {
+    "description": "標準入力から名前が 1 行で与えられます。`bufio.Scanner` で読み取り、`こんにちは、{名前}さん` の形式で出力してください。\n\n**入力される値**\n\n```text\n名前\n```\n\n**入力例1**\n\n```text\nTanaka\n```\n\n**期待出力1**\n\n```text\nこんにちは、Tanakaさん\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "Tanaka\n",
+        "expected_stdout": "こんにちは、Tanakaさん\n"
+      },
+      {
+        "stdin": "Go\n",
+        "expected_stdout": "こんにちは、Goさん\n"
+      },
+      {
+        "stdin": "gopher\n",
+        "expected_stdout": "こんにちは、gopherさん\n"
+      }
+    ],
+    "answer": "// lesson15 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\t// input() 相当の定型: NewScanner → Scan → Text。\n\t// Text() は改行を除いた 1 行分の文字列を返すので、そのまま連結に使えます。\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\tfmt.Printf(\"こんにちは、%sさん\\n\", name)\n}\n"
+  }
+}

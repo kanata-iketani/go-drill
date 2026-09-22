@@ -1,0 +1,15 @@
+{
+  "lesson": 4,
+  "chapter": 3,
+  "title": "再代入と未使用変数エラー",
+  "priority": "🟡",
+  "text": "一度作った変数に値を入れ直すときは `=` を使います（`:=` ではない点に注意）。型が固定なので、int の変数に文字列を再代入することはできません。もう 1 つ Python にない特徴として、宣言したのに一度も使わない変数はビルドエラーになります。「消し忘れの変数はバグのもと」という思想で、コンパイラが強制的に掃除させます。🟡 `:=` と `=` の使い分けを理屈で押さえましょう。\n\nPython ではこう書いた:\n\n```python\nscore = 80\nscore = \"high\"  # 型が変わっても平気\nunused = 1      # 使わなくても何も起きない\n```\n\nGo ではこう書く:\n\n```go\nscore := 80\nscore = 90        // 再代入は = （同じ int のみ）\n// unused := 1    // 使わないとビルドエラー: declared and not used\n```",
+  "sample": "// lesson04 ch03: 再代入は = / 未使用変数はエラー\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tscore := 80 // 新しく作るときは :=\n\tfmt.Println(\"最初の score:\", score)\n\n\tscore = 95 // 入れ直すときは =\n\tfmt.Println(\"再代入後の score:\", score)\n\n\t// score = \"high\"  // コンパイルエラー: int に文字列は入らない\n\t// unused := 1     // コンパイルエラー: declared and not used\n\n\tscore = score + 5 // 自分自身を使った更新もできます\n\tfmt.Println(\"加点後の score:\", score)\n}\n",
+  "exercise": {
+    "description": "変数 `balance` を `:=` で `1000` として作り、\n`=` による再代入だけで「500 を足す」「300 を引く」を順に行い、\nそのたびに残高を出力してください（出力は合計 3 行）。\n\n**期待出力**\n\n```text\n残高: 1000\n残高: 1500\n残高: 1200\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "残高: 1000\n残高: 1500\n残高: 1200\n",
+    "answer": "// lesson04 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tbalance := 1000 // 最初の 1 回だけ := で作る\n\tfmt.Println(\"残高:\", balance)\n\n\t// 2 回目以降に := を書くと「新しい変数を作り直す」ことになるため、\n\t// 同じ変数を更新し続けたいときは必ず = を使います。\n\tbalance = balance + 500\n\tfmt.Println(\"残高:\", balance)\n\n\tbalance = balance - 300\n\tfmt.Println(\"残高:\", balance)\n}\n"
+  }
+}

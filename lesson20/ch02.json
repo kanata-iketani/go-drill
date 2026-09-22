@@ -1,0 +1,27 @@
+{
+  "lesson": 20,
+  "chapter": 2,
+  "title": "ポインタ渡し（*int と &）",
+  "priority": "🟡",
+  "text": "呼び出し元の変数そのものを関数から書き換えたいときは**ポインタ**（変数のメモリ上の場所を指す値）を渡します。`&x` で x のポインタを取り、受け取る引数の型は `*int`、関数の中では `*p` で指した先を読み書きします。Python ではリストなどミュータブルな値を渡して間接的に書き換えましたが、Go では「呼び出し元を変えたい」という意図を `&` と `*` で明示します。🟡 「ポインタを渡す＝場所を教える」という理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\ndef double(nums):\n    nums[0] *= 2  # リスト経由でしか書き換えられない\n\nnums = [5]\ndouble(nums)\n```\n\nGo ではこう書く:\n\n```go\nfunc double(p *int) {\n\t*p *= 2 // ポインタの指す先を書き換える\n}\n\nx := 5\ndouble(&x) // x の場所を渡す\n```",
+  "sample": "// lesson20 ch02: ポインタ渡し（*int と &）\npackage main\n\nimport \"fmt\"\n\n// *int は「int のポインタ」。呼び出し元の変数の場所を受け取ります\nfunc double(p *int) {\n\t*p *= 2 // * を付けると指した先の値を読み書きできる\n}\n\nfunc main() {\n\tx := 5\n\tfmt.Println(x) // 5\n\n\tdouble(&x)     // & で x の場所（ポインタ）を渡す\n\tfmt.Println(x) // 10: 呼び出し元の x が書き換わった\n\n\tdouble(&x)\n\tfmt.Println(x) // 20\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 x が与えられます。\n指した先を 2 倍にする関数 `double(p *int)` を定義し、`double(&x)` を 2 回呼んで、\n1 回目の後の x と 2 回目の後の x を 1 行ずつ出力してください。\n\n**入力例1**\n\n```text\n5\n```\n\n**期待出力1**\n\n```text\n10\n20\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに double(p *int) を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tx, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\t// ここから下を書く（double(&x) を呼ぶたびに x を出力する）\n\t_ = x\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson20 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 戻り値ではなく「呼び出し元の x そのもの」を変えたいので、ポインタで受けます。\n// *p *= 2 の * は「ポインタの指す先」の意味で、これで元の変数が書き換わります。\nfunc double(p *int) {\n\t*p *= 2\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tx, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\n\tdouble(&x) // & で x の場所を渡す\n\tfmt.Println(x)\n\tdouble(&x)\n\tfmt.Println(x)\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n",
+        "expected_stdout": "10\n20\n"
+      },
+      {
+        "stdin": "7\n",
+        "expected_stdout": "14\n28\n"
+      },
+      {
+        "stdin": "0\n",
+        "expected_stdout": "0\n0\n"
+      }
+    ]
+  }
+}

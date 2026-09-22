@@ -1,0 +1,15 @@
+{
+  "lesson": 10,
+  "chapter": 1,
+  "title": "if（条件に括弧なし・{} は必須）",
+  "priority": "🔴",
+  "text": "Go の `if` は「条件が真のときだけ実行する」という意味は Python と同じですが、書き方が 2 点違います。第一に、条件を囲む括弧 `()` は書きません。第二に、ブロックはインデントではなく波括弧 `{}` で表し、処理が 1 行でも必ず `{}` を付けます。また Python の `pass`（何もしないことを示す文）に相当する語はなく、何もしないときは空ブロック `{}` を書きます。🔴 if は今後のすべてのコードで使うので、この形を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nif x > 10:\n    print(\"大きい\")\n```\n\nGo ではこう書く:\n\n```go\nif x > 10 {\n\tfmt.Println(\"大きい\")\n}\n```",
+  "sample": "// lesson10 ch01: if（条件に括弧なし・{} は必須）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tx := 42\n\n\t// 条件に () は付けず、{} は必ず書きます\n\tif x > 10 {\n\t\tfmt.Println(\"10より大きい\")\n\t}\n\n\t// 処理が 1 行でも {} は省略できません\n\tif x%2 == 0 {\n\t\tfmt.Println(\"偶数\")\n\t}\n\n\t// Python の pass に相当するのは空ブロック {} です\n\tif x > 100 {\n\t}\n\tfmt.Println(\"おわり\")\n}\n",
+  "exercise": {
+    "description": "変数 `score` に `85` を入れて、`score` が 80 以上なら `合格` と出力してください。if のブロックの後には、必ず `判定終了` と出力してください。\n\n**期待出力**\n\n```text\n合格\n判定終了\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "合格\n判定終了\n",
+    "answer": "// lesson10 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tscore := 85\n\n\t// 条件に () は付けず、本体が 1 行でも {} を省略できないのが Go の規則です。\n\t// 「合格」は 80 以上のときだけ、「判定終了」は if の外なので必ず出力されます。\n\tif score >= 80 {\n\t\tfmt.Println(\"合格\")\n\t}\n\tfmt.Println(\"判定終了\")\n}\n"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 6,
+  "title": "要素の削除（pop・remove・del はない）",
+  "priority": "🟡",
+  "text": "Go には Python の `pop` `remove` `del` に当たる関数が**ありません**。削除はスライス操作で書きます。末尾の削除は `s = s[:len(s)-1]`、i 番目の削除は標準パッケージ `slices` の `slices.Delete(s, i, i+1)` を使い、どちらも結果を再代入します。Delete の 2 つの引数は「i 番目から j-1 番目までを消す」という範囲指定です。🟡 「削除は専用関数ではなくスライス操作で書く」という考え方を理解しましょう。\n\nPython ではこう書いた:\n\n```python\na.pop()\ndel a[1]\n```\n\nGo ではこう書く:\n\n```go\ns = s[:len(s)-1]\ns = slices.Delete(s, 1, 2)\n```",
+  "sample": "// lesson07 ch06: 要素の削除（pop・remove・del はない）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\ts := []string{\"a\", \"b\", \"c\", \"d\"}\n\n\t// pop() に当たる末尾削除は「末尾を除いた切り出し」で書きます\n\ts = s[:len(s)-1]\n\tfmt.Println(s)\n\n\t// del a[1] に当たる削除は slices.Delete。1 番目から 2-1 番目までを消します\n\ts = slices.Delete(s, 1, 2)\n\tfmt.Println(s)\n}\n",
+  "exercise": {
+    "description": "スライス `[]int{10, 20, 30, 40}` を作り、`slices.Delete` で 1 番目の要素（20）を削除してスライス全体を出力し、続けて末尾削除 `s[:len(s)-1]` を行ってもう一度スライス全体を出力してください。`slices` を import に追加してください。\n\n**期待出力**\n\n```text\n[10 30 40]\n[10 30]\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[10 30 40]\n[10 30]\n",
+    "answer": "// lesson07 ch06 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tnums := []int{10, 20, 30, 40}\n\n\t// del a[1] に当たる操作。引数 (1, 2) は「1 番目から 2-1 番目まで」の\n\t// 範囲指定で、戻り値を再代入しないと削除が反映されません。\n\tnums = slices.Delete(nums, 1, 2)\n\tfmt.Println(nums)\n\n\t// a.pop() に当たる末尾削除は、末尾を除くスライス式で書きます。\n\tnums = nums[:len(nums)-1]\n\tfmt.Println(nums)\n}\n"
+  }
+}

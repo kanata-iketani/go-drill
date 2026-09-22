@@ -1,0 +1,27 @@
+{
+  "lesson": 24,
+  "chapter": 3,
+  "title": "fmt.Errorf(\"%w\") と errors.Is（エラーの包み直しと判定）",
+  "priority": "🟡",
+  "text": "下位のエラーに文脈を足して返すには、`fmt.Errorf` の書式 `%w`（wrap、エラーを包み込むこと）を使います。包んだ後でも `errors.Is(err, 元のエラー)` で「原因はこのエラーか」を判定できます。Python で `raise RuntimeError(\"検索失敗\") from e` と原因を保ったまま投げ直したことに相当します。🟡 「メッセージを足しても原因は失われない」という仕組みを理解しましょう。\n\nPython ではこう書いた:\n\n```python\ntry:\n    find(name)\nexcept KeyError as e:\n    raise RuntimeError(\"検索失敗\") from e\n```\n\nGo ではこう書く:\n\n```go\nif err != nil {\n\treturn fmt.Errorf(\"検索失敗: %w\", err) // 原因を包む\n}\n// errors.Is(err, ErrNotFound) で原因を判定できる\n```",
+  "sample": "// lesson24 ch03: %w で包んで errors.Is で判定する\npackage main\n\nimport (\n\t\"errors\"\n\t\"fmt\"\n)\n\n// 「原因」の目印になるエラーです（センチネルエラーと呼びます）\nvar ErrNotFound = errors.New(\"見つかりません\")\n\nfunc find(name string) error {\n\tif name == \"gopher\" {\n\t\treturn nil\n\t}\n\t// %w で ErrNotFound を包み、文脈（誰を探したか）を足します\n\treturn fmt.Errorf(\"検索 %s: %w\", name, ErrNotFound)\n}\n\nfunc main() {\n\terr := find(\"alice\")\n\tfmt.Println(err) // 検索 alice: 見つかりません\n\n\t// メッセージを足した後でも、errors.Is なら原因を判定できます\n\tfmt.Println(errors.Is(err, ErrNotFound)) // true\n}\n",
+  "exercise": {
+    "description": "1 行目にユーザー名が入力されます。`gopher` のときだけ成功する関数 `find` を用意しました。main で `find` を呼び、err が nil なら `<名前> が見つかりました` と 1 行出力してください。err が nil でなければ、1 行目にエラーメッセージを出力し、さらに `errors.Is(err, ErrNotFound)` が true なら 2 行目に `原因は ErrNotFound です` と出力してください。`%w` で包んでも原因を判定できることを確かめる問題です。\n\n**入力される値**\n\n```text\nユーザー名\n```\n\n**入力例1**\n\n```text\ngopher\n```\n\n**期待出力1**\n\n```text\ngopher が見つかりました\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"errors\"\n\t\"fmt\"\n\t\"os\"\n)\n\nvar ErrNotFound = errors.New(\"見つかりません\")\n\nfunc find(name string) error {\n\tif name == \"gopher\" {\n\t\treturn nil\n\t}\n\t// 文脈を足しつつ、%w で原因の ErrNotFound を包んで返します\n\treturn fmt.Errorf(\"検索 %s: %w\", name, ErrNotFound)\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// ここから下を書く: find を呼び、成功なら「<名前> が見つかりました」、\n\t// 失敗ならエラーを出力し、errors.Is で原因を判定する\n\t_ = name\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "gopher\n",
+        "expected_stdout": "gopher が見つかりました\n"
+      },
+      {
+        "stdin": "alice\n",
+        "expected_stdout": "検索 alice: 見つかりません\n原因は ErrNotFound です\n"
+      },
+      {
+        "stdin": "bob\n",
+        "expected_stdout": "検索 bob: 見つかりません\n原因は ErrNotFound です\n"
+      }
+    ],
+    "answer": "// lesson24 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"errors\"\n\t\"fmt\"\n\t\"os\"\n)\n\nvar ErrNotFound = errors.New(\"見つかりません\")\n\nfunc find(name string) error {\n\tif name == \"gopher\" {\n\t\treturn nil\n\t}\n\treturn fmt.Errorf(\"検索 %s: %w\", name, ErrNotFound)\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\terr := find(name)\n\tif err == nil {\n\t\tfmt.Println(name, \"が見つかりました\")\n\t\treturn\n\t}\n\t// %w で包んだので、メッセージには文脈が足されています。\n\t// それでも errors.Is なら「原因が ErrNotFound か」を判定できます。\n\t// エラーメッセージの文字列比較で判定しないのが Go の作法です。\n\tfmt.Println(err)\n\tif errors.Is(err, ErrNotFound) {\n\t\tfmt.Println(\"原因は ErrNotFound です\")\n\t}\n}\n"
+  }
+}

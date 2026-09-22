@@ -1,0 +1,27 @@
+{
+  "lesson": 15,
+  "chapter": 4,
+  "title": "複数行の入力（N を読んでから N 行読む）",
+  "priority": "🔴",
+  "text": "「1 行目に件数 N、続けて N 行のデータ」という形式はスキルチェックの最頻出パターンです。まず 1 行目を読んで Atoi で N に変換し、for の中で sc.Scan() と sc.Text() を繰り返して N 行を読みます。Scan() は呼ぶたびに次の行へ進むので、Python で input() をループの中で呼んだのと同じ感覚です。input() 相当が 4 行かかる Go でも、この骨組みさえ覚えれば複数行入力は怖くありません。🔴 試験本番で迷わないよう、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nn = int(input())\nfor i in range(n):\n    line = input()\n```\n\nGo ではこう書く:\n\n```go\nsc.Scan()\nn, _ := strconv.Atoi(sc.Text())\nfor range n {\n\tsc.Scan()\n\tline := sc.Text()\n}\n```",
+  "sample": "// lesson15 ch04: 複数行の入力（N を読んでから N 行読む）\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\t// 1 行目: 件数 N\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\t// 続く N 行を読む。Scan() は呼ぶたびに次の行へ進みます\n\tfor i := range n {\n\t\tsc.Scan()\n\t\tfmt.Printf(\"%d行目: %s\\n\", i+1, sc.Text())\n\t}\n}\n",
+  "exercise": {
+    "description": "標準入力の 1 行目に整数 N が与えられ、続く N 行に整数が 1 つずつ与えられます。N 個の整数の合計を出力してください。\n\n**入力される値**\n\n```text\nN\n整数1\n...\n整数N\n```\n\n**入力例1**\n\n```text\n3\n10\n20\n30\n```\n\n**期待出力1**\n\n```text\n60\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "3\n10\n20\n30\n",
+        "expected_stdout": "60\n"
+      },
+      {
+        "stdin": "1\n5\n",
+        "expected_stdout": "5\n"
+      },
+      {
+        "stdin": "4\n1\n2\n3\n4\n",
+        "expected_stdout": "10\n"
+      }
+    ],
+    "answer": "// lesson15 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\t// 1 行目の N を先に読み、その回数だけ Scan を繰り返すのが定型です。\n\t// Scan() が呼ぶたびに次の行へ進むので、ループの中で読み進められます。\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\tsum := 0\n\tfor range n {\n\t\tsc.Scan()\n\t\tv, _ := strconv.Atoi(sc.Text())\n\t\tsum += v\n\t}\n\tfmt.Println(sum)\n}\n"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "lesson": 24,
+  "chapter": 1,
+  "title": "Go に例外はない（error は戻り値）",
+  "priority": "🔴",
+  "text": "Go に**例外**は存在しません。`try/except` はなく、失敗しうる関数は結果と一緒に `error`（失敗を表す組み込みインターフェース）を**戻り値として**返します。呼び出し側は `if err != nil` で失敗を判定します（`nil` は「エラーなし」を表す値）。`strconv.Atoi` でずっと書いてきた形こそが、Go のエラー処理そのものです。🔴 `if err != nil` は Go で最も頻出する形です。手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ntry:\n    n = int(s)\nexcept ValueError:\n    print(\"数値ではありません\")\n```\n\nGo ではこう書く:\n\n```go\nn, err := strconv.Atoi(s)\nif err != nil {\n\tfmt.Println(\"数値ではありません\")\n}\n```",
+  "sample": "// lesson24 ch01: 例外はなく、error は戻り値\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\t// Atoi は (int, error) の 2 値を返します\n\tn, err := strconv.Atoi(\"42\")\n\tif err != nil {\n\t\tfmt.Println(\"変換失敗:\", err)\n\t} else {\n\t\tfmt.Println(\"変換成功:\", n)\n\t}\n\n\t// 失敗すると err に nil 以外の値が入ります\n\t_, err = strconv.Atoi(\"abc\")\n\tif err != nil {\n\t\tfmt.Println(\"abc は数値にできません\")\n\t}\n}\n",
+  "exercise": {
+    "description": "1 行目に文字列が 1 つ入力されます。`strconv.Atoi` で整数への変換を試み、失敗（`err != nil`）なら `数値ではありません`、成功なら値を 2 倍した数を出力してください。try/except で捕まえるのではなく、戻り値の err を if で確かめるのが Go 流です。\n\n**入力される値**\n\n```text\n文字列\n```\n\n**入力例1**\n\n```text\n21\n```\n\n**期待出力1**\n\n```text\n42\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\ts := sc.Text()\n\n\t// ここから下を書く: strconv.Atoi で変換し、\n\t// err != nil なら「数値ではありません」、成功なら 2 倍を出力する\n\t_ = s\n\t_ = strconv.Atoi\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "21\n",
+        "expected_stdout": "42\n"
+      },
+      {
+        "stdin": "abc\n",
+        "expected_stdout": "数値ではありません\n"
+      },
+      {
+        "stdin": "100\n",
+        "expected_stdout": "200\n"
+      }
+    ],
+    "answer": "// lesson24 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\ts := sc.Text()\n\n\t// 例外を捕まえるのではなく、戻り値の err を調べます。\n\t// 「失敗したら何をするか」を呼び出した直後にその場で書くのが\n\t// if err != nil の型です。err を無視しないことが Go の作法です。\n\tn, err := strconv.Atoi(s)\n\tif err != nil {\n\t\tfmt.Println(\"数値ではありません\")\n\t\treturn\n\t}\n\tfmt.Println(n * 2)\n}\n"
+  }
+}

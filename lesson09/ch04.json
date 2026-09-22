@@ -1,0 +1,15 @@
+{
+  "lesson": 9,
+  "chapter": 4,
+  "title": "構造体で「変更できない組」を表す",
+  "priority": "🟡",
+  "text": "**Go にタプルは存在しない**ため、Python で `p = (3, 5)` と書いた「座標の組」のようなデータは**構造体**（複数の値に名前を付けてひとまとめにする型）で表します。`type Point struct { X, Y int }` と型を定義し、`p[0]` のような位置番号ではなく `p.X` と**名前**でアクセスします。構造体も値型なので、代入するとコピーされて元は守られます。🟡 「組は構造体で表す」という Go の設計を理解しましょう。\n\nPython ではこう書いた:\n\n```python\np = (3, 5)\nprint(p[0])\n```\n\nGo ではこう書く:\n\n```go\np := Point{X: 3, Y: 5}\nfmt.Println(p.X)\n```",
+  "sample": "// lesson09 ch04: 構造体で「変更できない組」を表す\npackage main\n\nimport \"fmt\"\n\n// タプル (x, y) の代わりに、名前付きの型を定義します\ntype Point struct {\n\tX int\n\tY int\n}\n\nfunc main() {\n\tp := Point{X: 3, Y: 5}\n\n\t// p[0] ではなく名前でアクセスします\n\tfmt.Println(p.X)\n\tfmt.Println(p.Y)\n\n\t// 値型なので、コピーを書き換えても元は変わりません\n\tq := p\n\tq.X = 100\n\tfmt.Println(p.X)\n}\n",
+  "exercise": {
+    "description": "`X` と `Y`（どちらも int）を持つ構造体 `Point` を定義し、`Point{X: 3, Y: 5}` を変数 `p` に作ってから、`fmt.Printf` の書式 `X=%d Y=%d` を使って `X=3 Y=5` と出力してください。\n\n**期待出力**\n\n```text\nX=3 Y=5\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "X=3 Y=5\n",
+    "answer": "// lesson09 ch04 解答\npackage main\n\nimport \"fmt\"\n\n// タプル (3, 5) の代わりに、X と Y という名前を持つ型を定義します。\n// 位置番号ではなく名前で読めるので、何の値かが一目で分かります。\ntype Point struct {\n\tX int\n\tY int\n}\n\nfunc main() {\n\tp := Point{X: 3, Y: 5}\n\tfmt.Printf(\"X=%d Y=%d\\n\", p.X, p.Y)\n}\n"
+  }
+}

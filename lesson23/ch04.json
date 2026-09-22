@@ -1,0 +1,27 @@
+{
+  "lesson": 23,
+  "chapter": 4,
+  "title": "init()（main より先に走る初期化関数）",
+  "priority": "⚪",
+  "text": "`init()` は、パッケージが読み込まれたときに **main より先に自動で実行される**初期化関数です。自分で呼び出すコードは書きません。Python でモジュールのトップレベルに書いたコードが import 時に実行されるのと同じ役割です。便利な半面、多用すると処理の流れが追いにくくなるため、実務では設定の初期化など限られた場面で使われます。⚪ 「main より先に走る関数がある」ことだけ知っておきましょう。\n\nPython ではこう書いた:\n\n```python\n# module.py のトップレベルコードは import 時に走る\nprint(\"読み込みました\")\n```\n\nGo ではこう書く:\n\n```go\nfunc init() {\n\tfmt.Println(\"main より先に実行される\")\n}\n```",
+  "sample": "// lesson23 ch04: init() は main より先に走る\npackage main\n\nimport \"fmt\"\n\nvar config string\n\n// init はパッケージ読み込み時に自動で呼ばれます（自分では呼ばない）\nfunc init() {\n\tconfig = \"日本語モード\"\n\tfmt.Println(\"init: 設定を初期化しました\")\n}\n\nfunc main() {\n\t// この時点で config は init によって設定済みです\n\tfmt.Println(\"main: 設定 =\", config)\n}\n",
+  "exercise": {
+    "description": "1 行目に名前が入力されます。`設定を読み込みました` と出力する `init()` を定義し、main では `ようこそ、<名前> さん` と出力してください。init は呼び出しコードを書かなくても main より先に実行されるため、出力は必ず「設定を読み込みました」が先になります。\n\n**入力される値**\n\n```text\n名前\n```\n\n**入力例1**\n\n```text\n田中\n```\n\n**期待出力1**\n\n```text\n設定を読み込みました\nようこそ、田中 さん\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\n// ここに「設定を読み込みました」と出力する init() を書く\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// ここから下を書く: ようこそ、<名前> さん と出力する\n\t_ = name\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "田中\n",
+        "expected_stdout": "設定を読み込みました\nようこそ、田中 さん\n"
+      },
+      {
+        "stdin": "Gopher\n",
+        "expected_stdout": "設定を読み込みました\nようこそ、Gopher さん\n"
+      },
+      {
+        "stdin": "世界\n",
+        "expected_stdout": "設定を読み込みました\nようこそ、世界 さん\n"
+      }
+    ],
+    "answer": "// lesson23 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\n// init は main より先に自動実行されます。呼び出しコードは書きません。\n// Python でモジュールのトップレベルに書いた処理が import 時に走るのと\n// 同じ役割を、Go では init という関数の形で担います。\nfunc init() {\n\tfmt.Println(\"設定を読み込みました\")\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\tfmt.Println(\"ようこそ、\" + name + \" さん\")\n}\n"
+  }
+}

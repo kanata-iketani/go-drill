@@ -1,0 +1,27 @@
+{
+  "lesson": 15,
+  "chapter": 5,
+  "title": "スキルチェック定型テンプレート総まとめ",
+  "priority": "🔴",
+  "text": "このレッスンの総まとめとして、スキルチェック用の定型テンプレートを丸ごと覚えます。bufio.Scanner を作り、Buffer で読める行の上限を広げ、strings.Fields で行を分割し、strconv.Atoi で数値化する。Python なら input().split() の 1 行で済む処理に、Go では input() 相当だけで 4 行かかります。だからこそ、この一式を考えずに白紙から書き出せるよう丸暗記しておくことが重要です。🔴 1 分で書けるようになるまで繰り返しましょう。\n\nPython ではこう書いた:\n\n```python\nn = int(input())\nnums = list(map(int, input().split()))\n```\n\nGo ではこう書く:\n\n```go\nsc := bufio.NewScanner(os.Stdin)\nsc.Buffer(make([]byte, 1024*1024), 1024*1024)\nsc.Scan()\nn, _ := strconv.Atoi(sc.Text())\nsc.Scan()\nf := strings.Fields(sc.Text())\n```",
+  "sample": "// lesson15 ch05: スキルチェック定型テンプレート総まとめ\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\t// ここからが丸暗記するテンプレートです\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Buffer(make([]byte, 1024*1024), 1024*1024) // 長い行に備えて上限を拡大\n\n\t// 1 行目: 整数 N\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\t// 2 行目: 空白区切りの N 個の整数を Fields + Atoi で読む\n\tsc.Scan()\n\tf := strings.Fields(sc.Text())\n\tsum := 0\n\tfor i := range n {\n\t\tv, _ := strconv.Atoi(f[i])\n\t\tsum += v\n\t}\n\tfmt.Println(sum)\n}\n",
+  "exercise": {
+    "description": "標準入力の 1 行目に整数 N が与えられ、2 行目に N 個の整数が空白区切りで与えられます。1 行目に N 個の整数の合計、2 行目に最大値を出力してください。\n\n**入力される値**\n\n```text\nN\n整数1 整数2 ... 整数N\n```\n\n**入力例1**\n\n```text\n5\n3 1 4 1 5\n```\n\n**期待出力1**\n\n```text\n14\n5\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く（テンプレートを白紙から書き出す練習です）\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n3 1 4 1 5\n",
+        "expected_stdout": "14\n5\n"
+      },
+      {
+        "stdin": "3\n10 20 30\n",
+        "expected_stdout": "60\n30\n"
+      },
+      {
+        "stdin": "4\n-1 -5 2 0\n",
+        "expected_stdout": "-4\n2\n"
+      }
+    ],
+    "answer": "// lesson15 ch05 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\t// テンプレート: Scanner 生成 + Buffer 拡大までを毎回そのまま書きます\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Buffer(make([]byte, 1024*1024), 1024*1024)\n\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\tsc.Scan()\n\tf := strings.Fields(sc.Text())\n\n\t// 最大値は「最初の要素で初期化」すると負の数だけの入力でも正しく動きます\n\tsum := 0\n\tbest := 0\n\tfor i := range n {\n\t\tv, _ := strconv.Atoi(f[i])\n\t\tsum += v\n\t\tif i == 0 || v > best {\n\t\t\tbest = v\n\t\t}\n\t}\n\tfmt.Println(sum)\n\tfmt.Println(best)\n}\n"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "lesson": 21,
+  "chapter": 4,
+  "title": "大文字小文字で公開制御",
+  "priority": "🟡",
+  "text": "Go では名前の**先頭が大文字か小文字か**で公開範囲が決まります。先頭が大文字（`Name` や `Deposit`）なら他のパッケージからも使える**公開**、小文字（`balance`）ならそのパッケージの中だけの**非公開**です。Python の `_name` は「触らないで」という慣習にすぎませんでしたが、Go では言語仕様として強制されます。フィールドを小文字にして、公開メソッド経由でだけ操作させるのが定番の設計です。🟡 命名がそのまま設計になる、という理屈を押さえましょう。\n\nPython ではこう書いた:\n\n```python\nclass Wallet:\n    def __init__(self):\n        self._balance = 0  # _ は「触るな」の目印（強制力なし）\n\n    def deposit(self, n):\n        self._balance += n\n```\n\nGo ではこう書く:\n\n```go\ntype Wallet struct {\n\tbalance int // 小文字: パッケージの外から見えない\n}\n\n// 大文字: 公開メソッド。外からはこれ経由でだけ触れる\nfunc (w *Wallet) Deposit(n int) {\n\tw.balance += n\n}\n```",
+  "sample": "// lesson21 ch04: 大文字小文字で公開制御\npackage main\n\nimport \"fmt\"\n\n// Wallet は公開（大文字）、balance は非公開（小文字）です。\n// 別パッケージからは w.balance と直接触れず、メソッド経由になります\ntype Wallet struct {\n\tbalance int\n}\n\nfunc (w *Wallet) Deposit(n int) {\n\tif n > 0 { // メソッドを通すので、こうした検証を挟めます\n\t\tw.balance += n\n\t}\n}\n\nfunc (w *Wallet) Balance() int {\n\treturn w.balance\n}\n\nfunc main() {\n\tw := Wallet{}\n\tw.Deposit(100)\n\tw.Deposit(-50)           // 不正な入金は Deposit がはじく\n\tfmt.Println(w.Balance()) // 100\n}\n",
+  "exercise": {
+    "description": "1 行目に入金額（正の整数）が空白区切りで 1 個以上与えられます。\n**小文字（非公開）のフィールド** `balance int` を持つ構造体 `Wallet` と、\n**大文字（公開）のメソッド** `Deposit(n int)`・`Balance() int` を定義してください。\n入金額を順に Deposit してから、`Balance()` の結果を出力します。\n\n**入力例1**\n\n```text\n100 200\n```\n\n**期待出力1**\n\n```text\n300\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに Wallet（balance は小文字）と Deposit / Balance を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, len(fields))\n\tfor i, f := range fields {\n\t\tnums[i], _ = strconv.Atoi(f)\n\t}\n\t// ここから下を書く（Deposit を繰り返して Balance を出力する）\n\t_ = nums\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson21 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// balance を小文字にしておくと、パッケージの外からは直接読み書きできません。\n// Python の _balance と違い、Go ではこれが言語仕様として強制されるため、\n// 「必ず Deposit を通る」ことをコンパイラが保証してくれます。\ntype Wallet struct {\n\tbalance int\n}\n\nfunc (w *Wallet) Deposit(n int) {\n\tw.balance += n\n}\n\nfunc (w *Wallet) Balance() int {\n\treturn w.balance\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tw := Wallet{}\n\tfor _, f := range fields {\n\t\tn, _ := strconv.Atoi(f)\n\t\tw.Deposit(n)\n\t}\n\tfmt.Println(w.Balance())\n}\n",
+    "tests": [
+      {
+        "stdin": "100 200\n",
+        "expected_stdout": "300\n"
+      },
+      {
+        "stdin": "50\n",
+        "expected_stdout": "50\n"
+      },
+      {
+        "stdin": "10 20 30\n",
+        "expected_stdout": "60\n"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 6,
+  "chapter": 1,
+  "title": "strconv.Itoa（数値→文字列）",
+  "priority": "🔴",
+  "text": "数値を文字列に変換するには `strconv` パッケージ（文字列と数値の相互変換を集めた標準ライブラリ）の `strconv.Itoa` を使います。Python の `str(42)` に相当する関数です。Go は文字列と int を `+` で直接つなげられないため、連結する前に必ず文字列へ変換する必要があります。Itoa は Integer to ASCII の略です。🔴 数値を文章に埋め込む場面は頻出なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ns = str(42)\nprint(\"値は\" + s)\n```\n\nGo ではこう書く:\n\n```go\ns := strconv.Itoa(42)\nfmt.Println(\"値は\" + s)\n```",
+  "sample": "// lesson06 ch01: strconv.Itoa（数値→文字列）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tage := 28\n\n\t// int と文字列は + で直接つなげられないため、先に文字列へ変換します\n\ts := strconv.Itoa(age)\n\tfmt.Println(\"年齢は\" + s + \"歳です\")\n\n\t// 変換結果はふつうの文字列なので、len なども使えます\n\tprice := 1200\n\tps := strconv.Itoa(price)\n\tfmt.Println(ps + \" は \" + strconv.Itoa(len(ps)) + \" 文字です\")\n}\n",
+  "exercise": {
+    "description": "変数 `count` に `15` を入れ、`strconv.Itoa` で文字列に変換してから、文字列連結 `+` を使って `残り15個です` と出力してください（文をそのまま `Println` に書くのではなく、必ず `Itoa` を使うこと）。`strconv` を import に追加してください。\n\n**期待出力**\n\n```text\n残り15個です\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "残り15個です\n",
+    "answer": "// lesson06 ch01 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tcount := 15\n\n\t// Go では \"残り\" + count とは書けません（int と string は連結できない）。\n\t// Python の str(count) に当たる strconv.Itoa で文字列にしてから + でつなぎます。\n\tfmt.Println(\"残り\" + strconv.Itoa(count) + \"個です\")\n}\n"
+  }
+}

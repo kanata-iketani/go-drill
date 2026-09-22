@@ -1,0 +1,27 @@
+{
+  "lesson": 23,
+  "chapter": 2,
+  "title": "import と標準ライブラリ（math・os など）",
+  "priority": "🟡",
+  "text": "**標準ライブラリ**（Go に最初から付属するパッケージ群）はインストール不要で、`import` するだけで使えます。複数のパッケージは括弧でまとめて書きます。Python の `from math import sqrt` のように関数だけを取り出す書き方はなく、常に `math.Sqrt` のように**パッケージ名.関数名**で呼びます。`os`（OS まわりの機能）、`time`（時刻）、`math/rand`（乱数）なども同じ形で使います。🟡 まとめ書きの形に慣れましょう。\n\nPython ではこう書いた:\n\n```python\nimport math\nfrom math import sqrt  # 関数だけ取り出せる\nprint(sqrt(16))\n```\n\nGo ではこう書く:\n\n```go\nimport (\n\t\"fmt\"\n\t\"math\"\n)\n\nfmt.Println(math.Sqrt(16)) // 常に パッケージ名.関数名\n```",
+  "sample": "// lesson23 ch02: import と標準ライブラリ\npackage main\n\n// 複数のパッケージは括弧でまとめて import します\nimport (\n\t\"fmt\"\n\t\"math\"\n\t\"os\"\n)\n\nfunc main() {\n\t// 常に「パッケージ名.関数名」で呼びます（from math import sqrt はない）\n\tfmt.Println(math.Sqrt(16))     // 4\n\tfmt.Println(math.Pow(2, 8))    // 256\n\tfmt.Println(math.Abs(-3.5))    // 3.5\n\tfmt.Println(math.Floor(9.876)) // 9\n\n\t// os パッケージも同じ形で使います（Args はコマンドライン引数）\n\tfmt.Println(len(os.Args) > 0) // true\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 a と b が空白区切りで入力されます。`math` パッケージを import して、1 行目に a の b 乗（`math.Pow`）、2 行目に a と b の大きい方（`math.Max`）を整数で出力してください。math の関数は float64 を受け渡しするため、`float64(a)` に変換して渡し、結果を `int(...)` に戻すのがポイントです。\n\n**入力される値**\n\n```text\na b\n```\n\n**入力例1**\n\n```text\n2 10\n```\n\n**期待出力1**\n\n```text\n1024\n10\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\n\t// ここから下を書く: math を import に足し、\n\t// 1 行目: a の b 乗 / 2 行目: a と b の大きい方 を整数で出力する\n\t_ = a\n\t_ = b\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "2 10\n",
+        "expected_stdout": "1024\n10\n"
+      },
+      {
+        "stdin": "3 4\n",
+        "expected_stdout": "81\n4\n"
+      },
+      {
+        "stdin": "5 3\n",
+        "expected_stdout": "125\n5\n"
+      }
+    ],
+    "answer": "// lesson23 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"math\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\n\t// math の関数は float64 を受け取るため、int から変換して渡します。\n\t// 結果も float64 で返るので、整数として表示するために int に戻します。\n\t// 呼び方は常に「パッケージ名.関数名」です（sqrt 単体では呼べません）。\n\tfmt.Println(int(math.Pow(float64(a), float64(b))))\n\tfmt.Println(int(math.Max(float64(a), float64(b))))\n}\n"
+  }
+}

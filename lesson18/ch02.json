@@ -1,0 +1,27 @@
+{
+  "lesson": 18,
+  "chapter": 2,
+  "title": "戻り値の型を書く",
+  "priority": "🔴",
+  "text": "値を返す関数は、引数リストの後ろに**戻り値の型**を書きます。Python は `return` するだけで型を書きませんでしたが、Go は `func add(a, b int) int` のように「何型を返すか」を宣言します。宣言と違う型を返すとコンパイルエラーです。**戻り値がない関数は型を書きません**。`func hello()` のように引数リストで止めます。🔴 「返すなら型を書く・返さないなら書かない」を手に覚えさせましょう。\n\nPython ではこう書いた:\n\n```python\ndef add(a, b):\n    return a + b\n```\n\nGo ではこう書く:\n\n```go\nfunc add(a, b int) int {\n\treturn a + b\n}\n\n// 戻り値なしなら型を書かない\nfunc hello() {\n\tfmt.Println(\"hello\")\n}\n```",
+  "sample": "// lesson18 ch02: 戻り値の型を書く\npackage main\n\nimport \"fmt\"\n\n// 引数リストの後ろの int が「戻り値の型」です\nfunc add(a, b int) int {\n\treturn a + b\n}\n\n// 戻り値がない関数は型を書きません\nfunc hello() {\n\tfmt.Println(\"hello\")\n}\n\nfunc main() {\n\ttotal := add(3, 5) // 返ってきた値を変数で受け取る\n\tfmt.Println(total)\n\tfmt.Println(add(total, 10)) // 式の中でも使える\n\thello()\n}\n",
+  "exercise": {
+    "description": "1 行目に長方形の幅 w と高さ h（整数）が空白区切りで与えられます。\n**戻り値の型を書いた**関数 `area(w, h int) int` を定義し、面積 w×h を返して出力してください。\n\n**入力例1**\n\n```text\n3 4\n```\n\n**期待出力1**\n\n```text\n12\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに area(w, h int) int を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tw, _ := strconv.Atoi(fields[0])\n\th, _ := strconv.Atoi(fields[1])\n\t// ここから下を書く（area の戻り値を出力する）\n\t_, _ = w, h\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson18 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 計算結果は出力せずに return で返します。\n// 「計算する関数」と「表示する場所」を分けておくと、\n// 同じ関数をテストや別の計算に使い回せるからです。\nfunc area(w, h int) int {\n\treturn w * h\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tw, _ := strconv.Atoi(fields[0])\n\th, _ := strconv.Atoi(fields[1])\n\tfmt.Println(area(w, h))\n}\n",
+    "tests": [
+      {
+        "stdin": "3 4\n",
+        "expected_stdout": "12\n"
+      },
+      {
+        "stdin": "5 6\n",
+        "expected_stdout": "30\n"
+      },
+      {
+        "stdin": "7 1\n",
+        "expected_stdout": "7\n"
+      }
+    ]
+  }
+}

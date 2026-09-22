@@ -1,0 +1,15 @@
+{
+  "lesson": 5,
+  "chapter": 1,
+  "title": "文字列リテラルと + 結合",
+  "priority": "🔴",
+  "text": "Go の文字列は `\"...\"`（ダブルクォート）で書きます。Python のようにシングルクォートで文字列は作れません（Go の `'a'` は 1 文字の rune という別物になります）。`+` で連結できるのは Python と同じです。改行を含めたいときは `\\n`、そのまま複数行書きたいときはバッククォート `` ` `` を使います。🔴 「文字列は必ずダブルクォート」を手に覚えさせましょう。\n\nPython ではこう書いた:\n\n```python\ns = 'Hello' + \"World\"\n```\n\nGo ではこう書く:\n\n```go\ns := \"Hello\" + \"World\" // ダブルクォートのみ\n```",
+  "sample": "// lesson05 ch01: 文字列リテラルと + 結合\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\thello := \"Hello\"\n\tworld := \"World\"\n\n\t// + で連結できます（Python と同じ）\n\tfmt.Println(hello + \", \" + world + \"!\")\n\n\t// \\n で途中に改行を入れられます\n\tfmt.Println(\"1行目\\n2行目\")\n\n\t// バッククォートは書いたまま出力されます（\\n も文字のまま）\n\tfmt.Println(`複数行を\nそのまま書けます`)\n}\n",
+  "exercise": {
+    "description": "変数 `family` に `\"山田\"`、変数 `given` に `\"太郎\"` を入れ、\n`+` で連結して `山田 太郎` （間は半角スペース）と 1 行出力してください。\n\n**期待出力**\n\n```text\n山田 太郎\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "山田 太郎\n",
+    "answer": "// lesson05 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfamily := \"山田\"\n\tgiven := \"太郎\"\n\n\t// Println にカンマで渡しても空白区切りになりますが、\n\t// この演習は「+ で連結」が課題なので、間の空白も\n\t// 文字列 \" \" として自分で連結しています。\n\tfmt.Println(family + \" \" + given)\n}\n"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "lesson": 17,
+  "chapter": 3,
+  "title": "和・積・差は自分で書く",
+  "priority": "🟡",
+  "text": "Python の集合演算子 `|`（和）`&`（積）`-`（差）は Go にはないため、set 型がない Go では for で自分で書きます。発想は 1 つで、「一方を map にしておき、もう一方を走査して、含まれるかどうかで振り分ける」だけです。積は「A の要素のうち B にあるもの」、差は「A の要素のうち B にないもの」、和は「A と B を両方登録した map のキー」になります。出力の順序が必要なら、前レッスンの定石どおりソートします。🟡 演算子がなくても for で書ける、と理屈で理解しましょう。\n\nPython ではこう書いた:\n\n```python\ninter = a & b\ndiff = a - b\n```\n\nGo ではこう書く:\n\n```go\ninter := []string{}\nfor _, w := range a {\n\tif setB[w] { // B にもあれば積\n\t\tinter = append(inter, w)\n\t}\n}\n```",
+  "sample": "// lesson17 ch03: 和・積・差は自分で書く\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\ta := []string{\"apple\", \"banana\", \"orange\"}\n\tsetB := map[string]bool{\"banana\": true, \"grape\": true}\n\n\t// 積（A にも B にもある）と差（A にだけある）は 1 回の走査で作れます\n\tinter := []string{}\n\tdiff := []string{}\n\tfor _, w := range a {\n\t\tif setB[w] {\n\t\t\tinter = append(inter, w)\n\t\t} else {\n\t\t\tdiff = append(diff, w)\n\t\t}\n\t}\n\n\t// map を使った処理の出力はソートして順序を固定します\n\tslices.Sort(inter)\n\tslices.Sort(diff)\n\tfmt.Println(\"積:\", inter)\n\tfmt.Println(\"差:\", diff)\n}\n",
+  "exercise": {
+    "description": "標準入力の 1 行目に集合 A の単語、2 行目に集合 B の単語が空白区切りで与えられます（各行の中に重複はありません）。1 行目に積（A にも B にもある単語）、2 行目に差（A にだけある単語）を、それぞれ辞書順にソートして空白区切りで出力してください。\n\n**入力される値**\n\n```text\nA の単語1 A の単語2 ...\nB の単語1 B の単語2 ...\n```\n\n**入力例1**\n\n```text\napple banana orange\nbanana grape apple\n```\n\n**期待出力1**\n\n```text\napple banana\norange\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\ta := strings.Fields(sc.Text())\n\tsc.Scan()\n\tb := strings.Fields(sc.Text())\n\n\t// ここから下を書く\n\t_ = a\n\t_ = b\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "apple banana orange\nbanana grape apple\n",
+        "expected_stdout": "apple banana\norange\n"
+      },
+      {
+        "stdin": "a b c d\nb d e\n",
+        "expected_stdout": "b d\na c\n"
+      },
+      {
+        "stdin": "x y z\ny\n",
+        "expected_stdout": "y\nx z\n"
+      }
+    ],
+    "answer": "// lesson17 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"slices\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\ta := strings.Fields(sc.Text())\n\tsc.Scan()\n\tb := strings.Fields(sc.Text())\n\n\t// B を set 化しておけば、A を 1 回走査するだけで\n\t// 「B にある → 積」「B にない → 差」に振り分けられます。\n\tsetB := map[string]bool{}\n\tfor _, w := range b {\n\t\tsetB[w] = true\n\t}\n\tinter := []string{}\n\tdiff := []string{}\n\tfor _, w := range a {\n\t\tif setB[w] {\n\t\t\tinter = append(inter, w)\n\t\t} else {\n\t\t\tdiff = append(diff, w)\n\t\t}\n\t}\n\n\t// map を経由した結果は順序が不定になりうるので、ソートして固定します\n\tslices.Sort(inter)\n\tslices.Sort(diff)\n\tfmt.Println(strings.Join(inter, \" \"))\n\tfmt.Println(strings.Join(diff, \" \"))\n}\n"
+  }
+}

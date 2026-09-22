@@ -1,0 +1,27 @@
+{
+  "lesson": 21,
+  "chapter": 1,
+  "title": "type X struct（class の代わり）",
+  "priority": "🔴",
+  "text": "関連するデータをひとまとめにする入れ物が**構造体**です。Python では `class` で作りましたが、**Go に `class` はありません**。`type Person struct { ... }` で**フィールド**（データの項目）を型付きで並べ、`Person{Name: \"佐藤\", Age: 28}` で初期化し、`p.Name` で読み書きします。`__init__` を書かなくても、この初期化構文でそのまま値を詰められます。🔴 構造体は Go プログラムの中心なので、定義と初期化を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\np = Person(\"佐藤\", 28)\nprint(p.name)\n```\n\nGo ではこう書く:\n\n```go\ntype Person struct {\n\tName string\n\tAge  int\n}\n\np := Person{Name: \"佐藤\", Age: 28}\nfmt.Println(p.Name)\n```",
+  "sample": "// lesson21 ch01: type X struct（class の代わり）\npackage main\n\nimport \"fmt\"\n\n// Person は名前と年齢をひとまとめにした構造体です\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc main() {\n\t// フィールド名: 値 の形で初期化します\n\tp := Person{Name: \"佐藤\", Age: 28}\n\tfmt.Println(p.Name, p.Age)\n\n\t// フィールドは後から読み書きできます\n\tp.Age = 29\n\tfmt.Println(p.Age)\n\n\t// 指定しなかったフィールドはゼロ値（\"\" や 0）になります\n\tq := Person{Name: \"田中\"}\n\tfmt.Println(q.Name, q.Age)\n}\n",
+  "exercise": {
+    "description": "1 行目に名前と年齢（整数）が空白区切りで与えられます。\n`Name string` と `Age int` を持つ**構造体** `Person` を定義し、読み取った値で初期化して、\n`<Name>は<Age>歳です` の形式で出力してください（フィールド経由で出力すること）。\n\n**入力例1**\n\n```text\nSato 28\n```\n\n**期待出力1**\n\n```text\nSatoは28歳です\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに Person 構造体を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tage, _ := strconv.Atoi(fields[1])\n\t// ここから下を書く（Person を初期化して出力する）\n\t_, _ = name, age\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson21 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 名前と年齢は常にセットで扱うデータなので、構造体にまとめます。\n// class と違いメソッドや __init__ は持たず、まずは「型付きの入れ物」です。\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tage, _ := strconv.Atoi(fields[1])\n\n\t// フィールド名: 値 で初期化。順番に頼らないので読みやすく安全です\n\tp := Person{Name: name, Age: age}\n\tfmt.Printf(\"%sは%d歳です\\n\", p.Name, p.Age)\n}\n",
+    "tests": [
+      {
+        "stdin": "Sato 28\n",
+        "expected_stdout": "Satoは28歳です\n"
+      },
+      {
+        "stdin": "Tanaka 40\n",
+        "expected_stdout": "Tanakaは40歳です\n"
+      },
+      {
+        "stdin": "Ai 7\n",
+        "expected_stdout": "Aiは7歳です\n"
+      }
+    ]
+  }
+}

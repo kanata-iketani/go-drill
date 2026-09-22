@@ -1,0 +1,27 @@
+{
+  "lesson": 15,
+  "chapter": 2,
+  "title": "読んだ文字列を数値へ（strconv.Atoi）",
+  "priority": "🔴",
+  "text": "Scanner が読み取った行は必ず文字列なので、数値として計算するには strconv.Atoi で変換します。Atoi は (int, error) の 2 つを返しますが、スキルチェックでは入力形式が保証されているため、n, _ := strconv.Atoi(...) と書いて err を _ で捨てるのが定石です。Python なら int(input()) の 1 行で済む処理が、Go では 4 行の定型 + 変換 1 行になります。これも考えずに書けるまで丸暗記します。🔴 手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nn = int(input())\n```\n\nGo ではこう書く:\n\n```go\nsc := bufio.NewScanner(os.Stdin)\nsc.Scan()\nn, _ := strconv.Atoi(sc.Text())\n```",
+  "sample": "// lesson15 ch02: 読んだ文字列を数値へ（strconv.Atoi）\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\n\t// Text() は文字列なので、計算する前に Atoi で int へ変換します。\n\t// スキルチェックでは err を _ で捨てるのが定石です\n\tn, _ := strconv.Atoi(sc.Text())\n\n\tfmt.Println(\"2倍:\", n*2)\n\tfmt.Println(\"10足す:\", n+10)\n}\n",
+  "exercise": {
+    "description": "標準入力から年齢（整数）が 1 行で与えられます。`strconv.Atoi` で数値に変換し、`来年は{年齢+1}歳です` の形式で出力してください。\n\n**入力される値**\n\n```text\n年齢\n```\n\n**入力例1**\n\n```text\n20\n```\n\n**期待出力1**\n\n```text\n来年は21歳です\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "20\n",
+        "expected_stdout": "来年は21歳です\n"
+      },
+      {
+        "stdin": "7\n",
+        "expected_stdout": "来年は8歳です\n"
+      },
+      {
+        "stdin": "99\n",
+        "expected_stdout": "来年は100歳です\n"
+      }
+    ],
+    "answer": "// lesson15 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\n\t// Text() のままでは文字列なので +1 できません。Atoi で int にします。\n\t// 入力形式が保証されているスキルチェックでは err は _ で捨てるのが定石です。\n\tn, _ := strconv.Atoi(sc.Text())\n\n\tfmt.Printf(\"来年は%d歳です\\n\", n+1)\n}\n"
+  }
+}

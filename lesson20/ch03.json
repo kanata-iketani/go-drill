@@ -1,0 +1,31 @@
+{
+  "lesson": 20,
+  "chapter": 3,
+  "title": "可変長引数 ...int（*args の代わり）",
+  "priority": "🟡",
+  "text": "引数の個数を決めずに受け取るには、最後の引数の型の前に `...` を付けます（**可変長引数**）。Python の `*args` に相当し、関数の中では普通のスライスとして扱えます。呼び出しは `total(1, 2, 3)` のように好きな個数で書け、スライスをばらして渡すときは Python の `total(*nums)` に当たる `total(nums...)` と書きます。可変長引数は引数リストの最後に 1 つだけ置けます。🟡\n\nPython ではこう書いた:\n\n```python\ndef total(*args):\n    return sum(args)\n\nnums = [1, 2, 3]\nprint(total(*nums))\n```\n\nGo ではこう書く:\n\n```go\nfunc total(nums ...int) int {\n\tt := 0\n\tfor _, n := range nums {\n\t\tt += n\n\t}\n\treturn t\n}\n\nfmt.Println(total(nums...)) // スライスをばらして渡す\n```",
+  "sample": "// lesson20 ch03: 可変長引数 ...int（*args の代わり）\npackage main\n\nimport \"fmt\"\n\n// nums ...int と書くと、関数の中では nums は []int として扱えます\nfunc total(nums ...int) int {\n\tt := 0\n\tfor _, n := range nums {\n\t\tt += n\n\t}\n\treturn t\n}\n\nfunc main() {\n\t// 好きな個数で呼び出せます\n\tfmt.Println(total(1, 2, 3))\n\tfmt.Println(total(10, 20))\n\tfmt.Println(total()) // 0 個でもよい\n\n\t// スライスを渡すときは後ろに ... を付けてばらします\n\tnums := []int{5, 6, 7}\n\tfmt.Println(total(nums...))\n}\n",
+  "exercise": {
+    "description": "1 行目に 1 個以上の整数が空白区切りで与えられます。\n**可変長引数**の関数 `largest(nums ...int) int` を定義して最大値を返し、\n読み取ったスライスを `largest(nums...)` の形でばらして渡して、結果を出力してください。\n\n**入力例1**\n\n```text\n3 9 4\n```\n\n**期待出力1**\n\n```text\n9\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに largest(nums ...int) int を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, len(fields))\n\tfor i, f := range fields {\n\t\tnums[i], _ = strconv.Atoi(f)\n\t}\n\t// ここから下を書く（largest(nums...) を呼んで出力する）\n\t_ = nums\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson20 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ...int で受けると、呼び出し側は個数を気にせず渡せます。\n// 中では nums はただの []int なので、range で普通に走査できます。\nfunc largest(nums ...int) int {\n\tbest := nums[0] // 入力は 1 個以上という前提\n\tfor _, n := range nums[1:] {\n\t\tif n > best {\n\t\t\tbest = n\n\t\t}\n\t}\n\treturn best\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, len(fields))\n\tfor i, f := range fields {\n\t\tnums[i], _ = strconv.Atoi(f)\n\t}\n\t// スライスは nums... とばらして可変長引数に渡します（Python の *nums）\n\tfmt.Println(largest(nums...))\n}\n",
+    "tests": [
+      {
+        "stdin": "3 9 4\n",
+        "expected_stdout": "9\n"
+      },
+      {
+        "stdin": "10 2\n",
+        "expected_stdout": "10\n"
+      },
+      {
+        "stdin": "-3 -1 -7\n",
+        "expected_stdout": "-1\n"
+      },
+      {
+        "stdin": "5\n",
+        "expected_stdout": "5\n"
+      }
+    ]
+  }
+}

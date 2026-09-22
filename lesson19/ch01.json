@@ -1,0 +1,27 @@
+{
+  "lesson": 19,
+  "chapter": 1,
+  "title": "ブロックスコープ {}",
+  "priority": "🟡",
+  "text": "変数が使える範囲を**スコープ**といいます。Go の変数は、宣言した `{}`（ブロック）の中だけで有効です。Python では if や for の中で作った変数を外でも使えましたが、Go では for や if の中で宣言した変数はブロックを出ると消え、外で使うとコンパイルエラーになります。ループの結果を外に残したいときは、**ブロックの外で先に宣言**してから中で代入します。🟡 「宣言した場所で寿命が決まる」という理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nif x > 0:\n    msg = \"plus\"\nprint(msg)  # if の外でも使える\n```\n\nGo ではこう書く:\n\n```go\nmsg := \"\" // 外で使いたい変数は外で宣言する\nif x > 0 {\n\tmsg = \"plus\"\n}\nfmt.Println(msg)\n```",
+  "sample": "// lesson19 ch01: ブロックスコープ {}\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tx := 5\n\n\t// 外で使いたい変数は、ブロックの外で先に宣言します\n\tmsg := \"\"\n\tif x > 0 {\n\t\tmsg = \"plus\" // 代入なら外の msg に入る\n\t\tinner := \"if の中だけの変数\"\n\t\tfmt.Println(inner)\n\t}\n\t// fmt.Println(inner) // ← ブロックの外なのでコンパイルエラー\n\tfmt.Println(msg)\n\n\ttotal := 0\n\tfor i := range 3 {\n\t\ttotal += i // ループ変数 i もループの中だけで有効\n\t}\n\tfmt.Println(total)\n}\n",
+  "exercise": {
+    "description": "1 行目に 1 個以上の整数が空白区切りで与えられます。\n合計を入れる変数 `total` を **for ブロックの外で宣言**し、for で足し込んで、合計を出力してください。\n（for の中で `total := 0` と宣言すると外で使えないことを確かめながら書いてください）\n\n**入力例1**\n\n```text\n1 2 3\n```\n\n**期待出力1**\n\n```text\n6\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, len(fields))\n\tfor i, f := range fields {\n\t\tnums[i], _ = strconv.Atoi(f)\n\t}\n\t// ここから下を書く（total を外で宣言してから for で足す）\n\t_ = nums\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson19 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tnums := make([]int, len(fields))\n\tfor i, f := range fields {\n\t\tnums[i], _ = strconv.Atoi(f)\n\t}\n\n\t// for の中で宣言した変数はループを出ると消えるため、\n\t// ループ後も使う total はブロックの外で宣言しておきます。\n\ttotal := 0\n\tfor _, n := range nums {\n\t\ttotal += n // ここは代入なので外の total が更新される\n\t}\n\tfmt.Println(total)\n}\n",
+    "tests": [
+      {
+        "stdin": "1 2 3\n",
+        "expected_stdout": "6\n"
+      },
+      {
+        "stdin": "10 20 30 40\n",
+        "expected_stdout": "100\n"
+      },
+      {
+        "stdin": "5\n",
+        "expected_stdout": "5\n"
+      }
+    ]
+  }
+}

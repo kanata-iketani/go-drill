@@ -1,0 +1,15 @@
+{
+  "lesson": 5,
+  "chapter": 3,
+  "title": "[]rune と日本語",
+  "priority": "🟡",
+  "text": "日本語を文字単位で扱うには `[]rune(s)` で **rune**（1 文字を表す Go の型。Unicode のコードポイント 1 つ分）のスライスに変換します。変換後は `len` が文字数になり、`[i]` で i 番目の文字を取れます。取り出した rune を文字列として表示するには `string(r[0])` と戻します。「日本語が来たら []rune」は Go の定石です。🟡 なぜ変換が必要か（ch02 のバイトの話）とセットで理解しましょう。\n\nPython ではこう書いた:\n\n```python\ns = \"こんにちは\"\nprint(s[0])  # こ\n```\n\nGo ではこう書く:\n\n```go\nr := []rune(\"こんにちは\")\nfmt.Println(len(r))       // 5（文字数）\nfmt.Println(string(r[0])) // こ\n```",
+  "sample": "// lesson05 ch03: []rune で日本語を文字単位に\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\ts := \"こんにちは世界\"\n\n\t// []rune に変換すると 1 要素 = 1 文字になります\n\tr := []rune(s)\n\n\tfmt.Println(\"文字数:\", len(r)) // 7\n\n\t// [i] で i 番目の文字（rune）を取り出せます\n\tfmt.Println(string(r[0])) // こ\n\tfmt.Println(string(r[5])) // 世\n\n\t// r[i:j] で部分文字列も文字単位で切り出せます\n\tfmt.Println(string(r[5:7])) // 世界\n}\n",
+  "exercise": {
+    "description": "文字列 `\"駅前留学\"` を `[]rune` に変換して、\n「文字数」と「最初の 1 文字」を次の形式で 2 行出力してください。\n\n**期待出力**\n\n```text\n文字数: 4\n最初の文字: 駅\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "文字数: 4\n最初の文字: 駅\n",
+    "answer": "// lesson05 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 日本語を文字単位で数えたり取り出したりするときは、\n\t// まず []rune に変換するのが Go の定石です。\n\t// r[0] は rune（数値）なので、表示用に string() で文字列へ戻します。\n\tr := []rune(\"駅前留学\")\n\n\tfmt.Println(\"文字数:\", len(r))\n\tfmt.Println(\"最初の文字:\", string(r[0]))\n}\n"
+  }
+}

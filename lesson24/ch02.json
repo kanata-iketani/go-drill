@@ -1,0 +1,27 @@
+{
+  "lesson": 24,
+  "chapter": 2,
+  "title": "errors.New と return err（raise の代替は return）",
+  "priority": "🔴",
+  "text": "自分でエラーを作るには `errors.New(\"メッセージ\")` を使います。Python の `raise` に相当するのはエラーを投げることではなく **`return err`**、つまりエラーを戻り値として返すことです。失敗しうる関数は `(結果, error)` の 2 値を返す形にし、成功時はエラーの位置に `nil` を返します。🔴 「失敗したら return 0, errors.New(...)、成功したら return 値, nil」の型を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ndef divide(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"0 では割れません\")\n    return a // b\n```\n\nGo ではこう書く:\n\n```go\nfunc divide(a, b int) (int, error) {\n\tif b == 0 {\n\t\treturn 0, errors.New(\"0 では割れません\")\n\t}\n\treturn a / b, nil\n}\n```",
+  "sample": "// lesson24 ch02: errors.New で作り、raise の代わりに return する\npackage main\n\nimport (\n\t\"errors\"\n\t\"fmt\"\n)\n\n// 失敗しうる関数は (結果, error) の 2 値を返します\nfunc divide(a, b int) (int, error) {\n\tif b == 0 {\n\t\t// raise ではなく return でエラーを返します\n\t\treturn 0, errors.New(\"0 では割れません\")\n\t}\n\treturn a / b, nil // 成功時はエラーの位置に nil\n}\n\nfunc main() {\n\tif result, err := divide(10, 2); err == nil {\n\t\tfmt.Println(result) // 5\n\t}\n\tif _, err := divide(7, 0); err != nil {\n\t\tfmt.Println(err) // 0 では割れません\n\t}\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 a と b が空白区切りで入力されます。`(int, error)` を返す関数 `divide(a, b int)` を定義し、b が 0 のときは `errors.New(\"0 では割れません\")` をエラーとして返してください。main では err が nil でなければエラーメッセージを、成功なら a÷b の結果を出力します。\n\n**入力される値**\n\n```text\na b\n```\n\n**入力例1**\n\n```text\n10 2\n```\n\n**期待出力1**\n\n```text\n5\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"errors\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに divide(a, b int) (int, error) を書く:\n// b が 0 なら errors.New(\"0 では割れません\") を返す\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\n\t// ここから下を書く: divide を呼び、err != nil ならエラーを、\n\t// 成功なら結果を出力する\n\t_ = a\n\t_ = b\n\t_ = errors.New\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "10 2\n",
+        "expected_stdout": "5\n"
+      },
+      {
+        "stdin": "7 0\n",
+        "expected_stdout": "0 では割れません\n"
+      },
+      {
+        "stdin": "9 3\n",
+        "expected_stdout": "3\n"
+      }
+    ],
+    "answer": "// lesson24 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"errors\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// raise の代わりに return でエラーを返します。\n// 失敗しうる関数を (結果, error) の 2 値にするのが Go の定番の形で、\n// 成功時はエラーの位置に nil を返します。\nfunc divide(a, b int) (int, error) {\n\tif b == 0 {\n\t\treturn 0, errors.New(\"0 では割れません\")\n\t}\n\treturn a / b, nil\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\n\tresult, err := divide(a, b)\n\tif err != nil {\n\t\tfmt.Println(err) // error は Println でそのままメッセージが出ます\n\t\treturn\n\t}\n\tfmt.Println(result)\n}\n"
+  }
+}

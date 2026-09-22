@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 3,
+  "title": "静的型付けと gofmt",
+  "priority": "🟡",
+  "text": "Go は**静的型付け**（変数の型がコンパイル時に決まっていて、あとから変えられない仕組み）の言語です。Python では変数に何でも入れられましたが、Go で int の変数に文字列を入れるとコンパイルエラーになります。エラーが実行前に見つかるのが利点です。また Go には公式の整形ツール `gofmt` があり、インデントや空白はすべて機械が揃えます。🟡 「型は固定」「整形は gofmt に任せる」の2点を押さえましょう。\n\nPython ではこう書いた:\n\n```python\nx = 10\nx = \"hello\"  # 何でも入る\n```\n\nGo ではこう書く:\n\n```go\nvar x int = 10\n// x = \"hello\" // コンパイルエラー: int に文字列は入らない\n```",
+  "sample": "// lesson01 ch03: 静的型付け\n// 変数の型はコンパイル時に固定され、あとから変えられません\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar age int = 20\n\tvar height float64 = 171.5\n\n\tfmt.Println(\"age:\", age)\n\tfmt.Println(\"height:\", height)\n\n\t// age = \"twenty\" // これを有効にするとコンパイルエラーになります\n\n\tage = 21 // 同じ int なら再代入できます\n\tfmt.Println(\"来年の age:\", age)\n}\n",
+  "exercise": {
+    "description": "int 型の変数 `year` に `2026` を、float64 型の変数 `version` に `1.22` を入れて、\n次の 2 行を出力するプログラムを書いてください。\n\n**期待出力**\n\n```text\nyear: 2026\nversion: 1.22\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "year: 2026\nversion: 1.22\n",
+    "answer": "// lesson01 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// var 変数名 型 = 値 が基本形です。型を明示することで\n\t// 「year は整数、version は小数」という約束がコンパイル時に固定され、\n\t// 間違った型の代入を実行前に検出できます。\n\tvar year int = 2026\n\tvar version float64 = 1.22\n\n\tfmt.Println(\"year:\", year)\n\tfmt.Println(\"version:\", version)\n}\n"
+  }
+}

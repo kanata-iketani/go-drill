@@ -1,0 +1,27 @@
+{
+  "lesson": 25,
+  "chapter": 3,
+  "title": "ポインタ（& と * で呼び出し元を変える）",
+  "priority": "🟡",
+  "text": "**ポインタ**は変数のメモリ上の場所を指す値です。`&x` で x のポインタを取り、`*p` で指し先の値を読み書きします（デリファレンスと呼びます）。Go の引数は常に値渡しでコピーされるため、関数の中から呼び出し元の変数を書き換えたいときはポインタを渡します。Python では引数への再代入は呼び出し元に届きませんでしたが、Go はポインタで「届かせる」ことを明示できます。🟡 & と * の役割を理解しましょう。\n\nPython ではこう書いた:\n\n```python\ndef add_ten(n):\n    n += 10  # 呼び出し元の変数は変わらない\n```\n\nGo ではこう書く:\n\n```go\nfunc addTen(p *int) {\n\t*p += 10 // 指し先を書き換える → 呼び出し元が変わる\n}\n\naddTen(&x)\n```",
+  "sample": "// lesson25 ch03: ポインタで呼び出し元の変数を変える\npackage main\n\nimport \"fmt\"\n\n// 値渡し: コピーが増えるだけで呼び出し元は変わりません\nfunc addTenValue(n int) {\n\tn += 10\n}\n\n// ポインタ渡し: *p で指し先を書き換えると呼び出し元が変わります\nfunc addTen(p *int) {\n\t*p += 10\n}\n\nfunc main() {\n\tx := 5\n\taddTenValue(x)\n\tfmt.Println(x) // 5（変わらない）\n\n\taddTen(&x)     // &x で x のポインタ（場所）を渡す\n\tfmt.Println(x) // 15\n\n\tp := &x\n\tfmt.Println(*p) // 15（*p で指し先を読む）\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 n が入力されます。`*int` を受け取り指し先に 10 を足す関数 `addTen(p *int)` を定義してください。main では `x := n` としてから 1 行目に `before: <x>` を出力し、`addTen(&x)` を呼んだあと 2 行目に `after: <x>` を出力します。ポインタ渡しによって、関数の中の変更が呼び出し元の x に届くことを確かめる問題です。\n\n**入力される値**\n\n```text\nn\n```\n\n**入力例1**\n\n```text\n5\n```\n\n**期待出力1**\n\n```text\nbefore: 5\nafter: 15\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\n// ここに addTen(p *int) を書く（*p += 10 で指し先に 10 を足す）\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\t// ここから下を書く: x := n として before を出力し、\n\t// addTen(&x) を呼んでから after を出力する\n\t_ = n\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n",
+        "expected_stdout": "before: 5\nafter: 15\n"
+      },
+      {
+        "stdin": "100\n",
+        "expected_stdout": "before: 100\nafter: 110\n"
+      },
+      {
+        "stdin": "0\n",
+        "expected_stdout": "before: 0\nafter: 10\n"
+      }
+    ],
+    "answer": "// lesson25 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\n// 引数は値渡しでコピーされるため、int のまま受け取っても呼び出し元は変わりません。\n// ポインタ *int を受け取り、*p で指し先そのものを書き換えることで、\n// 呼び出し元の変数 x に変更を「届かせて」います。\nfunc addTen(p *int) {\n\t*p += 10\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\tx := n\n\tfmt.Println(\"before:\", x)\n\taddTen(&x) // &x で x の場所を渡す\n\tfmt.Println(\"after:\", x)\n}\n"
+  }
+}

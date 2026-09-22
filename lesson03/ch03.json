@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 3,
+  "title": "math.Pow（** はない）",
+  "priority": "🟡",
+  "text": "Go に累乗の演算子 `**` はありません。代わりに標準ライブラリの `math.Pow(x, y)` を使います。`math.Pow` は引数も戻り値も float64 なので、int で使いたいときは `int(math.Pow(2, 10))` のように変換します。2乗程度なら `x * x` と書くほうが Go らしいコードです。🟡 「** がない、math.Pow か掛け算で書く」を押さえましょう。\n\nPython ではこう書いた:\n\n```python\nprint(2 ** 10)  # 1024\n```\n\nGo ではこう書く:\n\n```go\nimport \"math\"\n\nfmt.Println(math.Pow(2, 10))      // 1024（float64）\nfmt.Println(int(math.Pow(2, 10))) // 1024（int）\n```",
+  "sample": "// lesson03 ch03: math.Pow（** はない）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"math\"\n)\n\nfunc main() {\n\t// Python の 2 ** 10 は math.Pow(2, 10) と書きます\n\tfmt.Println(math.Pow(2, 10))      // float64 で 1024\n\tfmt.Println(int(math.Pow(2, 10))) // int にしたいときは変換\n\n\t// 2乗くらいなら掛け算で書くほうが Go らしいコードです\n\tx := 9\n\tfmt.Println(x * x)\n\n\t// 平方根は math.Sqrt です\n\tfmt.Println(math.Sqrt(2))\n}\n",
+  "exercise": {
+    "description": "`math.Pow` を使って 3 の 4 乗を計算し、int に変換して出力してください。\n\n**期待出力**\n\n```text\n81\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "81\n",
+    "answer": "// lesson03 ch03 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"math\"\n)\n\nfunc main() {\n\t// Go には ** がないので累乗は math.Pow を使います。\n\t// math.Pow の戻り値は float64（81 でも表示は 81 になるが型は小数）なので、\n\t// 整数として扱いたいことを明示するため int() で変換しています。\n\tfmt.Println(int(math.Pow(3, 4)))\n}\n"
+  }
+}

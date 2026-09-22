@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 2,
+  "title": "package main と func main",
+  "priority": "🔴",
+  "text": "Python はファイルの先頭から順に実行されました。Go では、プログラムの入口が `func main`（main 関数）と決まっていて、さらにその関数は `package main` というパッケージ（コードの所属を表す宣言）に置く必要があります。この 3 点セット（package main・import・func main）はすべての Go プログラムの骨格です。🔴 何も見ずに書けるまで手を動かしましょう。\n\nPython ではこう書いた:\n\n```python\nprint(\"Hello\")\n```\n\nGo ではこう書く:\n\n```go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello\")\n}\n```",
+  "sample": "// lesson01 ch02: Go プログラムの骨格\n// package main + import + func main の 3 点セット\npackage main\n\n// import は使う機能（パッケージ）を取り込む宣言です\nimport \"fmt\"\n\n// プログラムは必ず func main から始まります\nfunc main() {\n\tfmt.Println(\"1: main 関数の先頭から実行されます\")\n\tfmt.Println(\"2: 上から順に実行されます\")\n\tfmt.Println(\"3: main 関数が終わるとプログラムも終わります\")\n}\n",
+  "exercise": {
+    "description": "`package main`・`import`・`func main` の 3 点セットを何も見ずに書き、\n`Go の骨格を覚えた` と 1 行出力するプログラムを完成させてください。\n\n**期待出力**\n\n```text\nGo の骨格を覚えた\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "Go の骨格を覚えた\n",
+    "answer": "// lesson01 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// この 3 点セット（package main / import / func main）は\n\t// すべての Go プログラムに共通する骨格なので、\n\t// 迷わず書けるようになるまで繰り返し練習します。\n\tfmt.Println(\"Go の骨格を覚えた\")\n}\n"
+  }
+}

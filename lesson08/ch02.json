@@ -1,0 +1,15 @@
+{
+  "lesson": 8,
+  "chapter": 2,
+  "title": "strings.Split（文字列→スライス）",
+  "priority": "🔴",
+  "text": "文字列を区切り文字で分割してスライスにするには `strings.Split(s, 区切り)` を使います。Python の `\"a,b,c\".split(\",\")` とほぼ同じで、結果は `[]string` になります。Join と Split は互いに逆の操作で、この 2 つでカンマ区切りデータの読み書きができます。分割した結果はスライスなので `s[i]` や `len` がそのまま使えます。🔴 データ処理の基本なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ncolors = \"赤,青,黄\".split(\",\")\n```\n\nGo ではこう書く:\n\n```go\ncolors := strings.Split(\"赤,青,黄\", \",\")\n```",
+  "sample": "// lesson08 ch02: strings.Split（文字列→スライス）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\tcsv := \"赤,青,黄\"\n\n\t// \"赤,青,黄\".split(\",\") に当たります。結果は []string です\n\tcolors := strings.Split(csv, \",\")\n\tfmt.Println(colors)\n\tfmt.Println(len(colors))\n\n\t// 分割後はふつうのスライスとして使えます\n\tfmt.Println(colors[1])\n}\n",
+  "exercise": {
+    "description": "文字列 `\"apple:banana:cherry\"` を `strings.Split` で `:` 区切りに分割し、1 行目にスライス全体を、2 行目に 0 番目の要素を出力してください。`strings` を import に追加してください。\n\n**期待出力**\n\n```text\n[apple banana cherry]\napple\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[apple banana cherry]\napple\n",
+    "answer": "// lesson08 ch02 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\t// \"apple:banana:cherry\".split(\":\") に当たります。\n\t// 結果は []string なので、インデックスや len がそのまま使えます。\n\tfruits := strings.Split(\"apple:banana:cherry\", \":\")\n\n\tfmt.Println(fruits)\n\tfmt.Println(fruits[0])\n}\n"
+  }
+}

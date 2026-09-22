@@ -1,0 +1,15 @@
+{
+  "lesson": 12,
+  "chapter": 2,
+  "title": "for {} 無限ループと break",
+  "priority": "🟡",
+  "text": "条件を書かない `for {}` は無限ループになり、Python の `while True:` に相当します。抜けるには `break`（いま実行中のループを即座に終了する文）を使います。単語は Python と同じです。「無限ループの中で処理し、条件を満たしたら break で抜ける」という形は、後で学ぶ標準入力の処理でも使う定番の書き方です。🟡 break が終わらせるのはループ 1 つ分だけ、という範囲を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nwhile True:\n    total += 3\n    if total >= 12:\n        break\n```\n\nGo ではこう書く:\n\n```go\nfor {\n\ttotal += 3\n\tif total >= 12 {\n\t\tbreak\n\t}\n}\n```",
+  "sample": "// lesson12 ch02: for {} 無限ループと break\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// for {} は while True: に相当する無限ループです\n\tcount := 0\n\tfor {\n\t\tcount++\n\t\tfmt.Println(\"count =\", count)\n\t\tif count == 3 {\n\t\t\tbreak // 条件を満たしたらループを抜けます\n\t\t}\n\t}\n\tfmt.Println(\"ループを抜けました\")\n}\n",
+  "exercise": {
+    "description": "変数 `total` を `0` から始めて、無限ループ `for {}` の中で `total` に 3 を足し続け、`total` が 12 以上になったら `break` でループを抜けて、最後に `total` を出力してください。\n\n**期待出力**\n\n```text\n12\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "12\n",
+    "answer": "// lesson12 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// while True: に相当する for {} で回し、\n\t// 終了条件はループ本体の中の if + break で表します。\n\ttotal := 0\n\tfor {\n\t\ttotal += 3\n\t\tif total >= 12 {\n\t\t\tbreak\n\t\t}\n\t}\n\tfmt.Println(total)\n}\n"
+  }
+}

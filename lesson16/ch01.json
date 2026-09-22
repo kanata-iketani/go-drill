@@ -1,0 +1,27 @@
+{
+  "lesson": 16,
+  "chapter": 1,
+  "title": "map リテラルと取得",
+  "priority": "🔴",
+  "text": "Python の辞書に相当するのが **map**（キーと値の組を保持するデータ構造）です。map[string]int のようにキーと値の型を指定し、リテラルは map[string]int{\"apple\": 120} の形で書きます。取得は Python と同じ m[key] です。ただし Python と 2 つ大きな差があります。要素の順序が保証されないこと（後のチャプターで扱います）と、辞書内包表記が存在しないことです。🔴 リテラルの書き方と取得を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nprices = {\"apple\": 120, \"banana\": 90}\nprint(prices[\"apple\"])\n```\n\nGo ではこう書く:\n\n```go\nprices := map[string]int{\"apple\": 120, \"banana\": 90}\nfmt.Println(prices[\"apple\"])\n```",
+  "sample": "// lesson16 ch01: map リテラルと取得\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// map[キーの型]値の型{...} がリテラルです\n\t// 複数行で書くときは最後の要素にもカンマが必要です\n\tprices := map[string]int{\n\t\t\"apple\":  120,\n\t\t\"banana\": 90,\n\t\t\"orange\": 60,\n\t}\n\n\t// 取得は Python の辞書と同じ書き方です\n\tfmt.Println(prices[\"apple\"])\n\tfmt.Println(prices[\"orange\"])\n\n\t// 取得した値は式の中でもそのまま使えます\n\tfmt.Println(prices[\"apple\"] + prices[\"banana\"])\n}\n",
+  "exercise": {
+    "description": "スターターには果物の価格表 `prices` が定義されています。標準入力から果物名が 1 行で与えられるので、その果物の価格を出力してください。\n\n**入力される値**\n\n```text\n果物名（apple / banana / orange のいずれか）\n```\n\n**入力例1**\n\n```text\napple\n```\n\n**期待出力1**\n\n```text\n120\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tprices := map[string]int{\"apple\": 120, \"banana\": 90, \"orange\": 60}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfruit := sc.Text()\n\n\t// ここから下を書く\n\t_ = prices\n\t_ = fruit\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "apple\n",
+        "expected_stdout": "120\n"
+      },
+      {
+        "stdin": "orange\n",
+        "expected_stdout": "60\n"
+      },
+      {
+        "stdin": "banana\n",
+        "expected_stdout": "90\n"
+      }
+    ],
+    "answer": "// lesson16 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tprices := map[string]int{\"apple\": 120, \"banana\": 90, \"orange\": 60}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfruit := sc.Text()\n\n\t// map の取得は Python の辞書と同じ m[key] です。\n\t// 入力された文字列をそのままキーにして引けるのが map の強みです。\n\tfmt.Println(prices[fruit])\n}\n"
+  }
+}

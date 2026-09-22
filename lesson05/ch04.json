@@ -1,0 +1,15 @@
+{
+  "lesson": 5,
+  "chapter": 4,
+  "title": "strings.Repeat",
+  "priority": "⚪",
+  "text": "Python の `\"ab\" * 3` のような文字列の掛け算は Go にはありません。代わりに `strings` パッケージの `strings.Repeat(s, n)` を使います。`strings` は文字列操作の関数を集めた標準ライブラリで、このあとのレッスンでも繰り返し登場します。⚪ 「* の代わりに strings.Repeat」と存在だけ知っておけば十分です。\n\nPython ではこう書いた:\n\n```python\nprint(\"=\" * 10)\n```\n\nGo ではこう書く:\n\n```go\nimport \"strings\"\n\nfmt.Println(strings.Repeat(\"=\", 10))\n```",
+  "sample": "// lesson05 ch04: strings.Repeat（文字列の掛け算の代わり）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\t// Python の \"=\" * 20 はこう書きます\n\tfmt.Println(strings.Repeat(\"=\", 20))\n\n\tfmt.Println(\"メニュー\")\n\n\t// 複数文字の繰り返しもできます\n\tfmt.Println(strings.Repeat(\"-*\", 10))\n\n\t// 変数と組み合わせて区切り線を作るのが定番の使い方です\n\tline := strings.Repeat(\"=\", 20)\n\tfmt.Println(line)\n}\n",
+  "exercise": {
+    "description": "`strings.Repeat` を使って `-` を 15 回繰り返した区切り線を作り、\n`ここまで読んだ` という行の上下に出力してください（出力は 3 行）。\n\n**期待出力**\n\n```text\n---------------\nここまで読んだ\n---------------\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "---------------\nここまで読んだ\n---------------\n",
+    "answer": "// lesson05 ch04 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\t// 同じ線を 2 回使うので、Repeat の結果を一度変数に入れます。\n\t// \"-\" を 15 個手打ちするより、数を変えたいときに 1 か所で済むのが利点です。\n\tline := strings.Repeat(\"-\", 15)\n\n\tfmt.Println(line)\n\tfmt.Println(\"ここまで読んだ\")\n\tfmt.Println(line)\n}\n"
+  }
+}

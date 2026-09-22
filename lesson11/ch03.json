@@ -1,0 +1,15 @@
+{
+  "lesson": 11,
+  "chapter": 3,
+  "title": "slices.Contains（スライスの in の代わり）",
+  "priority": "🟡",
+  "text": "Go に Python の `in` 演算子はありません。スライスに値が含まれるかは、標準ライブラリの `slices` パッケージにある `slices.Contains(スライス, 値)` で調べます。戻り値は bool なので、そのまま if の条件に使えます。使うには `import \"slices\"` が必要です。Go 1.21 より前はこの関数がなく、for で 1 件ずつ比較して探していました。🟡 「演算子ではなく関数で調べる」という Go の流儀を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nif \"banana\" in fruits:\n    print(\"あります\")\n```\n\nGo ではこう書く:\n\n```go\nif slices.Contains(fruits, \"banana\") {\n\tfmt.Println(\"あります\")\n}\n```",
+  "sample": "// lesson11 ch03: slices.Contains（スライスの in の代わり）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tfruits := []string{\"apple\", \"banana\", \"cherry\"}\n\n\t// x in fruits の代わりに slices.Contains を使います\n\tfmt.Println(slices.Contains(fruits, \"banana\"))\n\tfmt.Println(slices.Contains(fruits, \"grape\"))\n\n\t// int のスライスでも同じ形です\n\tnums := []int{10, 20, 30}\n\tif slices.Contains(nums, 20) {\n\t\tfmt.Println(\"20 が含まれています\")\n\t}\n}\n",
+  "exercise": {
+    "description": "スライス `nums := []int{2, 4, 6, 8}` を作り、`slices.Contains` を使って次の 2 つの結果を順に出力してください。\n\n1. `nums` に `6` が含まれるか\n2. `nums` に `5` が含まれるか\n\n**期待出力**\n\n```text\ntrue\nfalse\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "true\nfalse\n",
+    "answer": "// lesson11 ch03 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tnums := []int{2, 4, 6, 8}\n\n\t// Python の 6 in nums の代わりです。slices.Contains は bool を\n\t// 返すので、そのまま Println に渡せば true / false が出力されます。\n\tfmt.Println(slices.Contains(nums, 6))\n\tfmt.Println(slices.Contains(nums, 5))\n}\n"
+  }
+}

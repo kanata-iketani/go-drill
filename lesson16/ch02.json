@@ -1,0 +1,27 @@
+{
+  "lesson": 16,
+  "chapter": 2,
+  "title": "make と追加・更新",
+  "priority": "🔴",
+  "text": "空の map は make で作ります。var m map[string]int と宣言しただけの map は **nil map**（実体を持たない map）で、書き込むと実行時エラーになるため、あとから追加していく map は必ず make で作るのが鉄則です。追加と更新はどちらも m[key] = value で、キーがなければ追加、あれば上書きになります。この書き味は Python の d[key] = value と同じです。🔴 「make で作ってから書き込む」流れを手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nd = {}\nd[\"apple\"] = 100\nd[\"apple\"] = 120  # 上書き\n```\n\nGo ではこう書く:\n\n```go\nm := make(map[string]int)\nm[\"apple\"] = 100\nm[\"apple\"] = 120 // 上書き\n```",
+  "sample": "// lesson16 ch02: make と追加・更新\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 空の map は make で作ります（var だけの nil map には書き込めません）\n\tstock := make(map[string]int)\n\n\t// キーがなければ追加\n\tstock[\"pen\"] = 10\n\tstock[\"note\"] = 5\n\n\t// キーがあれば上書き（更新）\n\tstock[\"pen\"] = 8\n\n\tfmt.Println(stock[\"pen\"])\n\tfmt.Println(stock[\"note\"])\n\tfmt.Println(len(stock))\n}\n",
+  "exercise": {
+    "description": "標準入力の 1〜3 行目に「商品名 価格」が空白区切りで与えられます。同じ商品名が再登場した場合は価格を上書きしてください。4 行目に商品名が 1 つ与えられるので、その商品の価格を出力してください。\n\n**入力される値**\n\n```text\n商品名1 価格1\n商品名2 価格2\n商品名3 価格3\n調べる商品名\n```\n\n**入力例1**\n\n```text\napple 100\nbanana 80\napple 120\napple\n```\n\n**期待出力1**\n\n```text\n120\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\t// ここから下を書く: make で map を作り、3 行分の「商品名 価格」を登録する\n\t_ = sc\n\t_ = strings.Fields\n\t_ = strconv.Atoi\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "apple 100\nbanana 80\napple 120\napple\n",
+        "expected_stdout": "120\n"
+      },
+      {
+        "stdin": "cat 3\ndog 5\nbird 2\ndog\n",
+        "expected_stdout": "5\n"
+      },
+      {
+        "stdin": "x 1\ny 2\ny 9\ny\n",
+        "expected_stdout": "9\n"
+      }
+    ],
+    "answer": "// lesson16 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\t// 書き込んでいく map は make で作るのが鉄則です（nil map には書き込めない）。\n\t// m[key] = value は、キーがなければ追加、あれば上書きになるため、\n\t// 「再登場したら上書き」は特別な処理なしで実現できます。\n\tm := make(map[string]int)\n\tfor range 3 {\n\t\tsc.Scan()\n\t\tf := strings.Fields(sc.Text())\n\t\tprice, _ := strconv.Atoi(f[1])\n\t\tm[f[0]] = price\n\t}\n\n\tsc.Scan()\n\tfmt.Println(m[sc.Text()])\n}\n"
+  }
+}

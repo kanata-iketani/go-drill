@@ -1,0 +1,15 @@
+{
+  "lesson": 13,
+  "chapter": 2,
+  "title": "for i := range 10（range(n) の代わり）",
+  "priority": "🔴",
+  "text": "Python の `for i in range(10):` に相当するのが `for i := range 10 {}` で、0 から 9 まで順に回ります。これは **Go 1.22 以降**で使える構文です。それより前の Go には `for i := 0; i < 10; i++ {}` という 3 部形式しかなく、古い記事や既存コードでは今もよく見ます。また `range(1, 11)` のような開始値の指定はできないため、`i+1` を使って調整します。🔴 回数指定ループの基本形として、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nfor i in range(3):\n    print(i)\n```\n\nGo ではこう書く:\n\n```go\nfor i := range 3 {\n\tfmt.Println(i)\n}\n```",
+  "sample": "// lesson13 ch02: for i := range 10（range(n) の代わり）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// Go 1.22 以降の書き方。0 から 2 まで回ります\n\tfor i := range 3 {\n\t\tfmt.Println(i)\n\t}\n\n\t// Go 1.21 以前はこの 3 部形式で書いていました（今も使えます）\n\tfor i := 0; i < 3; i++ {\n\t\tfmt.Println(\"old:\", i)\n\t}\n\n\t// range(1, 4) のような開始値の指定はないので i+1 で調整します\n\tfor i := range 3 {\n\t\tfmt.Println(i + 1)\n\t}\n}\n",
+  "exercise": {
+    "description": "`for i := range 3` を使って、`1回目` `2回目` `3回目` と 1 行ずつ出力してください。`range` は 0 から始まるので、`fmt.Printf` と `i+1` を使います。\n\n**期待出力**\n\n```text\n1回目\n2回目\n3回目\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "1回目\n2回目\n3回目\n",
+    "answer": "// lesson13 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// range 3 は 0, 1, 2 と回るので、1回目〜3回目にするには i+1 を使います。\n\t// Python の range(1, 4) のような開始値の指定は Go にはありません。\n\tfor i := range 3 {\n\t\tfmt.Printf(\"%d回目\\n\", i+1)\n\t}\n}\n"
+  }
+}

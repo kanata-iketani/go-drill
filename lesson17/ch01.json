@@ -1,0 +1,27 @@
+{
+  "lesson": 17,
+  "chapter": 1,
+  "title": "Go に set 型は存在しない（map で代用する）",
+  "priority": "🟡",
+  "text": "Go に set 型は存在しません。Python の**集合**（重複しない要素の集まり）に相当する処理は、map で代用します。定番は map[T]bool で、要素をキーに、値に true を入れます。メモリを節約したいときは値を空の構造体にする map[T]struct{} という書き方もありますが、まずは読み書きが素直な map[T]bool で十分です。所属判定は set[x] と引くだけで、ないキーはゼロ値 false になるため、そのまま if の条件に使えます。🟡 「set は map で作る」と理屈で押さえましょう。\n\nPython ではこう書いた:\n\n```python\ns = {\"apple\", \"banana\"}\nprint(\"apple\" in s)\n```\n\nGo ではこう書く:\n\n```go\nset := map[string]bool{\"apple\": true, \"banana\": true}\nfmt.Println(set[\"apple\"])\n```",
+  "sample": "// lesson17 ch01: Go に set 型はない（map で代用）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// Python の {\"apple\", \"banana\", \"orange\"} に相当する集合です\n\tset := map[string]bool{\n\t\t\"apple\":  true,\n\t\t\"banana\": true,\n\t\t\"orange\": true,\n\t}\n\n\t// 所属判定: ないキーはゼロ値 false になるので、そのまま使えます\n\tfmt.Println(set[\"apple\"])\n\tfmt.Println(set[\"grape\"])\n\n\t// メモリ重視なら値を空構造体にする map[string]struct{} も使われます\n\tset2 := map[string]struct{}{\"apple\": {}}\n\t_, ok := set2[\"apple\"]\n\tfmt.Println(ok)\n}\n",
+  "exercise": {
+    "description": "スターターには会員名簿の集合 `members` が定義されています。標準入力から名前が 1 行で与えられるので、名簿にあれば `OK`、なければ `NG` と出力してください。\n\n**入力される値**\n\n```text\n名前\n```\n\n**入力例1**\n\n```text\nsato\n```\n\n**期待出力1**\n\n```text\nOK\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tmembers := map[string]bool{\"sato\": true, \"suzuki\": true, \"tanaka\": true}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// ここから下を書く\n\t_ = members\n\t_ = name\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "sato\n",
+        "expected_stdout": "OK\n"
+      },
+      {
+        "stdin": "yamada\n",
+        "expected_stdout": "NG\n"
+      },
+      {
+        "stdin": "tanaka\n",
+        "expected_stdout": "OK\n"
+      }
+    ],
+    "answer": "// lesson17 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tmembers := map[string]bool{\"sato\": true, \"suzuki\": true, \"tanaka\": true}\n\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := sc.Text()\n\n\t// map[T]bool の集合は、ないキーがゼロ値 false になるため、\n\t// Python の in に相当する所属判定が members[name] だけで書けます。\n\tif members[name] {\n\t\tfmt.Println(\"OK\")\n\t} else {\n\t\tfmt.Println(\"NG\")\n\t}\n}\n"
+  }
+}

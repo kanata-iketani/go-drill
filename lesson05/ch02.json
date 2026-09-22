@@ -1,0 +1,15 @@
+{
+  "lesson": 5,
+  "chapter": 2,
+  "title": "len と s[i]（バイト）",
+  "priority": "🟡",
+  "text": "`len(s)` は文字数ではなく**バイト数**（データの大きさの単位。ASCII 文字は 1 文字 1 バイト、日本語は UTF-8 で 1 文字 3 バイト）を返します。同様に `s[i]` も i 番目の文字ではなく i 番目のバイトを返します。英数字だけなら Python と同じ感覚で動きますが、日本語が混ざると期待とずれます。🟡 「文字列の実体はバイト列」という理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\ns = \"こんにちは\"\nprint(len(s))  # 5\n```\n\nGo ではこう書く:\n\n```go\ns := \"こんにちは\"\nfmt.Println(len(s)) // 15（バイト数）\n```",
+  "sample": "// lesson05 ch02: len と s[i] はバイト単位\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\ten := \"Hello\"\n\tja := \"こんにちは\"\n\n\t// 英数字は 1 文字 1 バイトなので直感どおりです\n\tfmt.Println(len(en))       // 5\n\tfmt.Println(en[0])         // 72（'H' のバイト値）\n\tfmt.Println(string(en[0])) // \"H\" に戻すには string() が必要\n\n\t// 日本語は UTF-8 で 1 文字 3 バイトです\n\tfmt.Println(len(ja)) // 15（5 文字 × 3 バイト）\n\n\t// ja[0] は「こ」の 1 バイト目にすぎません\n\tfmt.Println(ja[0]) // 227\n}\n",
+  "exercise": {
+    "description": "文字列 `\"Go言語\"` の `len` を出力してください。\n出力する前に、何バイトになるか予想してから実行すること\n（英数字 1 バイト、日本語 3 バイト）。\n\n**期待出力**\n\n```text\n8\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "8\n",
+    "answer": "// lesson05 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// \"Go\" は 1 バイト × 2 文字、\"言語\" は 3 バイト × 2 文字なので\n\t// 2 + 6 = 8 バイトです。len が「文字数」ではなく「バイト数」を\n\t// 返すことを、日本語入りの文字列で体感するのがこの演習の狙いです。\n\tfmt.Println(len(\"Go言語\"))\n}\n"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "lesson": 19,
+  "chapter": 2,
+  "title": "シャドーイング",
+  "priority": "🟡",
+  "text": "内側のブロックで外側と**同じ名前**の変数を `:=` で宣言すると、内側ではその新しい変数が外側の変数を隠します。これを**シャドーイング**といいます。外側の変数が消えるわけではなく、ブロックを出ると元の値のまま戻ってきます。Python では関数の中のローカル変数が外の変数を隠しましたが、Go ではただの `{}` ブロックでも同じことが起きます。🟡 「`:=` は新しい変数を作る」ことを意識して、どの変数が見えているか読み取れるようになりましょう。\n\nPython ではこう書いた:\n\n```python\nx = 1\ndef f():\n    x = 2  # 関数の中だけの別の x\nf()\nprint(x)  # 1\n```\n\nGo ではこう書く:\n\n```go\nx := 1\n{\n\tx := 2 // ブロックの中だけの別の x\n\tfmt.Println(x) // 2\n}\nfmt.Println(x) // 1\n```",
+  "sample": "// lesson19 ch02: シャドーイング\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tx := 1\n\tfmt.Println(\"外:\", x)\n\n\tif x > 0 {\n\t\t// := なので、外の x とは別の新しい x が作られます\n\t\tx := 100\n\t\tx += 5\n\t\tfmt.Println(\"内:\", x) // 105\n\t}\n\n\t// ブロックを出ると、隠れていた外の x が元の値のまま現れます\n\tfmt.Println(\"外:\", x) // 1\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 x が与えられます。次の 2 行を出力するプログラムを書いてください。\n\n1. `{}` ブロックの中で `x := x * 10` と**同名の変数を宣言**して、その値を出力\n2. ブロックを出た後に、外側の `x` を出力（元の値のままであることを確認する）\n\n**入力例1**\n\n```text\n5\n```\n\n**期待出力1**\n\n```text\n50\n5\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tx, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\t// ここから下を書く（{} ブロックの中で x := x * 10 を宣言する）\n\t_ = x\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson19 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tx, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\n\t{\n\t\t// 右辺の x は外の x、左辺の x はこのブロックだけの新しい変数です。\n\t\t// := が「宣言」だからこそ、同じ名前でも別物になります（シャドーイング）。\n\t\tx := x * 10\n\t\tfmt.Println(x)\n\t}\n\t// ブロックを出ると外の x はそのまま。シャドーイングは外に影響しません\n\tfmt.Println(x)\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n",
+        "expected_stdout": "50\n5\n"
+      },
+      {
+        "stdin": "3\n",
+        "expected_stdout": "30\n3\n"
+      },
+      {
+        "stdin": "12\n",
+        "expected_stdout": "120\n12\n"
+      }
+    ]
+  }
+}

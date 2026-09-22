@@ -1,0 +1,27 @@
+{
+  "lesson": 22,
+  "chapter": 3,
+  "title": "インターフェース（振る舞いの契約と暗黙実装）",
+  "priority": "🟡",
+  "text": "**インターフェース**は「この型はこのメソッドを持つ」という振る舞いの契約です。Go には `implements` のような宣言がなく、契約どおりのメソッドを持つ型は自動的にそのインターフェースを満たします（**暗黙実装**）。Python のダックタイピング（同名メソッドがあれば動くという流儀）に近い柔らかさを、コンパイル時の型検査つきで実現します。継承の代わりに「同じ振る舞いの型をまとめて扱う」のが役割です。🟡 契約という考え方を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nclass Dog:\n    def speak(self):  # 同名メソッドがあれば動く\n        return \"ワン\"\n```\n\nGo ではこう書く:\n\n```go\ntype Speaker interface {\n\tSpeak() string // この契約を満たす型は自動的に Speaker\n}\n```",
+  "sample": "// lesson22 ch03: インターフェースは「振る舞いの契約」\npackage main\n\nimport \"fmt\"\n\n// Speak() string を持つ型はすべて Speaker になります（暗黙実装）\ntype Speaker interface {\n\tSpeak() string\n}\n\ntype Dog struct {\n\tName string\n}\n\nfunc (d Dog) Speak() string {\n\treturn d.Name + \": ワン\"\n}\n\ntype Cat struct {\n\tName string\n}\n\nfunc (c Cat) Speak() string {\n\treturn c.Name + \": ニャー\"\n}\n\nfunc main() {\n\t// 契約を満たす型なら、同じスライスにまとめて扱えます\n\tspeakers := []Speaker{Dog{Name: \"ポチ\"}, Cat{Name: \"タマ\"}}\n\tfor _, s := range speakers {\n\t\tfmt.Println(s.Speak())\n\t}\n}\n",
+  "exercise": {
+    "description": "1 行目に動物の種類（`dog` か `cat`）と名前が空白区切りで入力されます。インターフェース `Speaker` 型の変数 `s` に、種類が `dog` なら `Dog`、`cat` なら `Cat` の値を代入し、`s.Speak()` の結果を 1 行出力してください。どちらの型も `Speak() string` を持つため、宣言を書かなくても `Speaker` を満たしています（暗黙実装）。\n\n**入力される値**\n\n```text\n種類 名前\n```\n\n**入力例1**\n\n```text\ndog ポチ\n```\n\n**期待出力1**\n\n```text\nポチ: ワン\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\ntype Speaker interface {\n\tSpeak() string\n}\n\ntype Dog struct {\n\tName string\n}\n\nfunc (d Dog) Speak() string {\n\treturn d.Name + \": ワン\"\n}\n\ntype Cat struct {\n\tName string\n}\n\nfunc (c Cat) Speak() string {\n\treturn c.Name + \": ニャー\"\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tkind := fields[0]\n\tname := fields[1]\n\n\t// ここから下を書く: Speaker 型の変数 s に\n\t// kind に応じて Dog か Cat を入れ、s.Speak() を出力する\n\t_ = kind\n\t_ = name\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "dog ポチ\n",
+        "expected_stdout": "ポチ: ワン\n"
+      },
+      {
+        "stdin": "cat タマ\n",
+        "expected_stdout": "タマ: ニャー\n"
+      },
+      {
+        "stdin": "dog コロ\n",
+        "expected_stdout": "コロ: ワン\n"
+      }
+    ],
+    "answer": "// lesson22 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\ntype Speaker interface {\n\tSpeak() string\n}\n\ntype Dog struct {\n\tName string\n}\n\nfunc (d Dog) Speak() string {\n\treturn d.Name + \": ワン\"\n}\n\ntype Cat struct {\n\tName string\n}\n\nfunc (c Cat) Speak() string {\n\treturn c.Name + \": ニャー\"\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tkind := fields[0]\n\tname := fields[1]\n\n\t// Speaker 型の変数には「契約を満たす型」ならどれでも入れられます。\n\t// Dog も Cat も implements と書いていませんが、Speak() string を\n\t// 持っているだけで自動的に Speaker として扱えます（暗黙実装）。\n\tvar s Speaker\n\tif kind == \"dog\" {\n\t\ts = Dog{Name: name}\n\t} else {\n\t\ts = Cat{Name: name}\n\t}\n\tfmt.Println(s.Speak())\n}\n"
+  }
+}

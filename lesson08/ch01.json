@@ -1,0 +1,15 @@
+{
+  "lesson": 8,
+  "chapter": 1,
+  "title": "strings.Join（スライス→文字列）",
+  "priority": "🔴",
+  "text": "スライスを 1 本の文字列にまとめるには `strings.Join(s, 区切り)` を使います。Python の `\",\".join(a)` とほぼ同じ機能です。違いは書き方の向きだけで、Python は区切り文字側のメソッドでしたが、Go はスライスを第 1 引数に取る関数です。区切りに `\"\"` を渡せばそのまま連結になります。🔴 出力の整形で毎回使うので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nprint(\",\".join(a))\n```\n\nGo ではこう書く:\n\n```go\nfmt.Println(strings.Join(s, \",\"))\n```",
+  "sample": "// lesson08 ch01: strings.Join（スライス→文字列）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\tweek := []string{\"月\", \"火\", \"水\"}\n\n\t// \",\".join(week) に当たります。スライスが先、区切りが後です\n\tfmt.Println(strings.Join(week, \",\"))\n\n\t// 区切りには自由な文字列を使えます\n\tfmt.Println(strings.Join(week, \" と \"))\n\n\t// 空文字列ならそのまま連結です\n\tfmt.Println(strings.Join(week, \"\"))\n}\n",
+  "exercise": {
+    "description": "スライス `[]string{\"2026\", \"09\", \"21\"}` を作り、`strings.Join` で `-` 区切りの 1 本の文字列にして出力してください。`strings` を import に追加してください。\n\n**期待出力**\n\n```text\n2026-09-21\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "2026-09-21\n",
+    "answer": "// lesson08 ch01 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\tparts := []string{\"2026\", \"09\", \"21\"}\n\n\t// \"-\".join(parts) に当たります。Go では「つなぐスライスが第 1 引数、\n\t// 区切り文字が第 2 引数」という向きになるだけで、働きは同じです。\n\tfmt.Println(strings.Join(parts, \"-\"))\n}\n"
+  }
+}

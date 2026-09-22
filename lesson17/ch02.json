@@ -1,0 +1,27 @@
+{
+  "lesson": 17,
+  "chapter": 2,
+  "title": "存在判定と重複除去",
+  "priority": "🔴",
+  "text": "set 代わりの map が最も活躍するのが存在判定と重複除去です。「すでに見たか」を seen という名前の map[T]bool に記録しながらスライスを走査し、初めて見た要素だけを結果に append します。set 型がない Go ではこれが重複除去の定石で、Python の set(lst) と違って**元の順序を保ったまま**取り除けるという利点もあります。スキルチェックでも実務でも頻出のパターンです。🔴 seen マップを使う形を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nunique = list(dict.fromkeys(words))  # 順序を保つ重複除去\n```\n\nGo ではこう書く:\n\n```go\nseen := map[string]bool{}\nunique := []string{}\nfor _, w := range words {\n\tif !seen[w] {\n\t\tseen[w] = true\n\t\tunique = append(unique, w)\n\t}\n}\n```",
+  "sample": "// lesson17 ch02: 存在判定と重複除去\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\twords := []string{\"go\", \"python\", \"go\", \"ruby\", \"python\"}\n\n\t// seen（見た要素の記録）を set 代わりの map で持ちます\n\tseen := map[string]bool{}\n\tunique := []string{}\n\tfor _, w := range words {\n\t\tif !seen[w] { // 初めて見た要素だけ通す\n\t\t\tseen[w] = true\n\t\t\tunique = append(unique, w)\n\t\t}\n\t}\n\n\t// Python の set(lst) と違い、元の順序が保たれます\n\tfmt.Println(unique) // [go python ruby]\n}\n",
+  "exercise": {
+    "description": "標準入力の 1 行に単語が空白区切りで与えられます。重複を取り除き、最初に登場した順序を保ったまま、空白区切りの 1 行で出力してください。\n\n**入力される値**\n\n```text\n単語1 単語2 ... 単語N\n```\n\n**入力例1**\n\n```text\napple banana apple orange banana\n```\n\n**期待出力1**\n\n```text\napple banana orange\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\twords := strings.Fields(sc.Text())\n\n\t// ここから下を書く\n\t_ = words\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "apple banana apple orange banana\n",
+        "expected_stdout": "apple banana orange\n"
+      },
+      {
+        "stdin": "go go go\n",
+        "expected_stdout": "go\n"
+      },
+      {
+        "stdin": "a b c b a d\n",
+        "expected_stdout": "a b c d\n"
+      }
+    ],
+    "answer": "// lesson17 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\twords := strings.Fields(sc.Text())\n\n\t// seen が set の代用です。初めて見た単語だけ unique に追加することで、\n\t// Python の set(lst) と違い、元の並び順を保ったまま重複を除去できます。\n\tseen := map[string]bool{}\n\tunique := []string{}\n\tfor _, w := range words {\n\t\tif !seen[w] {\n\t\t\tseen[w] = true\n\t\t\tunique = append(unique, w)\n\t\t}\n\t}\n\tfmt.Println(strings.Join(unique, \" \"))\n}\n"
+  }
+}

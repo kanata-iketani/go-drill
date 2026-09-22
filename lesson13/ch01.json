@@ -1,0 +1,15 @@
+{
+  "lesson": 13,
+  "chapter": 1,
+  "title": "for i, v := range スライス（enumerate 相当）",
+  "priority": "🔴",
+  "text": "スライスの全要素を順に処理するには `for i, v := range s {}` を使います。`range` はインデックスと値の 2 つを最初から返すため、Python で `enumerate` を使って書いていた形が、Go ではそのまま標準の書き方になります。値だけを取り出す `for v in s:` に対応する専用の形はなく、ch03 で学ぶ `_` でインデックスを捨てて表現します。🔴 スライス処理の基本形なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nfor i, v in enumerate(fruits):\n    print(i, v)\n```\n\nGo ではこう書く:\n\n```go\nfor i, v := range fruits {\n\tfmt.Println(i, v)\n}\n```",
+  "sample": "// lesson13 ch01: for i, v := range スライス（enumerate 相当）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfruits := []string{\"apple\", \"banana\", \"cherry\"}\n\n\t// range はインデックスと値の 2 つを返します（enumerate 相当）\n\tfor i, v := range fruits {\n\t\tfmt.Println(i, v)\n\t}\n\n\t// 番号を 1 から振りたいときは i+1 を使います\n\tfor i, v := range fruits {\n\t\tfmt.Printf(\"%d番目: %s\\n\", i+1, v)\n\t}\n}\n",
+  "exercise": {
+    "description": "スライス `colors := []string{\"red\", \"green\", \"blue\"}` を作り、`for i, v := range` を使って `fmt.Println(i, v)` の形で「インデックス 値」を 1 行ずつ出力してください。\n\n**期待出力**\n\n```text\n0 red\n1 green\n2 blue\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "0 red\n1 green\n2 blue\n",
+    "answer": "// lesson13 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tcolors := []string{\"red\", \"green\", \"blue\"}\n\n\t// Python の enumerate(colors) に相当します。range がインデックスと\n\t// 値を同時に返すため、カウンタ変数を自分で管理する必要がありません。\n\tfor i, v := range colors {\n\t\tfmt.Println(i, v)\n\t}\n}\n"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "lesson": 20,
+  "chapter": 1,
+  "title": "値渡し（引数はコピーされる）",
+  "priority": "🟡",
+  "text": "Go の関数の引数は**値渡し**です。関数を呼ぶと引数の値が**コピー**されて渡り、関数の中でコピーを書き換えても呼び出し元の変数は変わりません。Python でも数値や文字列は同じ振る舞いでしたが、Go では構造体なども丸ごとコピーされます。変更した結果が欲しいときは、戻り値で返して受け取り直すのが基本です。🟡 「関数の中の n は別物」という理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\ndef add_ten(n):\n    n += 10  # 呼び出し元の x は変わらない\n\nx = 5\nadd_ten(x)\nprint(x)  # 5\n```\n\nGo ではこう書く:\n\n```go\nfunc addTen(n int) int {\n\tn += 10 // 書き換わるのはコピーだけ\n\treturn n\n}\n\nx := 5\nx = addTen(x) // 戻り値で受け取り直す\n```",
+  "sample": "// lesson20 ch01: 値渡し（引数はコピーされる）\npackage main\n\nimport \"fmt\"\n\n// n には呼び出し元の値の「コピー」が入ります\nfunc addTen(n int) int {\n\tn += 10 // コピーを書き換えているだけ\n\treturn n\n}\n\nfunc main() {\n\tx := 5\n\tresult := addTen(x)\n\n\tfmt.Println(result) // 15\n\tfmt.Println(x)      // 5: 呼び出し元の x は変わらない\n\n\t// 変えたいなら戻り値を代入し直します\n\tx = addTen(x)\n\tfmt.Println(x) // 15\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 x が与えられます。\nn に 10 を足して**返す**関数 `addTen(n int) int` を定義し、\n1 行目に `addTen(x)` の戻り値、2 行目に呼び出し後の `x` を出力してください。\n（x が変わっていないこと＝引数がコピーであることを確認する問題です）\n\n**入力例1**\n\n```text\n5\n```\n\n**期待出力1**\n\n```text\n15\n5\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに addTen(n int) int を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tx, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\t// ここから下を書く（戻り値と x をそれぞれ出力する）\n\t_ = x\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson20 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// n はコピーなので、中で n += 10 しても呼び出し元には届きません。\n// だから「変えた結果」は return で返し、使う側が受け取ります。\nfunc addTen(n int) int {\n\tn += 10\n\treturn n\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tx, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\n\tfmt.Println(addTen(x))\n\tfmt.Println(x) // コピーが渡ったので x は元のまま\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n",
+        "expected_stdout": "15\n5\n"
+      },
+      {
+        "stdin": "0\n",
+        "expected_stdout": "10\n0\n"
+      },
+      {
+        "stdin": "90\n",
+        "expected_stdout": "100\n90\n"
+      }
+    ]
+  }
+}

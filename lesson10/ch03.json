@@ -1,0 +1,15 @@
+{
+  "lesson": 10,
+  "chapter": 3,
+  "title": "条件の前の1文（if v := f(); v > 0）",
+  "priority": "🟡",
+  "text": "Go の `if` は、条件の前にセミコロン `;` で区切って 1 文を書けます。「値を作って、すぐ判定する」ための形で、ここで宣言した変数はこの if と else の中だけで有効です。Python に対応する構文はなく、代入と if の 2 行に分けて書いていました。この形は後に学ぶエラー処理 `if err := ...; err != nil {` で多用される、Go らしい書き方です。🟡 まずは形と、変数が if の外では使えないという理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nl = len(word)\nif l >= 5:\n    print(\"長い単語\")\n```\n\nGo ではこう書く:\n\n```go\nif l := len(word); l >= 5 {\n\tfmt.Println(\"長い単語\")\n}\n```",
+  "sample": "// lesson10 ch03: 条件の前の1文（if v := f(); v > 0）\npackage main\n\nimport \"fmt\"\n\nfunc double(n int) int {\n\treturn n * 2\n}\n\nfunc main() {\n\t// 条件の前に 1 文書けます。v はこの if / else の中だけで有効です\n\tif v := double(21); v > 40 {\n\t\tfmt.Println(\"40より大きい:\", v)\n\t}\n\n\tname := \"gopher\"\n\tif l := len(name); l >= 6 {\n\t\tfmt.Println(\"6文字以上です\")\n\t} else {\n\t\tfmt.Println(\"短い名前です:\", l)\n\t}\n\t// ここでは v も l も使えません（スコープの外）\n}\n",
+  "exercise": {
+    "description": "変数 `word` に `\"golang\"` を入れて、条件の前の 1 文で `l := len(word)` を書き、`l` が 5 以上なら `fmt.Println(\"5文字以上:\", l)` の形で出力、そうでなければ `5文字未満` と出力してください。\n\n**期待出力**\n\n```text\n5文字以上: 6\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "5文字以上: 6\n",
+    "answer": "// lesson10 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tword := \"golang\"\n\n\t// 判定にしか使わない変数 l は、条件の前の 1 文で宣言すると\n\t// この if / else の中だけに閉じ込められ、外のスコープを汚しません。\n\tif l := len(word); l >= 5 {\n\t\tfmt.Println(\"5文字以上:\", l)\n\t} else {\n\t\tfmt.Println(\"5文字未満\")\n\t}\n}\n"
+  }
+}

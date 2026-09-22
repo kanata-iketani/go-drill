@@ -1,0 +1,15 @@
+{
+  "lesson": 4,
+  "chapter": 1,
+  "title": "var による宣言",
+  "priority": "🟡",
+  "text": "Go で変数を作る基本形は `var 変数名 型 = 値` です。**宣言**（この名前の変数をこの型で使うとコンパイラに伝えること）が必須な点が Python との大きな違いです。初期値から型が明らかなときは `var name = \"gopher\"` と型を省略できます。値を入れずに `var count int` と宣言すると、**ゼロ値**（型ごとの初期値。int は 0、string は \"\"）が入ります。🟡 「宣言してから使う」を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nname = \"gopher\"\n```\n\nGo ではこう書く:\n\n```go\nvar name string = \"gopher\"\n```",
+  "sample": "// lesson04 ch01: var による宣言\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 基本形: var 変数名 型 = 値\n\tvar name string = \"gopher\"\n\tvar age int = 13\n\n\t// 初期値から型が明らかなら型を省略できます\n\tvar lang = \"Go\"\n\n\t// 値を入れないとゼロ値（int は 0）が入ります\n\tvar count int\n\n\tfmt.Println(\"name:\", name)\n\tfmt.Println(\"age:\", age)\n\tfmt.Println(\"lang:\", lang)\n\tfmt.Println(\"count:\", count)\n}\n",
+  "exercise": {
+    "description": "`var` を使って、string 型の変数 `city` に `\"Tokyo\"` を、int 型の変数 `population` に\n`14000000` を入れ、次の 2 行を出力してください。\n\n**期待出力**\n\n```text\ncity: Tokyo\npopulation: 14000000\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "city: Tokyo\npopulation: 14000000\n",
+    "answer": "// lesson04 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// var 変数名 型 = 値 の基本形で宣言します。\n\t// 型を書いておくと「population は必ず整数」という約束が\n\t// コンパイル時に検査されるため、意図しない値の混入を防げます。\n\tvar city string = \"Tokyo\"\n\tvar population int = 14000000\n\n\tfmt.Println(\"city:\", city)\n\tfmt.Println(\"population:\", population)\n}\n"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 11,
+  "chapter": 1,
+  "title": "bool 型と比較演算子",
+  "priority": "🔴",
+  "text": "真偽を表す型が `bool`（真か偽かの 2 値だけを持つ型）で、値は小文字の `true` と `false` です。Python の `True` / `False` とは先頭の大文字小文字が違います。比較演算子 `==` `!=` `<` `<=` `>` `>=` は Python と同じで、結果は bool 型になります。ただし `0 < x < 10` のような比較の連結はできず、次章で学ぶ `&&` で 2 つの比較に分けます。🔴 比較の結果を bool として変数に入れて使う形を、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nis_adult = True\nprint(age >= 20)\n```\n\nGo ではこう書く:\n\n```go\nisAdult := true\nfmt.Println(age >= 20)\n```",
+  "sample": "// lesson11 ch01: bool 型と比較演算子\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// bool 型の値は小文字の true / false です\n\tisSunny := true\n\tfmt.Println(isSunny)\n\n\tage := 18\n\t// 比較演算子の結果は bool 型になります\n\tfmt.Println(age >= 20)\n\tfmt.Println(age == 18)\n\n\t// 結果は変数に入れて使い回せます\n\tcanVote := age >= 18\n\tfmt.Println(\"投票できる:\", canVote)\n}\n",
+  "exercise": {
+    "description": "変数 `age` に `18` を入れて、次の 2 つの式の結果を順に出力してください。\n\n1. `age >= 20`\n2. `age == 18`\n\n**期待出力**\n\n```text\nfalse\ntrue\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "false\ntrue\n",
+    "answer": "// lesson11 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tage := 18\n\n\t// 比較演算子の結果はそのまま bool 型の値になるので、\n\t// 変数に入れてから出力しても、式を直接 Println に渡しても同じです。\n\tok := age >= 20\n\tfmt.Println(ok)\n\tfmt.Println(age == 18)\n}\n"
+  }
+}

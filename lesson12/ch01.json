@@ -1,0 +1,15 @@
+{
+  "lesson": 12,
+  "chapter": 1,
+  "title": "for 条件 {}（while の代わり）",
+  "priority": "🔴",
+  "text": "Go に `while` はありません。繰り返しはすべて `for` が担当し、`for 条件 {}` と書くと Python の `while 条件:` と同じ動きになります。条件に括弧は不要で、ブロックは `{}` で囲みます。条件が false になるまで本体を繰り返すため、本体でカウンタを更新し忘れると止まらなくなる点も while と同じです。なお Python の `i += 1` は Go では `i++` とも書けます。🔴 while の置き換えとして最頻出の形なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ni = 1\nwhile i <= 3:\n    print(i)\n    i += 1\n```\n\nGo ではこう書く:\n\n```go\ni := 1\nfor i <= 3 {\n\tfmt.Println(i)\n\ti++\n}\n```",
+  "sample": "// lesson12 ch01: for 条件 {}（while の代わり）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// while i <= 3: に相当します。条件に () は付けません\n\ti := 1\n\tfor i <= 3 {\n\t\tfmt.Println(i)\n\t\ti++ // 更新を忘れると無限ループになります\n\t}\n\n\t// 条件が最初から false なら 1 回も実行されません\n\tn := 10\n\tfor n < 10 {\n\t\tfmt.Println(\"ここは実行されません\")\n\t}\n\tfmt.Println(\"おわり\")\n}\n",
+  "exercise": {
+    "description": "`for 条件 {}` の形を使って、1 から 5 までの整数を 1 行ずつ出力してください（`while` の置き換えの練習なので `range` は使わないこと）。\n\n**期待出力**\n\n```text\n1\n2\n3\n4\n5\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "1\n2\n3\n4\n5\n",
+    "answer": "// lesson12 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// while i <= 5: の置き換えです。カウンタは for の前で宣言し、\n\t// 本体の最後の i++ を忘れると条件が false にならず無限ループになります。\n\ti := 1\n\tfor i <= 5 {\n\t\tfmt.Println(i)\n\t\ti++\n\t}\n}\n"
+  }
+}

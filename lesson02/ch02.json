@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 2,
+  "title": "fmt.Print（end=\"\" の代わり）",
+  "priority": "🟡",
+  "text": "Python では `print(\"a\", end=\"\")` で改行を止めました。Go では改行を付けない `fmt.Print` を使います。`end=` という引数は存在しないので、「改行したい行は `Println`、したくない行は `Print`」と関数そのものを使い分けます。改行だけしたいときは `fmt.Println()` と空で呼びます。🟡 2 つの関数の違いを理屈で押さえましょう。\n\nPython ではこう書いた:\n\n```python\nprint(\"Hello\", end=\"\")\nprint(\"World\")\n```\n\nGo ではこう書く:\n\n```go\nfmt.Print(\"Hello\")\nfmt.Println(\"World\")\n```",
+  "sample": "// lesson02 ch02: fmt.Print（改行しない出力）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// Print は改行を付けないので、続けて出力されます\n\tfmt.Print(\"Hello\")\n\tfmt.Print(\", \")\n\tfmt.Println(\"world!\") // 最後だけ Println で改行\n\n\t// 改行だけしたいときは空の Println を呼びます\n\tfmt.Print(\"1行目のつもり\")\n\tfmt.Println()\n\tfmt.Println(\"2行目\")\n}\n",
+  "exercise": {
+    "description": "`fmt.Print` と `fmt.Println` を使い分けて、`Go` `lang` `!` の 3 つの文字列を\n**3 回の関数呼び出し**で 1 行につなげて出力してください。\n\n**期待出力**\n\n```text\nGolang!\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "Golang!\n",
+    "answer": "// lesson02 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// Print は改行しないため、呼び出しを重ねると 1 行につながります。\n\t// 最後の 1 回だけ Println にして行を閉じるのが定番の形です。\n\tfmt.Print(\"Go\")\n\tfmt.Print(\"lang\")\n\tfmt.Println(\"!\")\n}\n"
+  }
+}

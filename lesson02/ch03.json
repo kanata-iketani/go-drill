@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 3,
+  "title": "fmt.Printf（sep= と書式の代わり）",
+  "priority": "🔴",
+  "text": "`fmt.Printf` は**書式指定**（`%d` などの記号で値の埋め込み方を指定する仕組み）を使う出力関数です。`%d` は整数、`%s` は文字列、`%f` は小数（`%.1f` で小数第1位まで）に対応します。Python の `sep=\"-\"` のような区切り指定も、Go では書式の中に直接 `-` を書いて表現します。`Printf` は改行を付けないので、末尾に `\\n` を書きます。🔴 スキルチェックでも多用します。\n\nPython ではこう書いた:\n\n```python\nprint(2026, 9, 20, sep=\"-\")\n```\n\nGo ではこう書く:\n\n```go\nfmt.Printf(\"%d-%d-%d\\n\", 2026, 9, 20)\n```",
+  "sample": "// lesson02 ch03: fmt.Printf（書式指定つき出力）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tname := \"gopher\"\n\tage := 13\n\tpi := 3.14159\n\n\tfmt.Printf(\"name は %s です\\n\", name)\n\tfmt.Printf(\"age は %d 歳です\\n\", age)\n\tfmt.Printf(\"pi はおよそ %f です\\n\", pi)\n\tfmt.Printf(\"小数第1位までなら %.1f です\\n\", pi)\n\n\t// Python の print(2026, 9, 20, sep=\"-\") はこう書きます\n\tfmt.Printf(\"%d-%d-%d\\n\", 2026, 9, 20)\n}\n",
+  "exercise": {
+    "description": "文字列 `\"Tanaka\"`、整数 `28`、小数 `169.5` を `fmt.Printf` に渡して、\n次の 1 行を出力してください（`%s` `%d` `%.1f` を使うこと）。\n\n**期待出力**\n\n```text\nTanaka さん (28) の身長は 169.5 cm です\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "Tanaka さん (28) の身長は 169.5 cm です\n",
+    "answer": "// lesson02 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// %s に文字列、%d に整数、%.1f に小数が順番に対応します。\n\t// %.1f を使うと 169.500000 ではなく 169.5 と桁を制御でき、\n\t// 期待出力に正確に合わせられます（Printf は改行しないので \\n も忘れずに）。\n\tfmt.Printf(\"%s さん (%d) の身長は %.1f cm です\\n\", \"Tanaka\", 28, 169.5)\n}\n"
+  }
+}

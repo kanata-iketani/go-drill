@@ -1,0 +1,15 @@
+{
+  "lesson": 5,
+  "chapter": 5,
+  "title": "fmt.Sprintf（f文字列の代わり）",
+  "priority": "🔴",
+  "text": "Python の f文字列 `f\"{name}さん\"` に相当するのが `fmt.Sprintf` です。`Printf` と同じ書式（`%s` `%d` `%.1f` など）で文字列を**組み立てて返す**関数で、画面には出力しません。「表示するなら Printf、変数に入れるなら Sprintf」と使い分けます。🔴 実務でもスキルチェックでも頻出なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nmsg = f\"{name}さんは{age}歳です\"\n```\n\nGo ではこう書く:\n\n```go\nmsg := fmt.Sprintf(\"%sさんは%d歳です\", name, age)\n```",
+  "sample": "// lesson05 ch05: fmt.Sprintf（f文字列の代わり）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tname := \"佐藤\"\n\tage := 28\n\theight := 169.5\n\n\t// Sprintf は文字列を「作って返す」だけで、画面には出しません\n\tmsg := fmt.Sprintf(\"%sさんは%d歳です\", name, age)\n\tfmt.Println(msg)\n\n\t// 書式は Printf と共通です\n\tprofile := fmt.Sprintf(\"身長 %.1f cm\", height)\n\tfmt.Println(profile)\n\n\t// 作った文字列は普通の文字列として連結にも使えます\n\tfmt.Println(msg + \"（\" + profile + \"）\")\n}\n",
+  "exercise": {
+    "description": "変数 `item` に `\"コーヒー\"`、変数 `price` に `480` を入れて、\n`fmt.Sprintf` で `コーヒーは480円です` という文字列を変数 `msg` に作り、\n`msg` を出力してください。\n\n**期待出力**\n\n```text\nコーヒーは480円です\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "コーヒーは480円です\n",
+    "answer": "// lesson05 ch05 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\titem := \"コーヒー\"\n\tprice := 480\n\n\t// f\"{item}は{price}円です\" の Go 版です。\n\t// 表示ではなく「文字列を作って変数に持つ」のが Sprintf の役割で、\n\t// あとで連結やファイル出力に使い回せるのが Println 直書きとの違いです。\n\tmsg := fmt.Sprintf(\"%sは%d円です\", item, price)\n\tfmt.Println(msg)\n}\n"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 6,
+  "chapter": 4,
+  "title": "strconv.FormatFloat（float64→文字列）",
+  "priority": "⚪",
+  "text": "float64 を文字列に変換するには `strconv.FormatFloat` を使います。Python では `str(3.14)` や f文字列の `:.2f` で済んだ変換です。引数は（値・表記の種類・小数桁数・精度）の 4 つで、ふだんは表記 `'f'` と精度 `64` を固定して桁数だけ変えれば十分です。同じことは `fmt.Sprintf(\"%.2f\", x)` でもでき、実務ではそちらもよく使います。⚪ まずはこういう関数があると知っておくだけで十分です。\n\nPython ではこう書いた:\n\n```python\ns = f\"{3.14159:.2f}\"\n```\n\nGo ではこう書く:\n\n```go\ns := strconv.FormatFloat(3.14159, 'f', 2, 64)\n```",
+  "sample": "// lesson06 ch04: strconv.FormatFloat（float64→文字列）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\tpi := 3.14159\n\n\t// 引数は (値, 表記, 小数桁数, 精度)。'f' は 3.14 のような普通の表記です\n\ts := strconv.FormatFloat(pi, 'f', 2, 64)\n\tfmt.Println(\"円周率はおよそ \" + s)\n\n\t// 桁数に -1 を渡すと「元の値を復元できる最短の表記」になります\n\tfmt.Println(strconv.FormatFloat(pi, 'f', -1, 64))\n}\n",
+  "exercise": {
+    "description": "変数 `height` に `169.5` を入れ、`strconv.FormatFloat(height, 'f', 1, 64)` で文字列に変換してから、文字列連結 `+` で `身長は169.5cmです` と出力してください。`strconv` を import に追加してください。\n\n**期待出力**\n\n```text\n身長は169.5cmです\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "身長は169.5cmです\n",
+    "answer": "// lesson06 ch04 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\theight := 169.5\n\n\t// float64 も文字列と直接 + できないため、まず文字列に変換します。\n\t// 小数桁数を 1 と明示することで「169.5」という表示が保証されます。\n\ts := strconv.FormatFloat(height, 'f', 1, 64)\n\tfmt.Println(\"身長は\" + s + \"cmです\")\n}\n"
+  }
+}

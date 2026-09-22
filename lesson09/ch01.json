@@ -1,0 +1,15 @@
+{
+  "lesson": 9,
+  "chapter": 1,
+  "title": "Goにタプルはない（多値返却で代替）",
+  "priority": "🟡",
+  "text": "**Go にタプルは存在しません。** Python では `return a, b` と書くとタプルが 1 つ返りましたが、Go では**多値返却**（関数が複数の値をそのまま返す仕組み）で代替します。戻り値の型は `(int, int)` のように並べて宣言します。返っているのは組というデータではなく「2 つの別々の値」です。`strconv.Atoi` の `(int, error)` もこの仕組みでした。🟡 タプルとの違いを理屈で理解しましょう。\n\nPython ではこう書いた:\n\n```python\ndef divmod2(a, b):\n    return a // b, a % b  # タプルが 1 つ返る\n```\n\nGo ではこう書く:\n\n```go\nfunc divmod2(a, b int) (int, int) {\n\treturn a / b, a % b // 2 つの値がそのまま返る\n}\n```",
+  "sample": "// lesson09 ch01: Go にタプルはない（多値返却で代替）\npackage main\n\nimport \"fmt\"\n\n// 商と余りを返します。戻り値の型を ( ) で並べるのが多値返却です\nfunc divmod2(a, b int) (int, int) {\n\treturn a / b, a % b\n}\n\nfunc main() {\n\tq, r := divmod2(17, 5)\n\tfmt.Println(q)\n\tfmt.Println(r)\n\n\t// タプルという 1 つの値ではないため、受け取る変数は個数分必要です\n\tfmt.Println(divmod2(9, 2))\n}\n",
+  "exercise": {
+    "description": "横 `w`・縦 `h` を受け取り、面積 `w*h` と周の長さ `2*(w+h)` の 2 つを返す関数 `rect(w, h int) (int, int)` を定義し、`rect(3, 4)` の結果を 1 行ずつ出力してください。\n\n**期待出力**\n\n```text\n12\n14\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "12\n14\n",
+    "answer": "// lesson09 ch01 解答\npackage main\n\nimport \"fmt\"\n\n// Python なら return w*h, 2*(w+h) でタプルを返す場面です。\n// Go にタプルはないため、(int, int) と宣言して 2 つの値を直接返します。\nfunc rect(w, h int) (int, int) {\n\treturn w * h, 2 * (w + h)\n}\n\nfunc main() {\n\tarea, perimeter := rect(3, 4)\n\tfmt.Println(area)\n\tfmt.Println(perimeter)\n}\n"
+  }
+}

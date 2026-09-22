@@ -1,0 +1,15 @@
+{
+  "lesson": 6,
+  "chapter": 3,
+  "title": "strconv.ParseFloat（文字列→float64）",
+  "priority": "🟡",
+  "text": "文字列を小数に変換するには `strconv.ParseFloat` を使います。Python の `float(\"3.5\")` に相当します。第 2 引数には精度を渡し、`float64` を使う Go では常に `64` と書きます。Atoi と同じく戻り値は `(float64, error)` の 2 値で、`if err != nil` のチェックもまったく同じ形です。🟡 「文字列→数値の変換は必ず 2 値で返る」という仕組みを理屈で理解しましょう。\n\nPython ではこう書いた:\n\n```python\nx = float(\"2.5\")\n```\n\nGo ではこう書く:\n\n```go\nx, err := strconv.ParseFloat(\"2.5\", 64)\n```",
+  "sample": "// lesson06 ch03: strconv.ParseFloat（文字列→float64）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\t// 第 2 引数の 64 は「float64 の精度で読む」という指定です\n\tx, err := strconv.ParseFloat(\"2.5\", 64)\n\tif err != nil {\n\t\tfmt.Println(\"変換に失敗しました\")\n\t\treturn\n\t}\n\n\t// float64 になっているので計算できます\n\tfmt.Printf(\"%.1f\\n\", x+1.5)\n}\n",
+  "exercise": {
+    "description": "文字列 `\"1.5\"` と `\"2.25\"` をそれぞれ `strconv.ParseFloat` で float64 に変換し、合計を `fmt.Printf` の書式 `%.2f` を使って小数第 2 位まで出力してください。`if err != nil` のチェックも書くこと。`strconv` を import に追加してください。\n\n**期待出力**\n\n```text\n3.75\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "3.75\n",
+    "answer": "// lesson06 ch03 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\t// ParseFloat も Atoi と同じく (値, error) の 2 値を返します。\n\t// 第 2 引数の 64 は float64 の精度指定で、Go では常にこう書きます。\n\ta, err := strconv.ParseFloat(\"1.5\", 64)\n\tif err != nil {\n\t\tfmt.Println(\"変換に失敗しました\")\n\t\treturn\n\t}\n\tb, err := strconv.ParseFloat(\"2.25\", 64)\n\tif err != nil {\n\t\tfmt.Println(\"変換に失敗しました\")\n\t\treturn\n\t}\n\t// float64 の表示は %.2f のように桁数を明示すると出力が安定します。\n\tfmt.Printf(\"%.2f\\n\", a+b)\n}\n"
+  }
+}

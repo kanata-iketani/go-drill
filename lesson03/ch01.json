@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 1,
+  "title": "int と float64",
+  "priority": "🟡",
+  "text": "Go の数値には主に `int`（整数型）と `float64`（64ビットの浮動小数点数型。Python の float 相当）があります。Python では `3 + 1.5` のように整数と小数を自由に混ぜられましたが、Go では int と float64 は混ぜられません。計算する前に `float64(x)` のような**型変換**（値を別の型に作り直すこと）でどちらかに揃えます。🟡 「型を揃えてから計算する」を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nprint(3 + 1.5)  # 4.5\n```\n\nGo ではこう書く:\n\n```go\nn := 3\nf := 1.5\nfmt.Println(float64(n) + f) // 4.5\n```",
+  "sample": "// lesson03 ch01: int と float64 は混ぜられない\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tn := 3   // int\n\tf := 1.5 // float64\n\n\tfmt.Println(\"n =\", n)\n\tfmt.Println(\"f =\", f)\n\n\t// fmt.Println(n + f) // コンパイルエラー: int + float64 はできません\n\n\t// float64 に揃えてから計算します\n\tfmt.Println(\"n + f =\", float64(n)+f)\n\n\t// 逆に int に揃えると小数部分は切り捨てられます\n\tfmt.Println(\"n + int(f) =\", n+int(f))\n}\n",
+  "exercise": {
+    "description": "int 型の変数 `price` に `120` を、float64 型の変数 `rate` に `1.5` を入れて、\n`price` を float64 に変換してから掛け算した結果を出力してください。\n\n**期待出力**\n\n```text\n180\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "180\n",
+    "answer": "// lesson03 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar price int = 120\n\tvar rate float64 = 1.5\n\n\t// int と float64 はそのまま掛けられないため、\n\t// float64(price) で型を揃えてから計算します。\n\t// Println は 180.0 ではなく 180 と表示します（小数部が 0 なら省略される）。\n\tfmt.Println(float64(price) * rate)\n}\n"
+  }
+}

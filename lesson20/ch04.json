@@ -1,0 +1,27 @@
+{
+  "lesson": 20,
+  "chapter": 4,
+  "title": "キーワード引数・デフォルト引数はない",
+  "priority": "🟡",
+  "text": "Python の `greet(name, prefix=\"Hello\")` のような**デフォルト引数**や、`greet(name=\"太郎\")` のような**キーワード引数**は、**Go にはありません**。引数はすべて順番どおりに渡します。省略できる設定が欲しいときは、設定をまとめた**オプション構造体**（詳しくは次のレッスンで学びます）を引数にして、ゼロ値（`\"\"` や 0）だったら関数側でデフォルトを補う、という書き方で代替するのが定番です。🟡\n\nPython ではこう書いた:\n\n```python\ndef greet(name, prefix=\"Hello\"):\n    print(f\"{prefix}, {name}!\")\n\ngreet(\"Taro\")\ngreet(\"Hana\", prefix=\"Hi\")\n```\n\nGo ではこう書く:\n\n```go\ntype Options struct {\n\tPrefix string\n}\n\nfunc greet(name string, opt Options) {\n\tif opt.Prefix == \"\" {\n\t\topt.Prefix = \"Hello\" // ゼロ値ならデフォルトを補う\n\t}\n\tfmt.Printf(\"%s, %s!\\n\", opt.Prefix, name)\n}\n\ngreet(\"Taro\", Options{})\ngreet(\"Hana\", Options{Prefix: \"Hi\"})\n```",
+  "sample": "// lesson20 ch04: キーワード引数・デフォルト引数はない\npackage main\n\nimport \"fmt\"\n\n// 省略できる設定は構造体にまとめます（オプション構造体）\ntype Options struct {\n\tPrefix string\n}\n\nfunc greet(name string, opt Options) {\n\t// 指定がなければ（ゼロ値 \"\" なら）デフォルトを補います\n\tif opt.Prefix == \"\" {\n\t\topt.Prefix = \"Hello\"\n\t}\n\tfmt.Printf(\"%s, %s!\\n\", opt.Prefix, name)\n}\n\nfunc main() {\n\tgreet(\"Taro\", Options{})             // デフォルト引数の代わり\n\tgreet(\"Hana\", Options{Prefix: \"Hi\"}) // キーワード引数の代わり\n}\n",
+  "exercise": {
+    "description": "1 行目に名前、2 行目にあいさつの言葉（`-` のときは指定なしとみなす）が与えられます。\n`Prefix string` を持つ**オプション構造体** `Options` と、関数 `greet(name string, opt Options)` を定義してください。\ngreet は `Prefix` が空文字列ならデフォルトの `Hello` を補い、`<Prefix>, <name>!` の形式で出力します。\n2 行目が `-` なら `Options{}`、それ以外なら `Options{Prefix: 読んだ値}` を渡してください。\n\n**入力例1**\n\n```text\nTaro\n-\n```\n\n**期待出力1**\n\n```text\nHello, Taro!\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\n// ここに Options と greet(name string, opt Options) を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := strings.Fields(sc.Text())[0]\n\tsc.Scan()\n\tprefix := strings.Fields(sc.Text())[0]\n\t// ここから下を書く（prefix が \"-\" なら Options{} を渡す）\n\t_, _ = name, prefix\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson20 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\n)\n\n// Go にデフォルト引数はないので、省略可能な設定は構造体にまとめます。\n// 渡さなかったフィールドはゼロ値（\"\" や 0）になるため、\n// 「ゼロ値ならデフォルトを補う」ことで prefix=\"Hello\" の代わりになります。\ntype Options struct {\n\tPrefix string\n}\n\nfunc greet(name string, opt Options) {\n\tif opt.Prefix == \"\" {\n\t\topt.Prefix = \"Hello\"\n\t}\n\tfmt.Printf(\"%s, %s!\\n\", opt.Prefix, name)\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tname := strings.Fields(sc.Text())[0]\n\tsc.Scan()\n\tprefix := strings.Fields(sc.Text())[0]\n\n\tif prefix == \"-\" {\n\t\tgreet(name, Options{}) // 指定なし: デフォルトが使われる\n\t} else {\n\t\tgreet(name, Options{Prefix: prefix})\n\t}\n}\n",
+    "tests": [
+      {
+        "stdin": "Taro\n-\n",
+        "expected_stdout": "Hello, Taro!\n"
+      },
+      {
+        "stdin": "Hana\nHi\n",
+        "expected_stdout": "Hi, Hana!\n"
+      },
+      {
+        "stdin": "Ken\nYo\n",
+        "expected_stdout": "Yo, Ken!\n"
+      }
+    ]
+  }
+}

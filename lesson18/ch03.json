@@ -1,0 +1,27 @@
+{
+  "lesson": 18,
+  "chapter": 3,
+  "title": "多値を返す関数",
+  "priority": "🔴",
+  "text": "Go の関数は**値を 2 つ以上まとめて返せます**。Python ではタプルで `return q, r` と書きましたが、Go では戻り値の型を `(int, int)` と括弧で並べ、受け取る側は多値代入 `q, r := divmod(a, b)` で受けます。`strconv.Atoi` が `(int, error)` を返していたのは、まさにこの仕組みです。🔴 「結果とエラーを一緒に返す」という Go の基本形につながるので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ndef divide(a, b):\n    return a // b, a % b\n\nq, r = divide(17, 5)\n```\n\nGo ではこう書く:\n\n```go\nfunc divide(a, b int) (int, int) {\n\treturn a / b, a % b\n}\n\nq, r := divide(17, 5)\n```",
+  "sample": "// lesson18 ch03: 多値を返す関数\npackage main\n\nimport \"fmt\"\n\n// 戻り値が複数あるときは型を (int, int) と括弧で並べます\nfunc divide(a, b int) (int, int) {\n\treturn a / b, a % b\n}\n\nfunc main() {\n\t// 受け取る側は多値代入。順番どおりに入ります\n\tq, r := divide(17, 5)\n\tfmt.Println(\"商:\", q)\n\tfmt.Println(\"余り:\", r)\n\n\t// 片方だけ欲しいときは _ で捨てます\n\tq2, _ := divide(100, 7)\n\tfmt.Println(\"100÷7 の商:\", q2)\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 a と b（b は 0 以外）が空白区切りで与えられます。\n商と余りの **2 つの値を返す**関数 `divide(a, b int) (int, int)` を定義し、\n商と余りをこの順に空白区切りで 1 行に出力してください（`fmt.Println(q, r)` で出力できます）。\n\n**入力例1**\n\n```text\n17 5\n```\n\n**期待出力1**\n\n```text\n3 2\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに divide(a, b int) (int, int) を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\t// ここから下を書く（q, r := divide(a, b) で受け取って出力する）\n\t_, _ = a, b\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson18 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 商と余りは「セットで欲しい」結果なので、2 回に分けず一度に返します。\n// 戻り値の型 (int, int) と return a / b, a % b の個数は必ず一致させます。\nfunc divide(a, b int) (int, int) {\n\treturn a / b, a % b\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\t// 多値代入で受け取ります。Atoi の (int, error) と同じ形です\n\tq, r := divide(a, b)\n\tfmt.Println(q, r)\n}\n",
+    "tests": [
+      {
+        "stdin": "17 5\n",
+        "expected_stdout": "3 2\n"
+      },
+      {
+        "stdin": "20 4\n",
+        "expected_stdout": "5 0\n"
+      },
+      {
+        "stdin": "7 10\n",
+        "expected_stdout": "0 7\n"
+      }
+    ]
+  }
+}

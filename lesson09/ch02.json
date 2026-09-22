@@ -1,0 +1,15 @@
+{
+  "lesson": 9,
+  "chapter": 2,
+  "title": "多値代入とアンパック（a, b := f()）",
+  "priority": "🟡",
+  "text": "Go にタプルは存在しないため、Python のアンパック `a, b = f()` に当たるのは**多値代入**です。`a, b := f()` で 2 つの戻り値を一度に受け取り、いらない値は `_`（ブランク識別子。受け取って捨てるための名前）に入れます。値の入れ替え `a, b = b, a` は Python とまったく同じ構文で書けます。🟡 タプルを経由せず、値が変数へ直接入ることを理解しましょう。\n\nPython ではこう書いた:\n\n```python\nlow, high = minmax()\na, b = b, a\n```\n\nGo ではこう書く:\n\n```go\nlow, high := minmax()\na, b = b, a\n```",
+  "sample": "// lesson09 ch02: 多値代入とアンパック\npackage main\n\nimport \"fmt\"\n\nfunc minmax() (int, int) {\n\treturn 1, 9\n}\n\nfunc main() {\n\t// アンパックに当たる多値代入。個数が合わないとコンパイルエラーです\n\tlow, high := minmax()\n\tfmt.Println(low, high)\n\n\t// いらない値は _ で捨てます\n\t_, top := minmax()\n\tfmt.Println(top)\n\n\t// 値の入れ替えは Python と同じ書き方です\n\ta, b := 10, 20\n\ta, b = b, a\n\tfmt.Println(a, b)\n}\n",
+  "exercise": {
+    "description": "変数 `x := 1` と `y := 2` を宣言し、1 行の多値代入で値を入れ替えてから、`x`、`y` の順に 1 行ずつ出力してください。\n\n**期待出力**\n\n```text\n2\n1\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "2\n1\n",
+    "answer": "// lesson09 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tx := 1\n\ty := 2\n\n\t// Python の x, y = y, x と同じ構文です。右辺が先にすべて評価されるため、\n\t// 一時変数を用意しなくても正しく入れ替わります。\n\tx, y = y, x\n\n\tfmt.Println(x)\n\tfmt.Println(y)\n}\n"
+  }
+}

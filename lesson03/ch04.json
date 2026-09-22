@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 4,
+  "title": "演算子の優先順位",
+  "priority": "⚪",
+  "text": "優先順位（複数の演算子が並んだときの計算順）は Python とほぼ同じで、`* / %` が `+ -` より先に計算され、括弧 `()` で順番を変えられます。Python と考え方は変わらないので、迷ったら括弧を付けて意図を明示するのが読みやすいコードのコツです。⚪ 「Python と同じ、迷ったら括弧」とだけ知っておけば十分です。\n\nPython ではこう書いた:\n\n```python\nprint((100 + 200) * 3)\n```\n\nGo ではこう書く:\n\n```go\nfmt.Println((100 + 200) * 3)\n```",
+  "sample": "// lesson03 ch04: 演算子の優先順位\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// * / % は + - より先に計算されます（Python と同じ）\n\tfmt.Println(100 + 200*3) // 700\n\tfmt.Println((100+200)*3 == 900)\n\n\t// 括弧で順番を変えられます\n\tfmt.Println((100 + 200) * 3) // 900\n\n\t// 迷ったら括弧を付けて意図を明示するのが読みやすさのコツです\n\ttotal := (500 + 300) / 2\n\tfmt.Println(\"平均:\", total)\n}\n",
+  "exercise": {
+    "description": "80 点・90 点・70 点の 3 教科の平均点を、括弧を使った 1 つの式\n`(80 + 90 + 70) / 3` で計算して出力してください。\n\n**期待出力**\n\n```text\n平均点: 80\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "平均点: 80\n",
+    "answer": "// lesson03 ch04 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 括弧がないと 80 + 90 + 70/3 となり、70/3 だけ先に計算されてしまいます。\n\t// 足し算を先にしたい意図を括弧で明示するのが読みやすいコードの基本です。\n\t// 240 / 3 は int 同士なので、結果もちょうど 80（int）になります。\n\tfmt.Println(\"平均点:\", (80+90+70)/3)\n}\n"
+  }
+}

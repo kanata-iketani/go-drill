@@ -1,0 +1,27 @@
+{
+  "lesson": 18,
+  "chapter": 1,
+  "title": "func と引数の型",
+  "priority": "🔴",
+  "text": "Go で関数を定義するには `func` を使います。Python の `def` との一番の差は、**引数に型を書く**ことです。引数名の後ろに型を置き、同じ型が続くときは `a, b int` とまとめて書けます。型の合わない値を渡す呼び出しはコンパイルエラーになるので、実行する前に間違いに気づけます。🔴 関数定義はこの先すべての土台になるので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\ndef greet(name, times):\n    for i in range(times):\n        print(\"Hello,\", name)\n```\n\nGo ではこう書く:\n\n```go\nfunc greet(name string, times int) {\n\tfor range times {\n\t\tfmt.Println(\"Hello,\", name)\n\t}\n}\n```",
+  "sample": "// lesson18 ch01: func と引数の型\npackage main\n\nimport \"fmt\"\n\n// greet は名前と回数を受け取ってあいさつを出力します。\n// 引数には名前のあとに必ず型を書きます（name string, times int）\nfunc greet(name string, times int) {\n\tfor range times {\n\t\tfmt.Println(\"Hello,\", name)\n\t}\n}\n\n// 同じ型が続くときは a, b int とまとめて書けます\nfunc printSum(a, b int) {\n\tfmt.Println(a + b)\n}\n\nfunc main() {\n\tgreet(\"Gopher\", 2)\n\tprintSum(3, 5)\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 a と b が空白区切りで与えられます。\n**引数に型を書いた**関数 `printSum(a, b int)` を定義し、main から呼び出して a+b を出力してください。\n\n**入力例1**\n\n```text\n3 5\n```\n\n**期待出力1**\n\n```text\n8\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに printSum(a, b int) を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\t// ここから下を書く（printSum を呼び出す）\n\t_, _ = a, b\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson18 ch01 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// 引数には名前のあとに型を書きます。同じ int が続くので a, b int とまとめました。\n// 型を書いておくと printSum(\"x\", 1) のような誤った呼び出しが\n// コンパイル時に弾かれるのが Python の def との大きな差です。\nfunc printSum(a, b int) {\n\tfmt.Println(a + b)\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(fields[0])\n\tb, _ := strconv.Atoi(fields[1])\n\tprintSum(a, b)\n}\n",
+    "tests": [
+      {
+        "stdin": "3 5\n",
+        "expected_stdout": "8\n"
+      },
+      {
+        "stdin": "10 20\n",
+        "expected_stdout": "30\n"
+      },
+      {
+        "stdin": "0 7\n",
+        "expected_stdout": "7\n"
+      }
+    ]
+  }
+}

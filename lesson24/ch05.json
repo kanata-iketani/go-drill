@@ -1,0 +1,27 @@
+{
+  "lesson": 24,
+  "chapter": 5,
+  "title": "panic と recover（本当に使う場面は少ない）",
+  "priority": "⚪",
+  "text": "`panic` はプログラムを即座に停止へ向かわせる仕組み、`recover` は `defer` した関数の中でだけ panic を捕まえて復帰できる関数です。Python の例外と `except` に似ていますが、Go では通常の失敗は `error` で返すのが原則で、panic は「続行できないバグ」のような場面に限られます。本当に使う場面は少ない機能です。⚪ 存在と使いどころだけ知っておきましょう。\n\nPython ではこう書いた:\n\n```python\ntry:\n    risky()\nexcept Exception as e:\n    print(\"回復:\", e)\n```\n\nGo ではこう書く:\n\n```go\ndefer func() {\n\tif r := recover(); r != nil {\n\t\tfmt.Println(\"recover:\", r)\n\t}\n}()\n```",
+  "sample": "// lesson24 ch05: panic と recover（使う場面は少ない）\npackage main\n\nimport \"fmt\"\n\nfunc mustPositive(n int) int {\n\tif n < 0 {\n\t\t// 続行できない状況では panic で停止へ向かいます\n\t\t// （通常の失敗は error で返すのが原則です）\n\t\tpanic(\"負の数は扱えません\")\n\t}\n\treturn n * 10\n}\n\nfunc main() {\n\t// recover は defer した関数の中でだけ panic を捕まえられます\n\tdefer func() {\n\t\tif r := recover(); r != nil {\n\t\t\tfmt.Println(\"recover:\", r)\n\t\t}\n\t}()\n\n\tfmt.Println(mustPositive(3)) // 30\n\tfmt.Println(mustPositive(-1))\n\tfmt.Println(\"ここは実行されません\")\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 n が入力されます。n が負なら `負の数は扱えません` というメッセージで panic する関数 `check(n int) int`（正常時は n×10 を返す）を用意しました。main で recover する defer を仕掛けてから `check(n)` の結果を出力し、最後に `正常に終了しました` と出力してください。panic が起きた場合は defer だけが走り、`recover: 負の数は扱えません` の 1 行になります。\n\n**入力される値**\n\n```text\nn\n```\n\n**入力例1**\n\n```text\n5\n```\n\n**期待出力1**\n\n```text\n50\n正常に終了しました\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc check(n int) int {\n\tif n < 0 {\n\t\tpanic(\"負の数は扱えません\")\n\t}\n\treturn n * 10\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\t// ここから下を書く:\n\t// 1. panic 時に「recover: <メッセージ>」を出力する defer を仕掛ける\n\t// 2. check(n) の結果を出力する\n\t// 3. 最後に「正常に終了しました」を出力する\n\t_ = n\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "5\n",
+        "expected_stdout": "50\n正常に終了しました\n"
+      },
+      {
+        "stdin": "-3\n",
+        "expected_stdout": "recover: 負の数は扱えません\n"
+      },
+      {
+        "stdin": "0\n",
+        "expected_stdout": "0\n正常に終了しました\n"
+      }
+    ],
+    "answer": "// lesson24 ch05 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\nfunc check(n int) int {\n\tif n < 0 {\n\t\tpanic(\"負の数は扱えません\")\n\t}\n\treturn n * 10\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(sc.Text())\n\n\t// recover は defer した関数の中でしか効きません。\n\t// panic が起きると main の残りは実行されず、この defer だけが走ります。\n\t// 通常の失敗は error で返すのが原則で、panic はバグ相当の場面だけです。\n\tdefer func() {\n\t\tif r := recover(); r != nil {\n\t\t\tfmt.Println(\"recover:\", r)\n\t\t}\n\t}()\n\n\tfmt.Println(check(n))\n\tfmt.Println(\"正常に終了しました\")\n}\n"
+  }
+}

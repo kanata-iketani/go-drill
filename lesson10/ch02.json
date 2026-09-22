@@ -1,0 +1,15 @@
+{
+  "lesson": 10,
+  "chapter": 2,
+  "title": "else if と else（elif の代わり）",
+  "priority": "🔴",
+  "text": "複数の条件で分岐するとき、Python の `elif` は Go では `else if` と 2 語で書きます。`else` はそのままです。注意点は書く位置で、`else if` も `else` も直前の閉じ波括弧 `}` と同じ行に書きます。行を分けるとコンパイルエラーになります。条件に括弧を付けない点、`{}` を省略できない点は if と同じです。🔴 分岐は頻出なので、`} else if 条件 {` のつながりごと手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nif score >= 80:\n    print(\"A\")\nelif score >= 60:\n    print(\"B\")\nelse:\n    print(\"C\")\n```\n\nGo ではこう書く:\n\n```go\nif score >= 80 {\n\tfmt.Println(\"A\")\n} else if score >= 60 {\n\tfmt.Println(\"B\")\n} else {\n\tfmt.Println(\"C\")\n}\n```",
+  "sample": "// lesson10 ch02: else if と else（elif の代わり）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tscore := 72\n\n\t// elif は else if。直前の } と同じ行に書きます\n\tif score >= 80 {\n\t\tfmt.Println(\"A\")\n\t} else if score >= 60 {\n\t\tfmt.Println(\"B\")\n\t} else {\n\t\tfmt.Println(\"C\")\n\t}\n\n\ttemp := 31\n\tif temp >= 30 {\n\t\tfmt.Println(\"暑い\")\n\t} else if temp >= 15 {\n\t\tfmt.Println(\"快適\")\n\t} else {\n\t\tfmt.Println(\"寒い\")\n\t}\n}\n",
+  "exercise": {
+    "description": "変数 `n` に `7` を入れて、`n` が 10 以上なら `big`、そうでなく 5 以上なら `medium`、それ以外なら `small` と出力するプログラムを `if` / `else if` / `else` で書いてください。\n\n**期待出力**\n\n```text\nmedium\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "medium\n",
+    "answer": "// lesson10 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tn := 7\n\n\t// 条件は上から順に評価されるため、範囲の狭い方（>= 10）から先に書きます。\n\t// elif ではなく else if で、直前の } と同じ行に続けるのが Go の書き方です。\n\tif n >= 10 {\n\t\tfmt.Println(\"big\")\n\t} else if n >= 5 {\n\t\tfmt.Println(\"medium\")\n\t} else {\n\t\tfmt.Println(\"small\")\n\t}\n}\n"
+  }
+}

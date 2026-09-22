@@ -1,0 +1,27 @@
+{
+  "lesson": 18,
+  "chapter": 4,
+  "title": "無名関数（lambda の代わり）",
+  "priority": "🟡",
+  "text": "名前を付けずにその場で定義する関数を**無名関数**といいます。Python の `lambda` に相当しますが、lambda が 1 つの式しか書けなかったのに対し、Go の無名関数は**普通の関数と同じ書き方で複数行書けます**。変数に代入すれば `square(3)` のように呼び出せますし、関数の引数として渡すこともできます。🟡 「関数も値の一種として変数に入る」という理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nsquare = lambda x: x * x\nprint(square(3))\n```\n\nGo ではこう書く:\n\n```go\nsquare := func(x int) int {\n\treturn x * x\n}\nfmt.Println(square(3))\n```",
+  "sample": "// lesson18 ch04: 無名関数（lambda の代わり）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 名前の代わりに変数に代入して使います\n\tsquare := func(x int) int {\n\t\treturn x * x\n\t}\n\tfmt.Println(square(3))\n\n\t// lambda と違い、複数行のロジックも書けます\n\tclamp := func(x int) int {\n\t\tif x < 0 {\n\t\t\treturn 0\n\t\t}\n\t\tif x > 100 {\n\t\t\treturn 100\n\t\t}\n\t\treturn x\n\t}\n\tfmt.Println(clamp(-5), clamp(50), clamp(300))\n}\n",
+  "exercise": {
+    "description": "1 行目に整数 n が与えられます。\n2 乗を返す**無名関数**を変数 `square` に代入し（`square := func(x int) int { ... }` の形）、\n`square(n)` と `square(n+1)` の結果を 1 行ずつ出力してください。\n\n**入力例1**\n\n```text\n3\n```\n\n**期待出力1**\n\n```text\n9\n16\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\t// ここから下を書く（square := func(x int) int { ... } を定義して呼び出す）\n\t_ = n\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson18 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tn, _ := strconv.Atoi(strings.Fields(sc.Text())[0])\n\n\t// この場でしか使わない小さな処理なので、名前付き関数にせず\n\t// 無名関数を変数に代入しました。lambda x: x * x の Go 版ですが、\n\t// 必要なら中に複数行のロジックも書けます。\n\tsquare := func(x int) int {\n\t\treturn x * x\n\t}\n\tfmt.Println(square(n))\n\tfmt.Println(square(n + 1))\n}\n",
+    "tests": [
+      {
+        "stdin": "3\n",
+        "expected_stdout": "9\n16\n"
+      },
+      {
+        "stdin": "5\n",
+        "expected_stdout": "25\n36\n"
+      },
+      {
+        "stdin": "0\n",
+        "expected_stdout": "0\n1\n"
+      }
+    ]
+  }
+}

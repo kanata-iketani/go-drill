@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 4,
+  "title": "append で追加",
+  "priority": "🔴",
+  "text": "要素の追加は `append` で行います。Python の `a.append(x)` はリストをその場で変更しましたが、Go の `append` は**追加後のスライスを返す関数**なので、`s = append(s, x)` と必ず戻り値を再代入します。この再代入を忘れると追加が反映されません。`append(s, 1, 2)` のように一度に複数追加もできます。🔴 `s = append(s, x)` の形を手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\na.append(4)\n```\n\nGo ではこう書く:\n\n```go\ns = append(s, 4)\n```",
+  "sample": "// lesson07 ch04: append で追加\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar nums []int // 空のスライスから始めます\n\n\t// append は「追加後のスライス」を返すので、必ず再代入します\n\tnums = append(nums, 10)\n\tnums = append(nums, 20)\n\tfmt.Println(nums)\n\n\t// 一度に複数追加することもできます\n\tnums = append(nums, 30, 40)\n\tfmt.Println(nums)\n\tfmt.Println(len(nums))\n}\n",
+  "exercise": {
+    "description": "空の `[]string` を宣言し、`append` で `\"Go\"`、`\"Python\"`、`\"Ruby\"` を順に追加してから、1 行目にスライス全体を、2 行目に要素数を出力してください。\n\n**期待出力**\n\n```text\n[Go Python Ruby]\n3\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[Go Python Ruby]\n3\n",
+    "answer": "// lesson07 ch04 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// var で宣言した空スライスに追加していきます。\n\tvar langs []string\n\n\t// append はその場で変更せず「追加後のスライス」を返すため、\n\t// s = append(s, x) と再代入するのが Python の a.append(x) との違いです。\n\tlangs = append(langs, \"Go\")\n\tlangs = append(langs, \"Python\")\n\tlangs = append(langs, \"Ruby\")\n\n\tfmt.Println(langs)\n\tfmt.Println(len(langs))\n}\n"
+  }
+}

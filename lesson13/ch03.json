@@ -1,0 +1,15 @@
+{
+  "lesson": 13,
+  "chapter": 3,
+  "title": "_ で値を捨てる",
+  "priority": "🟡",
+  "text": "`range` の 1 つ目の戻り値はインデックスと決まっているため、値だけが欲しいときは 1 つ目を**ブランク識別子** `_`（受け取った値を捨てるための特別な名前）で受けて `for _, v := range s` と書きます。Go では宣言したのに使わない変数がコンパイルエラーになるので、「受け取るが使わない」を `_` で明示する必要があるのです。インデックスだけなら 2 つ目を省略して `for i := range s` と書けます。Python の `_` はただの慣習でしたが、Go では言語の仕組みです。🟡 なぜ `_` が必要なのか、理屈を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nfor v in scores:\n    print(v)\n```\n\nGo ではこう書く:\n\n```go\nfor _, v := range scores {\n\tfmt.Println(v)\n}\n```",
+  "sample": "// lesson13 ch03: _ で値を捨てる\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tscores := []int{80, 65, 92}\n\n\t// 値だけ使うときは、1 つ目のインデックスを _ で捨てます\n\tfor _, v := range scores {\n\t\tfmt.Println(v)\n\t}\n\n\t// インデックスだけなら 2 つ目を丸ごと省略できます\n\tfor i := range scores {\n\t\tfmt.Println(\"index:\", i)\n\t}\n\n\t// i, v を受け取って使わないと unused のコンパイルエラーになります\n\ttotal := 0\n\tfor _, v := range scores {\n\t\ttotal += v\n\t}\n\tfmt.Println(\"合計:\", total)\n}\n",
+  "exercise": {
+    "description": "スライス `prices := []int{100, 250, 380}` を作り、`for _, p := range` でインデックスを `_` に捨てながら合計を計算して、合計だけを出力してください。\n\n**期待出力**\n\n```text\n730\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "730\n",
+    "answer": "// lesson13 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tprices := []int{100, 250, 380}\n\n\t// 合計にインデックスは不要なので、1 つ目を _ で捨てて値だけ受け取ります。\n\t// i と名前を付けて使わないと「declared and not used」のエラーになります。\n\ttotal := 0\n\tfor _, p := range prices {\n\t\ttotal += p\n\t}\n\tfmt.Println(total)\n}\n"
+  }
+}

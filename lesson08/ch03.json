@@ -1,0 +1,15 @@
+{
+  "lesson": 8,
+  "chapter": 3,
+  "title": "strings.Fields（空白区切りの分割）",
+  "priority": "🔴",
+  "text": "空白区切りの文字列を分割するには `strings.Fields(s)` を使います。Python で引数なしの `split()` を呼んだときとほぼ同じで、連続する空白やタブをまとめて 1 つの区切りとして扱います。`strings.Split(s, \" \")` だと連続空白のあいだに空文字列の要素が入ってしまうため、空白区切りには Fields を選ぶのが定石です。🔴 のちの標準入力の読み取りで必ず使うので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nwords = \"go  is   fun\".split()\n```\n\nGo ではこう書く:\n\n```go\nwords := strings.Fields(\"go  is   fun\")\n```",
+  "sample": "// lesson08 ch03: strings.Fields（空白区切りの分割）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\tline := \"go  is   fun\"\n\n\t// 引数なしの split() に当たります。連続空白もまとめて区切ります\n\twords := strings.Fields(line)\n\tfmt.Println(words)\n\tfmt.Println(len(words))\n\n\t// Split(\" \") だと空文字列の要素が混ざり、数が変わってしまいます\n\tfmt.Println(len(strings.Split(line, \" \")))\n}\n",
+  "exercise": {
+    "description": "文字列 `\"梅 竹  松\"`（竹と松のあいだは空白 2 つ）を `strings.Fields` で分割し、1 行目にスライス全体を、2 行目に要素数を出力してください。`strings` を import に追加してください。\n\n**期待出力**\n\n```text\n[梅 竹 松]\n3\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[梅 竹 松]\n3\n",
+    "answer": "// lesson08 ch03 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n)\n\nfunc main() {\n\t// 引数なしの split() に当たる Fields は、連続する空白を\n\t// まとめて 1 つの区切りとして扱うため、空要素が混ざりません。\n\twords := strings.Fields(\"梅 竹  松\")\n\n\tfmt.Println(words)\n\tfmt.Println(len(words))\n}\n"
+  }
+}

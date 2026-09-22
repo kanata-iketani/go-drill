@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 2,
+  "title": "s[i] と要素の変更",
+  "priority": "🔴",
+  "text": "スライスの要素は Python と同じく `s[i]` で取り出し、`s[i] = 値` で書き換えます。先頭が 0 番なのも同じです。違いは**負のインデックスがない**ことです。Python の `a[-1]` のようには書けず、末尾の要素は `s[len(s)-1]` と書きます。範囲外を指定すると実行時に panic（プログラムの強制終了）になります。🔴 `s[len(s)-1]` は頻出の定型なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\na[0] = 99\nprint(a[-1])\n```\n\nGo ではこう書く:\n\n```go\ns[0] = 99\nfmt.Println(s[len(s)-1])\n```",
+  "sample": "// lesson07 ch02: s[i] と要素の変更\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tcolors := []string{\"赤\", \"青\", \"黄\"}\n\n\t// 取り出しは Python と同じ 0 始まりです\n\tfmt.Println(colors[0])\n\n\t// 代入で要素を書き換えられます\n\tcolors[1] = \"緑\"\n\tfmt.Println(colors)\n\n\t// 負のインデックスはないので、末尾は len を使って指します\n\tfmt.Println(colors[len(colors)-1])\n}\n",
+  "exercise": {
+    "description": "スライス `[]string{\"月\", \"火\", \"水\"}` を作り、1 番目の要素を `\"金\"` に書き換えてからスライス全体を出力し、次の行に末尾の要素を `s[len(s)-1]` の形で出力してください。\n\n**期待出力**\n\n```text\n[月 金 水]\n水\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[月 金 水]\n水\n",
+    "answer": "// lesson07 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tdays := []string{\"月\", \"火\", \"水\"}\n\n\t// a[1] = \"金\" と同じ書き方で、その場で要素が書き換わります。\n\tdays[1] = \"金\"\n\tfmt.Println(days)\n\n\t// Python の a[-1] は使えないため、末尾は len(s)-1 番目と指定します。\n\tfmt.Println(days[len(days)-1])\n}\n"
+  }
+}

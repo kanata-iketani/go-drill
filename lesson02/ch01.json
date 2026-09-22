@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 1,
+  "title": "fmt.Println",
+  "priority": "🔴",
+  "text": "`fmt.Println` は Python の `print()` に一番近い関数です。複数の値をカンマで並べると空白区切りで出力され、最後に自動で改行が付きます。Python と違い、括弧の前に `fmt.` というパッケージ名が必要な点だけ注意してください。🔴 一番よく使う関数なので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nprint(\"score\", 80)\n```\n\nGo ではこう書く:\n\n```go\nfmt.Println(\"score\", 80)\n```",
+  "sample": "// lesson02 ch01: fmt.Println\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 文字列も数値もそのまま出力できます\n\tfmt.Println(\"Hello, world!\")\n\tfmt.Println(42)\n\n\t// カンマで並べると空白区切りになり、最後に改行が付きます\n\tfmt.Println(\"score\", 80)\n\tfmt.Println(\"x\", 1, \"y\", 2)\n}\n",
+  "exercise": {
+    "description": "`fmt.Println` を 2 回使って、次の 2 行を出力してください。\n2 行目は文字列 `\"level\"` と数値 `5` をカンマで並べて 1 回の `Println` で出力すること。\n\n**期待出力**\n\n```text\nGo の標準出力\nlevel 5\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "Go の標準出力\nlevel 5\n",
+    "answer": "// lesson02 ch01 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Go の標準出力\")\n\t// Println にカンマで複数の値を渡すと、自動で空白区切りになります。\n\t// \"level 5\" と 1 つの文字列にしなくてよいので、\n\t// 文字列と数値を混ぜて出すときはこの形が最も簡単です。\n\tfmt.Println(\"level\", 5)\n}\n"
+  }
+}

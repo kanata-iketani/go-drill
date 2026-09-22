@@ -1,0 +1,27 @@
+{
+  "lesson": 15,
+  "chapter": 3,
+  "title": "1 行に複数の値（strings.Fields で分割）",
+  "priority": "🔴",
+  "text": "1 行に複数の値が空白区切りで並ぶ入力は、strings.Fields で分割します。Fields は文字列を空白で区切って []string を返す関数で、Python の split() に相当します。数値が必要な要素は、取り出してから strconv.Atoi で 1 つずつ変換します。Python の map(int, input().split()) のような一括変換は Go にないため、ここでも行数は増えます。🔴 「Fields で割って Atoi」の流れを手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\na, b = map(int, input().split())\n```\n\nGo ではこう書く:\n\n```go\nsc.Scan()\nf := strings.Fields(sc.Text())\na, _ := strconv.Atoi(f[0])\nb, _ := strconv.Atoi(f[1])\n```",
+  "sample": "// lesson15 ch03: 1 行に複数の値（strings.Fields）\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\n\t// \"3 5\" のような 1 行を空白で分割して []string にします\n\tf := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(f[0])\n\tb, _ := strconv.Atoi(f[1])\n\n\tfmt.Println(\"個数:\", len(f))\n\tfmt.Println(\"和:\", a+b)\n}\n",
+  "exercise": {
+    "description": "標準入力から 2 つの整数 a b が空白区切りの 1 行で与えられます。1 行目に和 a+b、2 行目に積 a*b を出力してください。\n\n**入力される値**\n\n```text\na b\n```\n\n**入力例1**\n\n```text\n3 5\n```\n\n**期待出力1**\n\n```text\n8\n15\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "3 5\n",
+        "expected_stdout": "8\n15\n"
+      },
+      {
+        "stdin": "10 20\n",
+        "expected_stdout": "30\n200\n"
+      },
+      {
+        "stdin": "7 0\n",
+        "expected_stdout": "7\n0\n"
+      }
+    ],
+    "answer": "// lesson15 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\n\t// 1 行を Fields で []string に割り、必要な要素を Atoi で数値化します。\n\t// 「Fields で割って Atoi」が複数値入力の定型です。\n\tf := strings.Fields(sc.Text())\n\ta, _ := strconv.Atoi(f[0])\n\tb, _ := strconv.Atoi(f[1])\n\n\tfmt.Println(a + b)\n\tfmt.Println(a * b)\n}\n"
+  }
+}

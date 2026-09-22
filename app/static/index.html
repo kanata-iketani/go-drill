@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Go入門編</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="topbar">
+  <span id="brand">Go入門編</span>
+  <select id="lessonSelect" title="レッスンを選ぶ"></select>
+  <nav id="chapterTabs"></nav>
+  <span id="progressBadge"></span>
+  <button id="qaToggle" title="Claude に質問する">💬 質問</button>
+  <button id="themeToggle" title="ダークモード切替">🌓</button>
+</header>
+
+<aside id="qaDrawer" class="hidden">
+  <div id="qaHead">
+    <button class="qaTab active" data-tab="chat">質問する</button>
+    <button class="qaTab" data-tab="notes">質問ノート</button>
+    <span class="spacer"></span>
+    <button id="qaClose" title="閉じる">✕</button>
+  </div>
+
+  <div id="qaChatPane" class="qaPane">
+    <div id="qaContext"></div>
+    <div id="qaLog"></div>
+    <div id="qaInputArea">
+      <label id="qaAttach"><input type="checkbox" id="qaAttachCode" checked> エディタのコードを添付</label>
+      <textarea id="qaInput" rows="3" placeholder="このチャプターについて Claude に質問（Ctrl+Enter で送信）"></textarea>
+      <button id="qaSend" class="btn judge">送信</button>
+    </div>
+  </div>
+
+  <div id="qaNotesPane" class="qaPane hidden">
+    <div id="qaNotesActions">
+      <button id="qaSummaryBtn" class="btn">📝 疑問点をまとめる</button>
+      <button id="qaReviewBtn" class="btn judge">🎯 復習問題を作る</button>
+    </div>
+    <div id="qaNotesStatus"></div>
+    <div id="qaSummary" class="md"></div>
+    <h3 id="qaListTitle">質問の記録</h3>
+    <div id="qaList"></div>
+  </div>
+</aside>
+
+<main id="panes">
+  <section id="lessonPane">
+    <div id="material">
+      <h1 id="chTitle"></h1>
+      <div id="chText" class="md"></div>
+      <h2 class="secTitle">サンプルコード</h2>
+      <div class="sampleWrap">
+        <pre class="code"><code id="chSample"></code></pre>
+        <button id="copySample" class="miniBtn">エディタにコピー</button>
+      </div>
+      <h2 class="secTitle">演習課題</h2>
+      <div id="chExercise" class="md"></div>
+      <div id="answerBox" class="hidden">
+        <h2 class="secTitle">模範解答</h2>
+        <pre class="code"><code id="answerCode"></code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="rightPane">
+    <div id="editorPane">
+      <div id="toolbar">
+        <button id="runBtn" class="btn run">▶ 実行 <span class="kbd">Ctrl+Enter</span></button>
+        <button id="judgeBtn" class="btn judge">✔ 採点</button>
+        <button id="answerBtn" class="btn">解答を見る</button>
+        <button id="resetBtn" class="btn">リセット</button>
+        <span class="spacer"></span>
+        <button id="nextBtn" class="btn next">次へ ≫</button>
+      </div>
+      <div id="editorHost"></div>
+    </div>
+    <div id="consolePane">
+      <div id="ioGrid">
+        <div class="ioCol">
+          <div class="ioLabel">入力（stdin）</div>
+          <textarea id="stdinBox" spellcheck="false"></textarea>
+        </div>
+        <div class="ioCol grow">
+          <div class="ioLabel">出力</div>
+          <pre id="outputBox"></pre>
+        </div>
+      </div>
+      <div id="judgeResult"></div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

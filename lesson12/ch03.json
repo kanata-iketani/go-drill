@@ -1,0 +1,15 @@
+{
+  "lesson": 12,
+  "chapter": 3,
+  "title": "continue（次の繰り返しへ進む）",
+  "priority": "🟡",
+  "text": "`continue` は、ループ本体の残りを飛ばして次の繰り返しへ進む文です。意味は Python と同じですが、`for 条件 {}` の形で使うときは注意が必要です。カウンタの更新より前に `continue` すると更新まで飛ばされ、無限ループになります。更新を本体の先頭に書いてから continue するのが安全な形です。🟡 continue がどこへ飛ぶのかを、カウンタ更新の位置とあわせて理解しましょう。\n\nPython ではこう書いた:\n\n```python\ni = 0\nwhile i < 5:\n    i += 1\n    if i == 3:\n        continue\n    print(i)\n```\n\nGo ではこう書く:\n\n```go\ni := 0\nfor i < 5 {\n\ti++\n\tif i == 3 {\n\t\tcontinue\n\t}\n\tfmt.Println(i)\n}\n```",
+  "sample": "// lesson12 ch03: continue（次の繰り返しへ進む）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// i を先に更新してから continue するのが安全な形です\n\ti := 0\n\tfor i < 5 {\n\t\ti++\n\t\tif i == 3 {\n\t\t\tcontinue // 3 のときは Println を飛ばして次の繰り返しへ\n\t\t}\n\t\tfmt.Println(i)\n\t}\n\n\t// もし i++ より前で continue すると、i が増えず無限ループになります\n\tfmt.Println(\"おわり\")\n}\n",
+  "exercise": {
+    "description": "1 から 6 までを回るループの中で、偶数のときは `continue` で飛ばして、奇数だけを 1 行ずつ出力してください。\n\n**期待出力**\n\n```text\n1\n3\n5\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "1\n3\n5\n",
+    "answer": "// lesson12 ch03 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// i++ を本体の先頭に置いてから continue します。\n\t// continue の後ろに更新を書くと、スキップのたびに i が増えず\n\t// 無限ループになるため、この順番が重要です。\n\ti := 0\n\tfor i < 6 {\n\t\ti++\n\t\tif i%2 == 0 {\n\t\t\tcontinue\n\t\t}\n\t\tfmt.Println(i)\n\t}\n}\n"
+  }
+}

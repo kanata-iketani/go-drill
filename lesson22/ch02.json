@@ -1,0 +1,27 @@
+{
+  "lesson": 22,
+  "chapter": 2,
+  "title": "構造体の埋め込み（フィールドとメソッドの昇格）",
+  "priority": "🟡",
+  "text": "フィールド名を書かずに型名だけを書くと**埋め込み**になります。埋め込んだ内側の型のフィールドとメソッドは外側の型に**昇格**（外側の変数から直接呼べるようになること）し、`e.Person.Name` を `e.Name` と短く書けます。Python の継承でメソッドを引き継いだのと似た見た目になりますが、実体はあくまで has-a であり、親子関係ではありません。🟡 昇格の仕組みを理解しましょう。\n\nPython ではこう書いた:\n\n```python\nclass Employee(Person):\n    pass  # Person のメソッドをそのまま使える\n\ne.greet()\n```\n\nGo ではこう書く:\n\n```go\ntype Employee struct {\n\tPerson  // フィールド名なし = 埋め込み\n\tCompany string\n}\n\ne.Greet() // Person のメソッドが昇格して直接呼べる\n```",
+  "sample": "// lesson22 ch02: 構造体の埋め込み（フィールドとメソッドの昇格）\npackage main\n\nimport \"fmt\"\n\ntype Person struct {\n\tName string\n\tAge  int\n}\n\n// Person のメソッドです\nfunc (p Person) Greet() string {\n\treturn fmt.Sprintf(\"こんにちは、%s です\", p.Name)\n}\n\n// フィールド名を書かずに型名だけを書くと「埋め込み」になります\ntype Employee struct {\n\tPerson\n\tCompany string\n}\n\nfunc main() {\n\te := Employee{\n\t\tPerson:  Person{Name: \"田中\", Age: 30},\n\t\tCompany: \"ペイザ\",\n\t}\n\t// 内側のフィールドとメソッドが「昇格」して直接使えます\n\tfmt.Println(e.Name)    // e.Person.Name と書かなくてよい\n\tfmt.Println(e.Greet()) // Person のメソッドもそのまま呼べる\n\tfmt.Println(e.Company)\n}\n",
+  "exercise": {
+    "description": "1 行目に名前と年齢が空白区切りで、2 行目に会社名が入力されます。`Person` を**埋め込んだ** `Employee` を作り、1 行目に昇格した `e.Introduce()` の結果、2 行目に `勤務先は<会社名>です` を出力してください。`Introduce` は `Person` のメソッドですが、埋め込みによって `Employee` から直接呼べます。\n\n**入力される値**\n\n```text\n名前 年齢\n会社名\n```\n\n**入力例1**\n\n```text\n田中 30\nペイザ\n```\n\n**期待出力1**\n\n```text\n私は田中、30歳です\n勤務先はペイザです\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc (p Person) Introduce() string {\n\treturn fmt.Sprintf(\"私は%s、%d歳です\", p.Name, p.Age)\n}\n\n// Person を埋め込んだ Employee です\ntype Employee struct {\n\tPerson\n\tCompany string\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tage, _ := strconv.Atoi(fields[1])\n\tsc.Scan()\n\tcompany := sc.Text()\n\n\t// ここから下を書く: Employee を作り、\n\t// 1 行目: 昇格した Introduce() の結果\n\t// 2 行目: 勤務先は<会社名>です\n\t_ = name\n\t_ = age\n\t_ = company\n}\n",
+    "tests": [
+      {
+        "stdin": "田中 30\nペイザ\n",
+        "expected_stdout": "私は田中、30歳です\n勤務先はペイザです\n"
+      },
+      {
+        "stdin": "鈴木 25\nGo商事\n",
+        "expected_stdout": "私は鈴木、25歳です\n勤務先はGo商事です\n"
+      },
+      {
+        "stdin": "高橋 41\n未来ソフト\n",
+        "expected_stdout": "私は高橋、41歳です\n勤務先は未来ソフトです\n"
+      }
+    ],
+    "answer": "// lesson22 ch02 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc (p Person) Introduce() string {\n\treturn fmt.Sprintf(\"私は%s、%d歳です\", p.Name, p.Age)\n}\n\ntype Employee struct {\n\tPerson\n\tCompany string\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tage, _ := strconv.Atoi(fields[1])\n\tsc.Scan()\n\tcompany := sc.Text()\n\n\t// Person を「埋め込み」にしたので、Introduce() は Employee に昇格し、\n\t// e.Introduce() と直接呼べます。継承のような見た目ですが、\n\t// 実体は e.Person が持つメソッドへの近道（has-a）です。\n\te := Employee{Person: Person{Name: name, Age: age}, Company: company}\n\tfmt.Println(e.Introduce())\n\tfmt.Println(\"勤務先は\" + e.Company + \"です\")\n}\n"
+  }
+}

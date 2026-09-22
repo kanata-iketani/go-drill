@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 8,
+  "title": "コピーしてからソート（sorted の代替）",
+  "priority": "🟡",
+  "text": "Python の `sorted(a)` は元のリストを変えずに、並べ替えた新しいリストを返しましたが、Go に相当する関数はありません。代わりに `slices.Clone(s)`（スライスの複製を作る関数）でコピーしてから、コピーの方を `slices.Sort` します。コピーせずに Sort すると元の並びが失われるため、「元も残したいならまず Clone」が定型です。🟡 なぜコピーが必要なのか（Sort はその場で書き換えるから）を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nb = sorted(a)\n```\n\nGo ではこう書く:\n\n```go\nb := slices.Clone(a)\nslices.Sort(b)\n```",
+  "sample": "// lesson07 ch08: コピーしてからソート（sorted の代替）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\tscores := []int{30, 10, 20}\n\n\t// sorted(scores) の代わり: 複製を作って、複製の方を並べ替えます\n\tranked := slices.Clone(scores)\n\tslices.Sort(ranked)\n\n\tfmt.Println(ranked)\n\tfmt.Println(scores) // 元の並びは残っています\n}\n",
+  "exercise": {
+    "description": "スライス `[]string{\"c\", \"a\", \"b\"}` を作り、`slices.Clone` でコピーしたものを `slices.Sort` で並べ替えて 1 行目に出力し、2 行目に元のスライスをそのまま出力して、元が変わっていないことを確認してください。`slices` を import に追加してください。\n\n**期待出力**\n\n```text\n[a b c]\n[c a b]\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "[a b c]\n[c a b]\n",
+    "answer": "// lesson07 ch08 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"slices\"\n)\n\nfunc main() {\n\toriginal := []string{\"c\", \"a\", \"b\"}\n\n\t// sorted(original) の代わり。Sort はその場で書き換えるため、\n\t// 元を残したいときは先に Clone で複製してから複製をソートします。\n\tsorted := slices.Clone(original)\n\tslices.Sort(sorted)\n\n\tfmt.Println(sorted)\n\tfmt.Println(original)\n}\n"
+  }
+}

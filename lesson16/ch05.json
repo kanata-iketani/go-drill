@@ -1,0 +1,27 @@
+{
+  "lesson": 16,
+  "chapter": 5,
+  "title": "range で全要素（順序は保証されない）",
+  "priority": "🟡",
+  "text": "map の全要素は for k, v := range m で取り出せます。ここで最重要の注意点があります。**Go の map は range で取り出す順序が保証されません**。同じプログラムを 2 回動かすと違う順序で出ることさえあります。挿入順を保つ Python 3.7 以降の辞書との明確な差です。そのため range は合計や件数など順序に依存しない集計にだけ使い、順序が問われる出力には使ってはいけません（対処は次チャプター）。🟡 この制約を理屈で理解しましょう。\n\nPython ではこう書いた:\n\n```python\nfor k, v in d.items():\n    print(k, v)  # 挿入順に出る\n```\n\nGo ではこう書く:\n\n```go\nfor k, v := range m {\n\tfmt.Println(k, v) // 順序は毎回変わりうる\n}\n```",
+  "sample": "// lesson16 ch05: range で全要素（順序は保証されない）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tscores := map[string]int{\"sato\": 80, \"suzuki\": 90, \"tanaka\": 70}\n\n\t// range の順序は保証されません。実行のたびに変わることもあるため、\n\t// このサンプルでは順序に依存しない「集計」だけを行います\n\tsum := 0\n\tcount := 0\n\tfor _, v := range scores {\n\t\tsum += v\n\t\tcount++\n\t}\n\n\t// 合計や件数は足す順番に関係なく同じ結果になるので安全です\n\tfmt.Println(\"人数:\", count)\n\tfmt.Println(\"合計:\", sum)\n}\n",
+  "exercise": {
+    "description": "標準入力の 3 行に「名前 点数」が空白区切りで与えられます（名前の重複はありません）。map に登録したあと、`range` で全要素を回して点数の合計を出力してください。合計は取り出す順序に依存しないため、range で安全に計算できます。\n\n**入力される値**\n\n```text\n名前1 点数1\n名前2 点数2\n名前3 点数3\n```\n\n**入力例1**\n\n```text\nsato 80\nsuzuki 90\ntanaka 70\n```\n\n**期待出力1**\n\n```text\n240\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\tscores := make(map[string]int)\n\tfor range 3 {\n\t\tsc.Scan()\n\t\tf := strings.Fields(sc.Text())\n\t\tv, _ := strconv.Atoi(f[1])\n\t\tscores[f[0]] = v\n\t}\n\n\t// ここから下を書く: range で scores を回して合計を出力する\n\t_ = scores\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "sato 80\nsuzuki 90\ntanaka 70\n",
+        "expected_stdout": "240\n"
+      },
+      {
+        "stdin": "a 1\nb 2\nc 3\n",
+        "expected_stdout": "6\n"
+      },
+      {
+        "stdin": "x 100\ny 50\nz 25\n",
+        "expected_stdout": "175\n"
+      }
+    ],
+    "answer": "// lesson16 ch05 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\n\tscores := make(map[string]int)\n\tfor range 3 {\n\t\tsc.Scan()\n\t\tf := strings.Fields(sc.Text())\n\t\tv, _ := strconv.Atoi(f[1])\n\t\tscores[f[0]] = v\n\t}\n\n\t// range の順序は不定ですが、合計は足す順番に関係なく同じ結果になります。\n\t// このように「順序に依存しない集計」だけが range の安全な使いどころです。\n\tsum := 0\n\tfor _, v := range scores {\n\t\tsum += v\n\t}\n\tfmt.Println(sum)\n}\n"
+  }
+}

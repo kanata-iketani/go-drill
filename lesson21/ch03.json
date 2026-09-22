@@ -1,0 +1,27 @@
+{
+  "lesson": 21,
+  "chapter": 3,
+  "title": "コンストラクタ関数 NewX",
+  "priority": "🟡",
+  "text": "Go の構造体には Python の `__init__` のような特別な初期化メソッドは**ありません**。代わりに、初期値を詰めた構造体（へのポインタ）を返す普通の関数を、**`New` で始まる名前**で用意するのが慣習です。これを**コンストラクタ関数**と呼び、デフォルト値の設定や値の検証をこの 1 か所に集められます。戻り値は `*Player` のようにポインタにするのが定番です。🟡 「特別な構文ではなく、ただの関数と命名の約束」という点を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nclass Player:\n    def __init__(self, name):\n        self.name = name\n        self.hp = 100\n\np = Player(\"勇者\")\n```\n\nGo ではこう書く:\n\n```go\nfunc NewPlayer(name string) *Player {\n\treturn &Player{Name: name, HP: 100}\n}\n\np := NewPlayer(\"勇者\")\n```",
+  "sample": "// lesson21 ch03: コンストラクタ関数 NewX\npackage main\n\nimport \"fmt\"\n\ntype Player struct {\n\tName string\n\tHP   int\n}\n\n// New + 型名 がコンストラクタ関数の慣習です。\n// HP の初期値 100 のような「決まりごと」をここに集めます\nfunc NewPlayer(name string) *Player {\n\treturn &Player{Name: name, HP: 100}\n}\n\nfunc main() {\n\tp := NewPlayer(\"勇者\")\n\tfmt.Println(p.Name, p.HP) // 勇者 100\n\n\tq := NewPlayer(\"魔法使い\")\n\tq.HP -= 30\n\tfmt.Println(q.Name, q.HP) // 魔法使い 70\n}\n",
+  "exercise": {
+    "description": "1 行目にプレイヤー名とダメージ量（整数）が空白区切りで与えられます。\n`Name string` と `HP int` を持つ構造体 `Player` と、\nHP を 100 に初期化して `*Player` を返す**コンストラクタ関数** `NewPlayer(name string) *Player` を定義してください。\nNewPlayer で作ったプレイヤーの HP からダメージを引き、`<Name> HP:<HP>` の形式で出力します。\n\n**入力例1**\n\n```text\nHero 30\n```\n\n**期待出力1**\n\n```text\nHero HP:70\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\n// ここに Player と NewPlayer(name string) *Player を定義する\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tdamage, _ := strconv.Atoi(fields[1])\n\t// ここから下を書く（NewPlayer で作り、HP を減らして出力する）\n\t_, _ = name, damage\n\t_ = fmt.Println\n}\n",
+    "answer": "// lesson21 ch03 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Player struct {\n\tName string\n\tHP   int\n}\n\n// __init__ の代わりはこの「ただの関数」です。HP=100 という初期化ルールを\n// ここに集めておけば、作る側が初期値を覚えておく必要がなくなります。\n// ポインタを返すので、呼び出し先で HP を減らしても同じ 1 体を指し続けます。\nfunc NewPlayer(name string) *Player {\n\treturn &Player{Name: name, HP: 100}\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tfields := strings.Fields(sc.Text())\n\tname := fields[0]\n\tdamage, _ := strconv.Atoi(fields[1])\n\n\tp := NewPlayer(name)\n\tp.HP -= damage\n\tfmt.Printf(\"%s HP:%d\\n\", p.Name, p.HP)\n}\n",
+    "tests": [
+      {
+        "stdin": "Hero 30\n",
+        "expected_stdout": "Hero HP:70\n"
+      },
+      {
+        "stdin": "Slime 0\n",
+        "expected_stdout": "Slime HP:100\n"
+      },
+      {
+        "stdin": "Mage 100\n",
+        "expected_stdout": "Mage HP:0\n"
+      }
+    ]
+  }
+}

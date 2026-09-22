@@ -1,0 +1,15 @@
+{
+  "lesson": 12,
+  "chapter": 4,
+  "title": "ループのネスト",
+  "priority": "🟡",
+  "text": "ループの中にループを書く**ネスト**（入れ子構造のこと）は、Python と同じ考え方で `for` を重ねるだけです。外側が 1 周する間に、内側は最後まで回ります。内側で `break` や `continue` を使うと、内側のループだけに効きます。Python で二重ループを一気に抜けるにはフラグ変数が必要でしたが、Go にはラベルという目印があり、`break outer` のように外側ごと抜けられます。🟡 いま内側と外側のどちらが回っているのかを追えるようになりましょう。\n\nPython ではこう書いた:\n\n```python\nfor i in range(1, 3):\n    for j in range(1, 4):\n        print(i, j)\n```\n\nGo ではこう書く:\n\n```go\ni := 1\nfor i <= 2 {\n\tj := 1\n\tfor j <= 3 {\n\t\tfmt.Println(i, j)\n\t\tj++\n\t}\n\ti++\n}\n```",
+  "sample": "// lesson12 ch04: ループのネスト\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 外側が 1 周する間に、内側は最後まで回ります\n\ti := 1\n\tfor i <= 3 {\n\t\tj := 1\n\t\tfor j <= 2 {\n\t\t\tfmt.Printf(\"i=%d j=%d\\n\", i, j)\n\t\t\tj++\n\t\t}\n\t\ti++\n\t}\n\n\t// 内側の break は内側のループだけを抜けます。\n\t// 外側ごと抜けたいときはラベル（outer: と break outer）を使います\n\tfmt.Println(\"ネストおわり\")\n}\n",
+  "exercise": {
+    "description": "二重ループを使って、九九の一部を出力してください。外側の `i` を 1〜3、内側の `j` を 1〜3 まで回し、`fmt.Printf(\"%d*%d=%d\\n\", i, j, i*j)` の形で 9 行出力します。\n\n**期待出力**\n\n```text\n1*1=1\n1*2=2\n1*3=3\n2*1=2\n2*2=4\n2*3=6\n3*1=3\n3*2=6\n3*3=9\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "1*1=1\n1*2=2\n1*3=3\n2*1=2\n2*2=4\n2*3=6\n3*1=3\n3*2=6\n3*3=9\n",
+    "answer": "// lesson12 ch04 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// 外側の i が 1 周する間に内側の j が 1〜3 まで回るので、\n\t// 出力は 1*1 から 3*3 まで 9 行になります。\n\t// j はネストの内側で毎回 1 に戻して宣言し直すのがポイントです。\n\ti := 1\n\tfor i <= 3 {\n\t\tj := 1\n\t\tfor j <= 3 {\n\t\t\tfmt.Printf(\"%d*%d=%d\\n\", i, j, i*j)\n\t\t\tj++\n\t\t}\n\t\ti++\n\t}\n}\n"
+  }
+}

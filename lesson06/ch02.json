@@ -1,0 +1,15 @@
+{
+  "lesson": 6,
+  "chapter": 2,
+  "title": "strconv.Atoi と err（文字列→数値）",
+  "priority": "🔴",
+  "text": "文字列を数値に変換する `strconv.Atoi` は、Python の `int(\"42\")` に相当します。大きな違いは、Atoi が `(int, error)` の **2 つの値**を返すことです。`error` は「処理が失敗したかどうか」を表す型で、この講座ではここで初めて登場します。成功すると err には `nil`（何もないことを表す値）が入り、失敗すると理由が入ります。`if err != nil { ... }` で失敗を確認するのが Go の定型です。🔴 この形は今後ずっと使うので、手が覚えるまで書きましょう。\n\nPython ではこう書いた:\n\n```python\nn = int(\"42\")\n```\n\nGo ではこう書く:\n\n```go\nn, err := strconv.Atoi(\"42\")\nif err != nil {\n\tfmt.Println(\"変換できません\")\n}\n```",
+  "sample": "// lesson06 ch02: strconv.Atoi と err（文字列→数値）\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\t// Atoi は (int, error) の 2 つの値を返します\n\tn, err := strconv.Atoi(\"300\")\n\tif err != nil {\n\t\tfmt.Println(\"変換に失敗しました\")\n\t\treturn\n\t}\n\tfmt.Println(n + 100) // 数値になっているので計算できます\n\n\t// 数値にできない文字列では err に失敗の理由が入ります\n\t_, err = strconv.Atoi(\"abc\")\n\tif err != nil {\n\t\tfmt.Println(\"abc は数値に変換できません\")\n\t}\n}\n",
+  "exercise": {
+    "description": "文字列 `\"120\"` と `\"80\"` をそれぞれ `strconv.Atoi` で int に変換し、2 つの合計を出力してください。変換のたびに `if err != nil` のチェックを書くこと。`strconv` を import に追加してください。\n\n**期待出力**\n\n```text\n200\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "200\n",
+    "answer": "// lesson06 ch02 解答\npackage main\n\nimport (\n\t\"fmt\"\n\t\"strconv\"\n)\n\nfunc main() {\n\t// Atoi は (int, error) を返すため、2 変数で受けて err を必ず確認します。\n\t// このチェックを毎回書く習慣が、この先の Go コードの基本形になります。\n\ta, err := strconv.Atoi(\"120\")\n\tif err != nil {\n\t\tfmt.Println(\"変換に失敗しました\")\n\t\treturn\n\t}\n\tb, err := strconv.Atoi(\"80\")\n\tif err != nil {\n\t\tfmt.Println(\"変換に失敗しました\")\n\t\treturn\n\t}\n\tfmt.Println(a + b)\n}\n"
+  }
+}

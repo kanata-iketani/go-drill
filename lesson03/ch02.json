@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 2,
+  "title": "四則演算と %",
+  "priority": "🔴",
+  "text": "`+ - * %` は Python と同じ感覚で使えます。最大の注意点は `/` です。Python の `/` は常に小数を返しましたが、Go の `/` は int 同士なら切り捨て（Python の `//` 相当）になります。小数の答えが欲しいときは float64 に変換してから割ります。`%` は割り算の余りで、これは Python と同じです。🔴 `7 / 2` が `3` になる感覚は、手が覚えるまで書いて慣れましょう。\n\nPython ではこう書いた:\n\n```python\nprint(7 / 2)   # 3.5\nprint(7 // 2)  # 3\n```\n\nGo ではこう書く:\n\n```go\nfmt.Println(7 / 2)                     // 3（int 同士は切り捨て）\nfmt.Println(float64(7) / float64(2))   // 3.5\n```",
+  "sample": "// lesson03 ch02: 四則演算と %（int の / は切り捨て）\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"7 + 2 =\", 7+2)\n\tfmt.Println(\"7 - 2 =\", 7-2)\n\tfmt.Println(\"7 * 2 =\", 7*2)\n\n\t// int 同士の / は切り捨て（Python の // 相当）\n\tfmt.Println(\"7 / 2 =\", 7/2)\n\n\t// 小数の答えが欲しいときは float64 に揃えてから割ります\n\tfmt.Println(\"7.0 / 2.0 =\", float64(7)/float64(2))\n\n\t// % は割り算の余り（Python と同じ）\n\tfmt.Println(\"7 % 2 =\", 7%2)\n}\n",
+  "exercise": {
+    "description": "100 個のあめを 7 人で分けます。1 人あたりの個数（`100 / 7`）と\n余り（`100 % 7`）を、次の形式で 2 行出力してください。\n\n**期待出力**\n\n```text\n1人あたり 14 個\n余り 2 個\n```",
+    "starter": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// ここに書く\n\t_ = fmt.Println\n}\n",
+    "stdin": "",
+    "expected_stdout": "1人あたり 14 個\n余り 2 個\n",
+    "answer": "// lesson03 ch02 解答\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\t// int 同士の / は自動的に切り捨てになるため、\n\t// Python の 100 // 7 のような専用演算子は不要です。\n\t// 「何個ずつ・何個余る」の組は / と % のセットで求めるのが定石です。\n\tfmt.Println(\"1人あたり\", 100/7, \"個\")\n\tfmt.Println(\"余り\", 100%7, \"個\")\n}\n"
+  }
+}

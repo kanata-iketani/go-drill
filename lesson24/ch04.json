@@ -1,0 +1,27 @@
+{
+  "lesson": 24,
+  "chapter": 4,
+  "title": "独自エラー型（Error() string を実装）",
+  "priority": "🟡",
+  "text": "`error` の正体は、`Error() string` というメソッドを 1 つだけ要求するインターフェースです。自作の構造体にこのメソッドを実装すれば**独自エラー型**になり、「どの値で失敗したか」といった追加情報をエラー自体に持たせられます。Python で `class AgeError(Exception)` と例外クラスを定義したことに相当します。🟡 「エラーもただの型」という見方を理解しましょう。\n\nPython ではこう書いた:\n\n```python\nclass AgeError(Exception):\n    def __init__(self, age):\n        self.age = age\n```\n\nGo ではこう書く:\n\n```go\ntype AgeError struct{ Age int }\n\nfunc (e *AgeError) Error() string {\n\treturn fmt.Sprintf(\"%d歳は成人ではありません\", e.Age)\n}\n```",
+  "sample": "// lesson24 ch04: Error() string を実装すると独自エラー型になる\npackage main\n\nimport \"fmt\"\n\n// 追加情報（失敗した値）を持てる独自エラー型です\ntype AgeError struct {\n\tAge int\n}\n\n// このメソッドを実装した型は error として返せます\nfunc (e *AgeError) Error() string {\n\treturn fmt.Sprintf(\"%d歳は成人ではありません\", e.Age)\n}\n\nfunc checkAge(age int) error {\n\tif age < 20 {\n\t\treturn &AgeError{Age: age}\n\t}\n\treturn nil\n}\n\nfunc main() {\n\tif err := checkAge(15); err != nil {\n\t\tfmt.Println(err) // 15歳は成人ではありません\n\t}\n\tif err := checkAge(30); err == nil {\n\t\tfmt.Println(\"30歳は成人です\")\n\t}\n}\n",
+  "exercise": {
+    "description": "1 行目に年齢（整数）が入力されます。フィールド `Age` を持つ構造体 `AgeError` に `Error() string` を実装して独自エラー型を作り、`<年齢>歳は成人ではありません` を返すようにしてください。さらに、20 歳未満なら `&AgeError{...}` を返す関数 `checkAge(age int) error` を定義し、main では err が nil なら `成人です`、そうでなければエラーメッセージを出力します。\n\n**入力される値**\n\n```text\n年齢\n```\n\n**入力例1**\n\n```text\n25\n```\n\n**期待出力1**\n\n```text\n成人です\n```",
+    "starter": "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\n// ここに AgeError 構造体と Error() string メソッドを書く\n\n// ここに checkAge(age int) error を書く\n// （20 歳未満なら &AgeError{...} を返し、それ以外は nil を返す）\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tage, _ := strconv.Atoi(sc.Text())\n\n\t// ここから下を書く: checkAge の結果で出力を分ける\n\t_ = age\n\t_ = fmt.Println\n}\n",
+    "tests": [
+      {
+        "stdin": "25\n",
+        "expected_stdout": "成人です\n"
+      },
+      {
+        "stdin": "5\n",
+        "expected_stdout": "5歳は成人ではありません\n"
+      },
+      {
+        "stdin": "19\n",
+        "expected_stdout": "19歳は成人ではありません\n"
+      }
+    ],
+    "answer": "// lesson24 ch04 解答\npackage main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strconv\"\n)\n\ntype AgeError struct {\n\tAge int\n}\n\n// Error() string を実装すると、この構造体は error として返せます。\n// errors.New と違い、失敗した値（Age）をフィールドとして持ち運べるので、\n// メッセージの組み立てや呼び出し側での詳細な処理に使えます。\nfunc (e *AgeError) Error() string {\n\treturn fmt.Sprintf(\"%d歳は成人ではありません\", e.Age)\n}\n\nfunc checkAge(age int) error {\n\tif age < 20 {\n\t\treturn &AgeError{Age: age}\n\t}\n\treturn nil\n}\n\nfunc main() {\n\tsc := bufio.NewScanner(os.Stdin)\n\tsc.Scan()\n\tage, _ := strconv.Atoi(sc.Text())\n\n\tif err := checkAge(age); err != nil {\n\t\tfmt.Println(err)\n\t\treturn\n\t}\n\tfmt.Println(\"成人です\")\n}\n"
+  }
+}
