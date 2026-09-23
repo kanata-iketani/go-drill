@@ -1,0 +1,14 @@
+{
+  "lesson": 7,
+  "chapter": 2,
+  "title": "Q47",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "トランザクションの中で order_items を全行 DELETE し、消えたことを確認してから、ROLLBACK で無かったことにしてください。\n\nトランザクションの中では確かに0件になり、ROLLBACKで11件に戻りました。逆に言うと、**COMMITしてしまったDELETEはROLLBACKでは戻せません**。戻せるのはトランザクションが開いている間だけです。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "トランザクションの中で order_items を全行 DELETE し、消えたことを確認してから、ROLLBACK で無かったことにしてください。",
+    "starter": "",
+    "answer": "BEGIN;\nDELETE FROM order_items;\nSELECT count(*) FROM order_items;\nROLLBACK;\nSELECT count(*) FROM order_items;"
+  }
+}

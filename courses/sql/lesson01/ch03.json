@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 3,
+  "title": "Q3",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "category が 'book' の商品の name と price を表示してください。\n\n文字列の比較はシングルクォートです。ダブルクォートは列名の引用なので、`\"book\"` と書くと「book という列」を探してエラーになります。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "category が 'book' の商品の name と price を表示してください。",
+    "starter": "",
+    "answer": "SELECT name, price FROM products WHERE category = 'book';",
+    "expected_stdout": "           name           | price \n--------------------------+-------\n Goで学ぶバックエンド入門 |  3200\n SQLアンチパターン攻略    |  2800\n データベース設計の教科書 |  3600\n(3 rows)"
+  }
+}

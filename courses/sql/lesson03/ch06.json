@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 6,
+  "title": "Q24",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "customers と orders を「内部結合した場合」と「LEFT JOINした場合」で、結果の行数がどう違うかをそれぞれ数えて確かめてください。\n\n内部結合は「注文7件ぶんの行」だけ。LEFT JOINは注文の無い erin の行が右側NULLで残るので1行増えます。行数の差 = 左側だけに存在する行の数、という読み方は実務のデータ調査で頻繁に使います。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "customers と orders を「内部結合した場合」と「LEFT JOINした場合」で、結果の行数がどう違うかをそれぞれ数えて確かめてください。",
+    "starter": "",
+    "answer": "SELECT count(*) FROM customers c JOIN orders o ON o.customer_id = c.id;\nSELECT count(*) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;",
+    "expected_stdout": " count \n-------\n     7\n(1 row)\n\n count \n-------\n     8\n(1 row)"
+  }
+}

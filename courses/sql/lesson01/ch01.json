@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 1,
+  "title": "Q1",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "products テーブルの全行・全列を表示してください。\n\n`*` は全列の意味です。動作確認には便利ですが、アプリのコードでは列を明示します（#5）。以降の問題でこの8商品を何度も使うので、ここで一覧を眺めておいてください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "products テーブルの全行・全列を表示してください。",
+    "starter": "",
+    "answer": "SELECT * FROM products;",
+    "expected_stdout": " id |           name           | price | stock | category \n----+--------------------------+-------+-------+----------\n  1 | Goで学ぶバックエンド入門 |  3200 |    12 | book\n  2 | SQLアンチパターン攻略    |  2800 |     5 | book\n  3 | メカニカルキーボード     | 15800 |     3 | gadget\n  4 | USB-Cハブ                |  4500 |    20 | gadget\n  5 | ドリップコーヒー30袋     |  1980 |    50 | food\n  6 | プロテインバー12本       |  1450 |     0 | food\n  7 | モニターライト           |  6980 |     8 | gadget\n  8 | データベース設計の教科書 |  3600 |     7 | book\n(8 rows)"
+  }
+}

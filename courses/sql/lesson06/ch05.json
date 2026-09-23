@@ -1,0 +1,14 @@
+{
+  "lesson": 6,
+  "chapter": 5,
+  "title": "Q45",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "(customer_id, ordered_on) の複合インデックスを貼り、「両方を指定した検索」と「ordered_on だけの検索」で実行計画とコストがどう違うか確認してください。\n\n面白いのはコストの差です。左端（customer_id）を含む検索はコスト 4.31。ordered_on だけの検索も一応インデックスを使っていますが、コストは 1122 と260倍です。左端が決まらないと索引の絞り込みが効かず、索引全体をなめる「実質全走査」になっているためです。#8 の左端プレフィックス規則は「まったく使えない」ではなく「絞り込みが効かず桁違いに損」と覚えるのが実測に忠実です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "(customer_id, ordered_on) の複合インデックスを貼り、「両方を指定した検索」と「ordered_on だけの検索」で実行計画とコストがどう違うか確認してください。",
+    "starter": "",
+    "answer": "CREATE INDEX idx_big_orders_cust_date ON big_orders (customer_id, ordered_on);\nEXPLAIN ANALYZE SELECT * FROM big_orders WHERE customer_id = 42 AND ordered_on = '2025-02-10';"
+  }
+}

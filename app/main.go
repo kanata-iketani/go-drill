@@ -53,9 +53,18 @@ type Chapter struct {
 	Chapter  int      `json:"chapter"`
 	Title    string   `json:"title"`
 	Priority string   `json:"priority"`
+	Kind     string   `json:"kind"` // "go"(既定) / "sql" / "bash"
 	Text     string   `json:"text"`
 	Sample   string   `json:"sample"`
 	Exercise Exercise `json:"exercise"`
+}
+
+// kindOf は章の採点方式を返す（未指定は "go"）。
+func (c *Chapter) kindOf() string {
+	if c.Kind == "" {
+		return "go"
+	}
+	return c.Kind
 }
 
 // tests は単一 stdin/expected 形式と tests 配列形式を統一して返す。
@@ -152,7 +161,25 @@ func loadWork(lesson, ch int) string {
 	return string(b)
 }
 
-// ---- go run 実行 ----
+// ---- コード実行（kind 別に分岐）----
+
+// dbContainer は SQL 採点に使う PostgreSQL コンテナ名（-db-container で変更可）。
+var dbContainer = "pg-practice"
+
+// runCode は kind に応じて code を実行し、標準出力・標準エラーを返す。
+//   go   : go run（従来どおり）
+//   sql  : docker exec で PostgreSQL コンテナの psql に流す
+//   bash : bash -c で実行（CTF などのシェル演習用）
+func runCode(kind, code, stdin string) (stdout, stderr string, timedOut bool, err error) {
+	switch kind {
+	case "sql":
+		return runSQL(code)
+	case "bash":
+		return runBash(code, stdin)
+	default:
+		return runGo(code, stdin)
+	}
+}
 
 func runGo(code, stdin string) (stdout, stderr string, timedOut bool, err error) {
 	tmp, err := os.MkdirTemp("", "go-drill-run-*")
@@ -178,6 +205,58 @@ func runGo(code, stdin string) (stdout, stderr string, timedOut bool, err error)
 		return out.String(), errBuf.String(), true, nil
 	}
 	_ = runErr // 非 0 終了（コンパイルエラー等）は stderr で伝わるのでエラー扱いにしない
+	return out.String(), errBuf.String(), false, nil
+}
+
+// runSQL は書かれた SQL を psql に流し、整形済みの出力を返す。
+// コースルートに setup.sql があれば毎回それを先に流し、常にクリーンな状態で採点する
+// （UPDATE/DELETE など状態を変える問題でも、実行のたびに同じ結果になるようにするため）。
+// psql は失敗しても終了コードで返すため、エラーは stderr に出す（-v ON_ERROR_STOP=1）。
+func runSQL(code string) (stdout, stderr string, timedOut bool, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+
+	full := code
+	if b, err := os.ReadFile(filepath.Join(courseRoot, "setup.sql")); err == nil {
+		// setup の出力は採点対象に含めない。\o /dev/null で捨ててから本題に入る。
+		full = "\\set QUIET on\n\\o /dev/null\n" + string(b) + "\n\\o\n" + code
+	}
+
+	cmd := exec.CommandContext(ctx, "docker", "exec", "-i", dbContainer,
+		"psql", "-U", "postgres", "-d", "testdb", "-v", "ON_ERROR_STOP=1", "-q")
+	cmd.Stdin = strings.NewReader(full)
+	var out, errBuf strings.Builder
+	cmd.Stdout = &out
+	cmd.Stderr = &errBuf
+	_ = cmd.Run()
+	if ctx.Err() == context.DeadlineExceeded {
+		return out.String(), errBuf.String(), true, nil
+	}
+	// setup の DROP TABLE IF EXISTS などが出す NOTICE は無害なので採点判定から除く。
+	// ERROR 行だけを残して stderr とする。
+	var errLines []string
+	for _, l := range strings.Split(errBuf.String(), "\n") {
+		if strings.TrimSpace(l) == "" || strings.HasPrefix(l, "NOTICE") {
+			continue
+		}
+		errLines = append(errLines, l)
+	}
+	return out.String(), strings.Join(errLines, "\n"), false, nil
+}
+
+// runBash は書かれたシェルを bash -c で実行する（CTF 演習用）。
+func runBash(code, stdin string) (stdout, stderr string, timedOut bool, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, "bash", "-c", code)
+	cmd.Stdin = strings.NewReader(stdin)
+	var out, errBuf strings.Builder
+	cmd.Stdout = &out
+	cmd.Stderr = &errBuf
+	_ = cmd.Run()
+	if ctx.Err() == context.DeadlineExceeded {
+		return out.String(), errBuf.String(), true, nil
+	}
 	return out.String(), errBuf.String(), false, nil
 }
 
@@ -332,7 +411,11 @@ func handleRun(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	saveWork(req.Lesson, req.Chapter, req.Code)
-	stdout, stderr, timedOut, err := runGo(req.Code, req.Stdin)
+	kind := "go"
+	if c, err := loadChapter(req.Lesson, req.Chapter); err == nil {
+		kind = c.kindOf()
+	}
+	stdout, stderr, timedOut, err := runCode(kind, req.Code, req.Stdin)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -365,7 +448,7 @@ func handleJudge(w http.ResponseWriter, r *http.Request) {
 	var results []caseResult
 	allPass := true
 	for _, t := range c.tests() {
-		stdout, stderr, timedOut, err := runGo(req.Code, t.Stdin)
+		stdout, stderr, timedOut, err := runCode(c.kindOf(), req.Code, t.Stdin)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -415,6 +498,7 @@ func main() {
 	flag.StringVar(&courseRoot, "root", "", "講座ルート（lessonNN の親ディレクトリ。省略時は自動検出）")
 	flag.StringVar(&claudeModel, "claude-model", "sonnet", "質問回答に使う Claude モデル（claude CLI の --model に渡す）")
 	addr := flag.String("addr", "127.0.0.1:8080", "待ち受けアドレス（127.0.0.1 のみ推奨）")
+	flag.StringVar(&dbContainer, "db-container", "pg-practice", "SQL採点に使うPostgreSQLコンテナ名")
 	flag.BoolVar(&enableAI, "enable-ai", false, "AI質問機能を有効にする（要 Claude Code CLI。既定は無効）")
 	flag.Parse()
 

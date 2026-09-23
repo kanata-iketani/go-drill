@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 7,
+  "title": "Q15",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "都道府県ごとの顧客数を、多い順（同数なら都道府県名順）に表示してください。\n\n同数のときの順序も ORDER BY で明示するのがポイントです。指定しないと同数グループ内の並びは実行のたびに変わり得ます。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "都道府県ごとの顧客数を、多い順（同数なら都道府県名順）に表示してください。",
+    "starter": "",
+    "answer": "SELECT prefecture, count(*) FROM customers\nGROUP BY prefecture\nORDER BY count(*) DESC, prefecture;",
+    "expected_stdout": " prefecture | count \n------------+-------\n 大阪府     |     2\n 東京都     |     2\n 福岡県     |     1\n(3 rows)"
+  }
+}

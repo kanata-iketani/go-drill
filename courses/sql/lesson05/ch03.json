@@ -1,0 +1,14 @@
+{
+  "lesson": 5,
+  "chapter": 3,
+  "title": "Q37",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "存在しない顧客（customer_id = 999）の注文を作ろうとすると何が起きますか。実際に確かめてください。\n\n外部キー制約により、存在しない顧客への注文は作れません。孤児レコード（親のいない子）を作らせないのが役目です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "存在しない顧客（customer_id = 999）の注文を作ろうとすると何が起きますか。実際に確かめてください。",
+    "starter": "",
+    "answer": "INSERT INTO orders (customer_id, status, ordered_at) VALUES (999, 'pending', now());"
+  }
+}

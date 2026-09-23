@@ -1,0 +1,14 @@
+{
+  "lesson": 5,
+  "chapter": 1,
+  "title": "Q35",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "すでに存在する email（alice@example.com）で顧客を追加しようとすると何が起きますか。実際に打って、エラーメッセージを確認してください。\n\nUNIQUE制約が二重登録を止めました。「アプリ側で重複チェックしているから大丈夫」は同時リクエストですり抜けます。最後の砦は常にDBの制約です（#6）。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "すでに存在する email（alice@example.com）で顧客を追加しようとすると何が起きますか。実際に打って、エラーメッセージを確認してください。",
+    "starter": "",
+    "answer": "INSERT INTO customers (name, email, prefecture) VALUES ('alice2', 'alice@example.com', '東京都');"
+  }
+}

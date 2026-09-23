@@ -1,0 +1,15 @@
+{
+  "lesson": 7,
+  "chapter": 4,
+  "title": "Q49",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "今のセッションのデフォルトのトランザクション分離レベルを確認してください。\n\nPostgreSQLのデフォルトは read committed（コミット済みのデータだけが見える）です。#9 で学んだとおり、多くのアプリはこのままで問題ありませんが、「自分のトランザクション中に他人のコミットが見えることがある」性質だけは覚えておいてください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "今のセッションのデフォルトのトランザクション分離レベルを確認してください。",
+    "starter": "",
+    "answer": "SHOW default_transaction_isolation;",
+    "expected_stdout": " default_transaction_isolation \n-------------------------------\n read committed\n(1 row)"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 5,
+  "title": "Q23",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "一度も注文していない顧客の名前を表示してください。\n\n「存在しないものを探す」はLEFT JOINの代表的な使い方です。内部結合では注文の無い顧客は行ごと消えるので、この問いには答えられません。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "一度も注文していない顧客の名前を表示してください。",
+    "starter": "",
+    "answer": "SELECT c.name\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.id IS NULL;",
+    "expected_stdout": " name \n------\n erin\n(1 row)"
+  }
+}

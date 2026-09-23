@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 4,
+  "title": "Q4",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "price が 3000 以上の商品の name と price を表示してください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "price が 3000 以上の商品の name と price を表示してください。",
+    "starter": "",
+    "answer": "SELECT name, price FROM products WHERE price >= 3000;",
+    "expected_stdout": "           name           | price \n--------------------------+-------\n Goで学ぶバックエンド入門 |  3200\n メカニカルキーボード     | 15800\n USB-Cハブ                |  4500\n モニターライト           |  6980\n データベース設計の教科書 |  3600\n(5 rows)"
+  }
+}

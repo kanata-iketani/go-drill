@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 3,
+  "title": "Q11",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "カテゴリごとの商品数を表示してください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "カテゴリごとの商品数を表示してください。",
+    "starter": "",
+    "answer": "SELECT category, count(*) FROM products GROUP BY category;",
+    "expected_stdout": " category | count \n----------+-------\n food     |     2\n gadget   |     3\n book     |     3\n(3 rows)"
+  }
+}

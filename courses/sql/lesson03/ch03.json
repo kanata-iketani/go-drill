@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 3,
+  "title": "Q21",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "注文ごとの合計金額（価格×数量の合計。列名 total）を、注文ID順に表示してください。\n\nJOINで広げてからGROUP BYで畳む。この「広げて畳む」がSQLの集計の基本形です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "注文ごとの合計金額（価格×数量の合計。列名 total）を、注文ID順に表示してください。",
+    "starter": "",
+    "answer": "SELECT o.id AS order_id, sum(p.price * oi.quantity) AS total\nFROM order_items oi\nJOIN orders o   ON o.id = oi.order_id\nJOIN products p ON p.id = oi.product_id\nGROUP BY o.id\nORDER BY o.id;",
+    "expected_stdout": " order_id | total \n----------+-------\n        1 |  7160\n        2 | 15800\n        3 |  6400\n        4 | 10980\n        5 |  5940\n        6 | 10180\n        7 |  7920\n(7 rows)"
+  }
+}

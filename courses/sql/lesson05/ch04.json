@@ -1,0 +1,14 @@
+{
+  "lesson": 5,
+  "chapter": 4,
+  "title": "Q38",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "名前が NULL の商品を追加しようとすると何が起きますか。実際に確かめてください。\n\nなお、Q36〜Q38の失敗したINSERTも serial の連番は消費しています（DETAILの行に id 10 や 11 が見えています）。**連番には欠番ができるのが正常**で、この伏線はQ46で回収します。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "名前が NULL の商品を追加しようとすると何が起きますか。実際に確かめてください。",
+    "starter": "",
+    "answer": "INSERT INTO products (name, price, stock, category) VALUES (NULL, 1000, 1, 'book');"
+  }
+}

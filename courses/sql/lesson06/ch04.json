@@ -1,0 +1,14 @@
+{
+  "lesson": 6,
+  "chapter": 4,
+  "title": "Q44",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "memo 列に普通のインデックスを貼り、前方一致（`LIKE 'memo-1234%'`）と中間一致（`LIKE '%1234%'`）の実行計画を確認してください。予想と違う結果が出たら、その理由を調べてください。\n\n予想が外れた人が多いはずです。#8 では「前方一致はインデックスが効く」と学んだのに、**Seq Scan のまま**です。これはこのデータベースのロケール（文字の並び順の規則）が `C` ではないためで、通常のB-Treeインデックスでは LIKE の前方一致に使えません。演算子クラス `text_pattern_ops` を指定した専用のインデックスを貼ると効くようになります。\n\n\n\n\n\n中間一致（`LIKE '%1234%'`）はどちらのインデックスでも Seq Scan のままです（実測 6.850ms）。先頭が決まっていないと辞書は引けない、という #8 の理屈どおりです。「知識どおりのはずなのに効かない」ときに EXPLAIN で確かめて理由を掘る。この体験こそが実務の型です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "memo 列に普通のインデックスを貼り、前方一致（`LIKE 'memo-1234%'`）と中間一致（`LIKE '%1234%'`）の実行計画を確認してください。予想と違う結果が出たら、その理由を調べてください。",
+    "starter": "",
+    "answer": "CREATE INDEX idx_big_orders_memo ON big_orders (memo);\nEXPLAIN ANALYZE SELECT * FROM big_orders WHERE memo LIKE 'memo-1234%';"
+  }
+}

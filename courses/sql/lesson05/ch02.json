@@ -1,0 +1,14 @@
+{
+  "lesson": 5,
+  "chapter": 2,
+  "title": "Q36",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "価格が -100 円の商品を追加しようとすると何が起きますか。実際に確かめてください。\n\nCHECK制約は「この列が満たすべき条件」を宣言する仕組みです。ありえない値はテーブルの定義で門前払いします。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "価格が -100 円の商品を追加しようとすると何が起きますか。実際に確かめてください。",
+    "starter": "",
+    "answer": "INSERT INTO products (name, price, stock, category) VALUES ('不正な商品', -100, 1, 'book');"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "lesson": 7,
+  "chapter": 3,
+  "title": "Q48",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "在庫の引き当てで「読んでから更新するまでの間に他の人が更新する」のを防ぎたいとします。id = 4 の商品の在庫を、行ロックを取ってから1減らすトランザクションを書いてください。\n\n`FOR UPDATE` は「この行をこれから更新するので、他の人は触らずに待て」という行ロックです。在庫の確認と更新の間に他のトランザクションが割り込むと売り越しが起きるため、読んだ時点でロックを取ります。2つ目のターミナルで同じ `SELECT ... FOR UPDATE` を打つと、こちらがCOMMITするまで待たされるのを観察できます。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "在庫の引き当てで「読んでから更新するまでの間に他の人が更新する」のを防ぎたいとします。id = 4 の商品の在庫を、行ロックを取ってから1減らすトランザクションを書いてください。",
+    "starter": "",
+    "answer": "BEGIN;\nSELECT stock FROM products WHERE id = 4 FOR UPDATE;\nUPDATE products SET stock = stock - 1 WHERE id = 4;\nCOMMIT;\nSELECT name, stock FROM products WHERE id = 4;"
+  }
+}

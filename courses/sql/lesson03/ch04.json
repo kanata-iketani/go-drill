@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 4,
+  "title": "Q22",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "顧客ごとの総購入額を、金額の大きい順に表示してください。一度も注文していない顧客は出なくて構いません。\n\nGROUP BY を `c.name` だけにせず `c.id` を入れているのは、同姓同名の顧客がいても別人として集計されるようにするためです。名前でグループ化すると別人が合算されます。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "顧客ごとの総購入額を、金額の大きい順に表示してください。一度も注文していない顧客は出なくて構いません。",
+    "starter": "",
+    "answer": "SELECT c.name, sum(p.price * oi.quantity) AS total\nFROM order_items oi\nJOIN orders o    ON o.id = oi.order_id\nJOIN products p  ON p.id = oi.product_id\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.id, c.name\nORDER BY total DESC;",
+    "expected_stdout": " name  | total \n-------+-------\n bob   | 21740\n alice | 21480\n carol | 10980\n dave  | 10180\n(4 rows)"
+  }
+}

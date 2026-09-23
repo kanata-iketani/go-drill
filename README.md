@@ -44,6 +44,21 @@ go run . -enable-ai
 
 コマンドラインだけで進めたい場合は、各レッスンの `README.md`・`chNN_sample.go`・`chNN_exercise.md`・`answer/` を直接読んで `go run` してもかまいません。
 
+## SQL演習コース（おまけ）
+
+Go入門とは別に、SQL を書いて実行・自動採点できる **SQL50本ノック** コースも同梱しています（`courses/sql/`）。同じ画面・同じ操作（▶実行・✔採点）で、SELECT からトランザクションまで50問を進められます。
+
+採点に PostgreSQL を使うので、先に Docker で `pg-practice` コンテナを起動しておいてください。
+
+```sh
+docker run -d --name pg-practice -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=testdb -p 5432:5432 postgres:16
+
+cd app
+go run . -root ../courses/sql
+```
+
+採点前に毎回テーブルを初期化するので、UPDATE や DELETE の問題も何度でも同じ条件で解き直せます。EXPLAIN やトランザクションなど出力が実行環境で変わる問題は、採点なしの「実行して確かめる」問題として用意しています（コンテナ名を変えたいときは `-db-container 名前`）。
+
 ## レッスン一覧
 
 | # | テーマ |

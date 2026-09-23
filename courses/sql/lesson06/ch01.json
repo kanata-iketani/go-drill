@@ -1,0 +1,14 @@
+{
+  "lesson": 6,
+  "chapter": 1,
+  "title": "Q41",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "検証用に大きなテーブルを作ります。以下を実行して、10万件入ったことを確認してください。\n\n```sql\nCREATE TABLE big_orders (\n  id          serial PRIMARY KEY,\n  customer_id integer NOT NULL,\n  amount      integer NOT NULL,\n  memo        text NOT NULL,\n  ordered_on  date NOT NULL\n);\nINSERT INTO big_orders (customer_id, amount, memo, ordered_on)\nSELECT (i % 1000) + 1, (i * 37) % 50000, 'memo-' || i, DATE '2025-01-01' + (i % 600)\nFROM generate_series(1, 100000) AS i;\n```\n\n`generate_series` は連番を生成する関数で、テスト用の大量データ作りの定番です。#8 で学んだとおり、件数が少ないとDBは全件走査を選ぶため、インデックスの実験には数万件以上が必要です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "検証用に大きなテーブルを作ります。以下を実行して、10万件入ったことを確認してください。\n\n```sql\nCREATE TABLE big_orders (\n  id          serial PRIMARY KEY,\n  customer_id integer NOT NULL,\n  amount      integer NOT NULL,\n  memo        text NOT NULL,\n  ordered_on  date NOT NULL\n);\nINSERT INTO big_orders (customer_id, amount, memo, ordered_on)\nSELECT (i % 1000) + 1, (i * 37) % 50000, 'memo-' || i, DATE '2025-01-01' + (i % 600)\nFROM generate_series(1, 100000) AS i;\n```",
+    "starter": "",
+    "answer": ""
+  }
+}

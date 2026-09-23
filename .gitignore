@@ -4,3 +4,5 @@ app/notes.md
 app/work/
 lesson90/
 *.log
+courses/*/app/progress.json
+courses/*/app/work/

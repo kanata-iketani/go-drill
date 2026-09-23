@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 7,
+  "title": "Q7",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "商品のカテゴリ一覧を、重複なしで表示してください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "商品のカテゴリ一覧を、重複なしで表示してください。",
+    "starter": "",
+    "answer": "SELECT DISTINCT category FROM products;",
+    "expected_stdout": " category \n----------\n food\n gadget\n book\n(3 rows)"
+  }
+}

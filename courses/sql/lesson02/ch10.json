@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 10,
+  "title": "Q18",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "価格が3000円未満を「お手頃」、3000円以上を「高価格」として、それぞれの商品数を表示してください（CASE式を使います。分類の列名は price_range）。\n\nCASE式は「値を条件で変換する」道具で、SELECT にも GROUP BY にも置けます。集計の軸を自分で作れるようになると、レポート系のSQLが一気に書きやすくなります。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "価格が3000円未満を「お手頃」、3000円以上を「高価格」として、それぞれの商品数を表示してください（CASE式を使います。分類の列名は price_range）。",
+    "starter": "",
+    "answer": "SELECT CASE WHEN price < 3000 THEN 'お手頃' ELSE '高価格' END AS price_range,\n       count(*)\nFROM products\nGROUP BY price_range;",
+    "expected_stdout": " price_range | count \n-------------+-------\n 高価格      |     5\n お手頃      |     3\n(2 rows)"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 4,
+  "chapter": 6,
+  "title": "Q34",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "products に論理削除用の列 deleted_at（timestamptz）を追加し、id = 6 の商品を論理削除してください。そのうえで「削除されていない商品」の数を数えてください。\n\n行は9つあるのに、「生きている商品」は8つ。論理削除は「消えたことにする」だけでデータは残るので、後から説明を求められるデータに向きます（#10の判断基準）。そのかわり、すべての参照クエリに `deleted_at IS NULL` を付けて回る運用コストを引き受けることになります。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "products に論理削除用の列 deleted_at（timestamptz）を追加し、id = 6 の商品を論理削除してください。そのうえで「削除されていない商品」の数を数えてください。",
+    "starter": "",
+    "answer": "ALTER TABLE products ADD COLUMN deleted_at timestamptz;\nUPDATE products SET deleted_at = '2026-09-18 00:00+09' WHERE id = 6;\nSELECT count(*) FROM products WHERE deleted_at IS NULL;",
+    "expected_stdout": " count \n-------\n     7\n(1 row)"
+  }
+}

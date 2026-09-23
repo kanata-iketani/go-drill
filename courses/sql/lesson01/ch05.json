@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 5,
+  "title": "Q5",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "全商品の name と price を、価格の高い順に表示してください。\n\nORDER BY を付けない SELECT の並び順は保証されません。「なんとなくID順に見える」に頼ったコードは、いつか順番が変わって壊れます。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "全商品の name と price を、価格の高い順に表示してください。",
+    "starter": "",
+    "answer": "SELECT name, price FROM products ORDER BY price DESC;",
+    "expected_stdout": "           name           | price \n--------------------------+-------\n メカニカルキーボード     | 15800\n モニターライト           |  6980\n USB-Cハブ                |  4500\n データベース設計の教科書 |  3600\n Goで学ぶバックエンド入門 |  3200\n SQLアンチパターン攻略    |  2800\n ドリップコーヒー30袋     |  1980\n プロテインバー12本       |  1450\n(8 rows)"
+  }
+}

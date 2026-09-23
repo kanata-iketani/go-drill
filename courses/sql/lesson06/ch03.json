@@ -1,0 +1,14 @@
+{
+  "lesson": 6,
+  "chapter": 3,
+  "title": "Q43",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "customer_id にインデックスを貼り、Q42と同じクエリの実行計画がどう変わったか確認してください。\n\n実行時間が 3.335ms → 0.119ms、約28分の1になりました。インデックスで対象行の場所を特定してから、本体を読みに行く形（Bitmap Scan）です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "customer_id にインデックスを貼り、Q42と同じクエリの実行計画がどう変わったか確認してください。",
+    "starter": "",
+    "answer": "CREATE INDEX idx_big_orders_customer ON big_orders (customer_id);\nEXPLAIN ANALYZE SELECT * FROM big_orders WHERE customer_id = 42;"
+  }
+}

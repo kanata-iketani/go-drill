@@ -1,0 +1,14 @@
+{
+  "lesson": 7,
+  "chapter": 1,
+  "title": "Q46",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "「erin が USB-Cハブを1個注文する」処理を1つのトランザクションで書いてください。orders への追加、order_items への追加、在庫を1減らす、の3つが全部成功するか全部失敗するかのどちらかになるようにします。\n\n確認します。\n\n\n\n\n\n**ポイント**\n\n- 注文IDが 8 ではなく 9 なのは、Q37の失敗INSERTが連番8を消費したからです（Q38の伏線回収）。「次のIDは8のはず」と決め打ちで書くと、まさにこの欠番で壊れます\n- そこで採番されたIDは RETURNING で受け取り、`WITH`（CTE）でそのまま order_items のINSERTに渡しています。IDを手で書き写さないのが正解です\n- 3つの文がBEGINとCOMMITで囲まれているので、途中で失敗すれば全部無かったことになります。「注文はあるのに明細が無い」中途半端な状態が残らないのがトランザクションの価値です（#9の銀行振込と同じ）",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "「erin が USB-Cハブを1個注文する」処理を1つのトランザクションで書いてください。orders への追加、order_items への追加、在庫を1減らす、の3つが全部成功するか全部失敗するかのどちらかになるようにします。",
+    "starter": "",
+    "answer": "BEGIN;\nWITH new_order AS (\n  INSERT INTO orders (customer_id, status, ordered_at)\n  VALUES (5, 'pending', '2026-09-18 09:00+09')\n  RETURNING id\n)\nINSERT INTO order_items (order_id, product_id, quantity)\nSELECT id, 4, 1 FROM new_order;\nUPDATE products SET stock = stock - 1 WHERE id = 4;\nCOMMIT;"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 4,
+  "chapter": 1,
+  "title": "Q29",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "顧客 frank（email: frank@example.com、北海道）を追加し、追加されたことを SELECT で確認してください。\n\nid と created_at は指定していません。serial と DEFAULT が埋めてくれる列は、INSERTで触らないのが基本です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "顧客 frank（email: frank@example.com、北海道）を追加し、追加されたことを SELECT で確認してください。",
+    "starter": "",
+    "answer": "INSERT INTO customers (name, email, prefecture) VALUES ('frank', 'frank@example.com', '北海道');\nSELECT id, name, prefecture FROM customers WHERE name = 'frank';",
+    "expected_stdout": " id | name  | prefecture \n----+-------+------------\n  6 | frank | 北海道\n(1 row)"
+  }
+}

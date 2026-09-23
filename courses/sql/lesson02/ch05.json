@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 5,
+  "title": "Q13",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "商品数が3つ以上あるカテゴリだけを、商品数つきで表示してください。\n\n行を絞るのが WHERE、グループを絞るのが HAVING です。「集計した結果に対する条件」は WHERE には書けません。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "商品数が3つ以上あるカテゴリだけを、商品数つきで表示してください。",
+    "starter": "",
+    "answer": "SELECT category, count(*) FROM products GROUP BY category HAVING count(*) >= 3;",
+    "expected_stdout": " category | count \n----------+-------\n gadget   |     3\n book     |     3\n(2 rows)"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 2,
+  "title": "Q20",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "注文明細を「注文ID・商品名・数量」の形で、注文ID順（同一注文内は商品ID順）に表示してください。\n\n3テーブルのJOINも、2テーブルの繰り返しです。「明細を軸に、注文と商品をぶら下げる」と考えると迷いません。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "注文明細を「注文ID・商品名・数量」の形で、注文ID順（同一注文内は商品ID順）に表示してください。",
+    "starter": "",
+    "answer": "SELECT o.id AS order_id, p.name, oi.quantity\nFROM order_items oi\nJOIN orders o   ON o.id = oi.order_id\nJOIN products p ON p.id = oi.product_id\nORDER BY o.id, p.id;",
+    "expected_stdout": " order_id |           name           | quantity \n----------+--------------------------+----------\n        1 | Goで学ぶバックエンド入門 |        1\n        1 | ドリップコーヒー30袋     |        2\n        2 | メカニカルキーボード     |        1\n        3 | SQLアンチパターン攻略    |        1\n        3 | データベース設計の教科書 |        1\n        4 | USB-Cハブ                |        2\n        4 | ドリップコーヒー30袋     |        1\n        5 | ドリップコーヒー30袋     |        3\n        6 | Goで学ぶバックエンド入門 |        1\n        6 | モニターライト           |        1\n        7 | ドリップコーヒー30袋     |        4\n(11 rows)"
+  }
+}

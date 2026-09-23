@@ -1,0 +1,15 @@
+{
+  "lesson": 2,
+  "chapter": 4,
+  "title": "Q12",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "カテゴリごとの平均価格（四捨五入・列名 avg_price）を、平均価格の高い順に表示してください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "カテゴリごとの平均価格（四捨五入・列名 avg_price）を、平均価格の高い順に表示してください。",
+    "starter": "",
+    "answer": "SELECT category, round(avg(price)) AS avg_price\nFROM products\nGROUP BY category\nORDER BY avg_price DESC;",
+    "expected_stdout": " category | avg_price \n----------+-----------\n gadget   |      9093\n book     |      3200\n food     |      1715\n(3 rows)"
+  }
+}

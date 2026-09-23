@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 7,
+  "title": "Q25",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "一度も売れていない（どの注文明細にも登場しない）商品の名前を表示してください。\n\nQ23と同じ型です。「LEFT JOIN して右側が NULL の行を探す」は1つの決まり文句として手に入れてください。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "一度も売れていない（どの注文明細にも登場しない）商品の名前を表示してください。",
+    "starter": "",
+    "answer": "SELECT p.name\nFROM products p\nLEFT JOIN order_items oi ON oi.product_id = p.id\nWHERE oi.order_id IS NULL;",
+    "expected_stdout": "        name        \n--------------------\n プロテインバー12本\n(1 row)"
+  }
+}

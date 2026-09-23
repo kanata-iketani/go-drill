@@ -1,0 +1,14 @@
+{
+  "lesson": 6,
+  "chapter": 2,
+  "title": "Q42",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "`customer_id = 42` の行を探すクエリの実行計画を EXPLAIN ANALYZE で確認してください。どんなスキャンになっていますか。\n\nSeq Scan、つまり10万行の全件走査です。「99900行を読んで捨てた」と正直に書いてあります。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "`customer_id = 42` の行を探すクエリの実行計画を EXPLAIN ANALYZE で確認してください。どんなスキャンになっていますか。",
+    "starter": "",
+    "answer": "EXPLAIN ANALYZE SELECT * FROM big_orders WHERE customer_id = 42;"
+  }
+}

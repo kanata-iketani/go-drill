@@ -1,0 +1,15 @@
+{
+  "lesson": 4,
+  "chapter": 4,
+  "title": "Q32",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "category が 'food' の商品を100円値上げします。**UPDATE を打つ前に**、何行が変更対象になるかを確認する SQL を打ってから、UPDATE してください。\n\n事前のSELECTの件数（2）とUPDATEの結果（UPDATE 2）が一致していることを確認します。**同じWHERE句でまずSELECTしてからUPDATEする**。この一手間が、WHERE忘れで全行更新する事故（#10で触れた定番事故）への一番簡単な保険です。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "category が 'food' の商品を100円値上げします。**UPDATE を打つ前に**、何行が変更対象になるかを確認する SQL を打ってから、UPDATE してください。",
+    "starter": "",
+    "answer": "SELECT count(*) FROM products WHERE category = 'food';",
+    "expected_stdout": " count \n-------\n     2\n(1 row)"
+  }
+}

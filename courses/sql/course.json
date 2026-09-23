@@ -1,0 +1,30 @@
+[
+  {
+    "lesson": 1,
+    "title": "SELECT基礎"
+  },
+  {
+    "lesson": 2,
+    "title": "集計とGROUP BY"
+  },
+  {
+    "lesson": 3,
+    "title": "JOIN"
+  },
+  {
+    "lesson": 4,
+    "title": "更新系(INSERT/UPDATE/DELETE)"
+  },
+  {
+    "lesson": 5,
+    "title": "制約とテーブル設計"
+  },
+  {
+    "lesson": 6,
+    "title": "インデックスとEXPLAIN"
+  },
+  {
+    "lesson": 7,
+    "title": "トランザクション"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "lesson": 1,
+  "chapter": 8,
+  "title": "Q8",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "名前に「データベース」を含む商品の name を表示してください。\n\n`%` は「任意の0文字以上」。この中間一致がインデックスとどう付き合うかは、Q44で実際に確かめます。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "名前に「データベース」を含む商品の name を表示してください。",
+    "starter": "",
+    "answer": "SELECT name FROM products WHERE name LIKE '%データベース%';",
+    "expected_stdout": "           name           \n--------------------------\n データベース設計の教科書\n(1 row)"
+  }
+}

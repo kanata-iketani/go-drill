@@ -1,0 +1,15 @@
+{
+  "lesson": 3,
+  "chapter": 8,
+  "title": "Q26",
+  "priority": "🟡",
+  "kind": "sql",
+  "text": "都道府県ごとの売上合計を、金額の大きい順に表示してください。\n\nQ22と同じJOINで、畳む軸を顧客から都道府県に変えただけです。JOINの形とGROUP BYの軸は独立に選べる、と分かるとSQLの見通しが良くなります。",
+  "sample": "-- ここに SQL を書いて「実行」▶ を押す。「採点」✔ で答え合わせ。\n",
+  "exercise": {
+    "description": "都道府県ごとの売上合計を、金額の大きい順に表示してください。",
+    "starter": "",
+    "answer": "SELECT c.prefecture, sum(p.price * oi.quantity) AS total\nFROM order_items oi\nJOIN orders o    ON o.id = oi.order_id\nJOIN products p  ON p.id = oi.product_id\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.prefecture\nORDER BY total DESC;",
+    "expected_stdout": " prefecture | total \n------------+-------\n 東京都     | 32460\n 大阪府     | 21740\n 福岡県     | 10180\n(3 rows)"
+  }
+}
