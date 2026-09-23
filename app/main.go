@@ -402,7 +402,10 @@ func detectRoot() string {
 	return abs
 }
 
-var claudeAvailable bool
+var (
+	claudeAvailable bool
+	enableAI        bool
+)
 
 func handleConfig(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, map[string]any{"claudeAvailable": claudeAvailable})
@@ -412,10 +415,15 @@ func main() {
 	flag.StringVar(&courseRoot, "root", "", "講座ルート（lessonNN の親ディレクトリ。省略時は自動検出）")
 	flag.StringVar(&claudeModel, "claude-model", "sonnet", "質問回答に使う Claude モデル（claude CLI の --model に渡す）")
 	addr := flag.String("addr", "127.0.0.1:8080", "待ち受けアドレス（127.0.0.1 のみ推奨）")
+	flag.BoolVar(&enableAI, "enable-ai", false, "AI質問機能を有効にする（要 Claude Code CLI。既定は無効）")
 	flag.Parse()
 
-	if _, err := exec.LookPath("claude"); err == nil {
-		claudeAvailable = true
+	if enableAI {
+		if _, err := exec.LookPath("claude"); err == nil {
+			claudeAvailable = true
+		} else {
+			log.Println("警告: -enable-ai が指定されましたが claude CLI が見つかりません。AI質問機能は無効のままです。")
+		}
 	}
 
 	if courseRoot == "" {
